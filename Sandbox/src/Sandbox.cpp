@@ -7,5 +7,7 @@ public:
 };
 
 Adonis::Application* Adonis::createApplication() {
+	AD_CLIENT_INFO("MOIN");
+	AD_CLIENT_INFO("MOIN");
 	return new Sandbox();
 }

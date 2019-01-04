@@ -19,6 +19,7 @@
     <ClInclude Include="src\Adonis\Log.h">
       <Filter>Adonis</Filter>
     </ClInclude>
+    <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
@@ -27,5 +28,6 @@
     <ClCompile Include="src\Adonis\Log.cpp">
       <Filter>Adonis</Filter>
     </ClCompile>
+    <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
 </Project>

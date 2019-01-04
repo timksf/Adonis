@@ -1,0 +1,3 @@
+[submodule "Adonis/vendor/spdlog"]
+	path = Adonis/vendor/spdlog
+	url = https://github.com/gabime/spdlog

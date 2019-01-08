@@ -156,11 +156,20 @@
     <ClInclude Include="src\Adonis\Application.h" />
     <ClInclude Include="src\Adonis\Core.h" />
     <ClInclude Include="src\Adonis\EntryPoint.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\Event.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\EventListener.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\EventManager.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\Events\Events.h" />
     <ClInclude Include="src\Adonis\Log.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp" />
+    <ClCompile Include="src\Adonis\Eventsystem\Event.cpp" />
+    <ClCompile Include="src\Adonis\Eventsystem\EventListener.cpp" />
+    <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp" />
+    <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp" />
     <ClCompile Include="src\Adonis\Log.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

@@ -1,4 +1,6 @@
 #include <Adonis.h>
+#include <iostream>
+#include <memory>
 
 class Sandbox : public Adonis::Application {
 public:
@@ -6,8 +8,7 @@ public:
 	~Sandbox() {};
 };
 
+
 Adonis::Application* Adonis::createApplication() {
-	AD_CLIENT_INFO("MOIN");
-	AD_CLIENT_INFO("MOIN");
 	return new Sandbox();
 }

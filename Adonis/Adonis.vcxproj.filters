@@ -4,6 +4,12 @@
     <Filter Include="Adonis">
       <UniqueIdentifier>{03A8CEA6-EF49-F97C-D804-0DD1C44580CD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Adonis\Eventsystem">
+      <UniqueIdentifier>{591E87D3-4502-4829-AE62-427C9A6532AB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Adonis\Eventsystem\Events">
+      <UniqueIdentifier>{1D0CF25A-89CE-25E5-D27E-B4713E80FEC2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Adonis.h" />
@@ -16,14 +22,39 @@
     <ClInclude Include="src\Adonis\EntryPoint.h">
       <Filter>Adonis</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\Eventsystem\Event.h">
+      <Filter>Adonis\Eventsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Eventsystem\EventListener.h">
+      <Filter>Adonis\Eventsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Eventsystem\EventManager.h">
+      <Filter>Adonis\Eventsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Eventsystem\Events\ApplicationEvent.h">
+      <Filter>Adonis\Eventsystem\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\Log.h">
       <Filter>Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\Events\Events.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
       <Filter>Adonis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\Eventsystem\Event.cpp">
+      <Filter>Adonis\Eventsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\Eventsystem\EventListener.cpp">
+      <Filter>Adonis\Eventsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp">
+      <Filter>Adonis\Eventsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp">
+      <Filter>Adonis\Eventsystem\Events</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Log.cpp">
       <Filter>Adonis</Filter>

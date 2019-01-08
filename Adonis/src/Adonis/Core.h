@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning( disable: 4251 )
 
 #ifdef ADONIS_PLATFORM_WINDOWS
 	#ifdef ADONIS_BUILD_DLL

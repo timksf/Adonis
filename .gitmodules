@@ -1,3 +1,6 @@
 [submodule "Adonis/vendor/spdlog"]
 	path = Adonis/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Adonis/vendor/GLFW"]
+	path = Adonis/vendor/GLFW
+	url = https://github.com/tiefseeudo/glfw.git

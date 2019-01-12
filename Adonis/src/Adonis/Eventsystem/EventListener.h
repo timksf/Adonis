@@ -19,7 +19,7 @@ namespace Adonis {
 			}
 
 			template<typename EventType>
-			inline auto init(const event_handler_t<EventType>& handler)->void{
+			inline auto on_event(const event_handler_t<EventType>& handler)->void{
 				auto casted_handler = ([&, handler](event_ptr event) { //pass event_ptr by reference and handler by value
 					auto&& casted_event = std::dynamic_pointer_cast<EventType>(event);
 					if (casted_event != nullptr) {

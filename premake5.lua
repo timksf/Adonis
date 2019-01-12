@@ -9,6 +9,11 @@ workspace "Adonis"
 
 outputdir = "%{cfg.buildcfg}/%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Adonis/vendor/GLFW/include"
+
+include "Adonis/vendor/GLFW"
+
 project "Adonis"
 	location "Adonis"
 	kind "SharedLib"
@@ -28,7 +33,13 @@ project "Adonis"
 	includedirs{
 		"%{prj.name}",
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"

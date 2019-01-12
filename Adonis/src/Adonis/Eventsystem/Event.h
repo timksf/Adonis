@@ -7,11 +7,12 @@ namespace Adonis {
 
 	namespace event {
 
-		class Event {
+		class ADONIS_API Event {
 		public:
 			using evID = size_t;
 			virtual auto id()const->evID = 0;
 			virtual ~Event() {};
+			static std::string name;
 		};
 
 		#define	DECLARE_EVENT(type) \
@@ -20,7 +21,8 @@ namespace Adonis {
 			} \
 			Event::evID id()const override{\
 				return address();\
-			}
+			}\
+			std::string name = std::string(#type);
 
 		class TestEvent: public Event {
 		public:

@@ -7,6 +7,7 @@
 namespace Adonis {
 
 	Application::Application(): event::EventListener(){
+		m_window = IWindow::create();
 	}
 
 
@@ -14,9 +15,11 @@ namespace Adonis {
 	}
 
 	void Application::run(){
-		init<event::UpdateEvent>(std::bind(&Application::on_update_event, this, std::placeholders::_1));
-		while (true) {
-			event::EventManager::queueEvent< event::UpdateEvent>();
+		on_event<event::UpdateEvent>(std::bind(&Application::on_update_event, this, std::placeholders::_1));
+		on_event<event::WindowCloseEvent>(std::bind(&Application::on_window_close, this, std::placeholders::_1));
+		on_event<event::KeyPressed>(std::bind(&Application::on_key_pressed, this, std::placeholders::_1));
+		while (m_running) {
+			event::EventManager::queueEvent<event::UpdateEvent>();
 			event::EventManager::processEvents();
 		}
 	}
@@ -27,7 +30,16 @@ namespace Adonis {
 
 	void Application::on_update_event(event::event_ptr_t<event::UpdateEvent>& ev) {
 		#ifdef ADONIS_DEBUG
-			AD_CORE_INFO("App update");
 		#endif // ADONIS_DEBUG
+	}
+
+	void Application::on_window_close(event::event_ptr_t<event::WindowCloseEvent>& ev) {
+		m_running = false;
+	}
+
+	void Application::on_key_pressed(event::event_ptr_t<event::KeyPressed>& ev) {
+		if (ev->code() == GLFW_KEY_F11) {
+			m_window->toggle_fullscreen();
+		}
 	}
 }

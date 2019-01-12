@@ -23,28 +23,29 @@ namespace Adonis {
 			static auto queueEvent(event_ptr event)->void;
 			static auto processEvents()->void;
 
-			template<typename EventType>
-			static inline auto queueEvent()->void {
+			template<typename EventType, typename... Args>
+			static inline auto queueEvent(Args&&... args)->void {
 				if (!valid_type<EventType>()) {
 					#ifdef ADONIS_DEBUG
 						AD_CORE_WARN("Failed to queue event of type: {0}", typeid(EventType).name());
 					#endif
 					return;
 				}else{
-					queueEvent(std::make_shared<EventType>());
+					queueEvent(std::make_shared<EventType>(std::forward<Args>(args)...));
 				}
 			}
 
 		private:
 
 			/*
-				Check if EventType actually is derived from event class
+				Check if EventType is derived from event class
 			*/
 			template<typename EventType>
 			static inline auto valid_type()->bool {
 				return std::is_base_of_v<Event, EventType>;
 			}
 
+			static std::mutex s_mutex;
 			static std::vector<event_ptr> s_queue;
 			static std::map<Event::evID, std::vector<event_handler>> s_subscriptions;
 		};

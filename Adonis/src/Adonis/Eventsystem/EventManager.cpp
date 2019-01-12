@@ -8,6 +8,7 @@ namespace Adonis {
 
 		std::vector<event_ptr> EventManager::s_queue = std::vector<event_ptr>();
 		std::map<Event::evID, std::vector<event_handler>> EventManager::s_subscriptions = std::map<Event::evID, std::vector<event_handler>>();
+		std::mutex EventManager::s_mutex = std::mutex();
 
 		bool EventManager::subscribe(size_t id, const event_handler& handler) {
 			auto where = s_subscriptions.find(id);
@@ -59,20 +60,15 @@ namespace Adonis {
 		}
 
 		void EventManager::processEvents() {
-			//AD_CORE_INFO("Size of event queue: {0}", s_queue.size());
-			auto it = s_queue.begin();
 			while (s_queue.size() > 0) {
-				auto& event = *it;
-				auto subscription = s_subscriptions.find(event->id());
-				if (subscription != s_subscriptions.end()) {
-					auto& handlers = subscription->second;
+				auto&& entry = s_subscriptions.find(s_queue[0]->id());
+				if (entry != s_subscriptions.end()) {
+					auto& handlers = entry->second;
 					for (auto& handler : handlers) {
-						handler(event);
+						handler(s_queue[0]);
 					}
 				}
-				it = s_queue.erase(it);
-				if (s_queue.size() != 0)
-					it++;
+				s_queue.erase(s_queue.begin());
 			}
 		}
 

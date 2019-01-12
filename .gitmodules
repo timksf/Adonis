@@ -4,3 +4,6 @@
 [submodule "Adonis/vendor/GLFW"]
 	path = Adonis/vendor/GLFW
 	url = https://github.com/tiefseeudo/glfw.git
+[submodule "Adonis/vendor/glm"]
+	path = Adonis/vendor/glm
+	url = https://github.com/g-truc/glm.git

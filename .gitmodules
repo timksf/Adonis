@@ -7,3 +7,6 @@
 [submodule "Adonis/vendor/glm"]
 	path = Adonis/vendor/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Adonis/vendor/imgui"]
+	path = Adonis/vendor/imgui
+	url = https://github.com/ocornut/imgui.git

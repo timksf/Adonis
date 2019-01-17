@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "WindowsWindow.h"
+
 #include "Adonis/Eventsystem/EventManager.h"
 #include "Adonis/Eventsystem/Events/Events.h"
 
@@ -26,7 +27,6 @@ namespace Adonis {
 	}
 
 	WindowsWindow::~WindowsWindow() {
-
 	}
 
 	void WindowsWindow::init() {
@@ -40,7 +40,7 @@ namespace Adonis {
 
 		switch (m_mode) {
 		case WindowMode::Windowed:
-			m_window = std::unique_ptr<GLFWwindow, void(*)(GLFWwindow *)>(glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr), glfwDestroyWindow);
+			m_window = std::unique_ptr<GLFWwindow, void(*)(GLFWwindow *)>(glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr), WindowsWindow::shutdown);
 			break;
 		case WindowMode::Borderless:
 		{
@@ -60,7 +60,12 @@ namespace Adonis {
 		default:break;
 		}
 
+		//Set member variables
+		glfwGetFramebufferSize(m_window.get(), &m_framebuffer_width, &m_framebuffer_height);
+
 		glfwMakeContextCurrent(m_window.get());
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		AD_CORE_ASSERT(status, "Failed to initialize GLAD");
 
 		//set vsync
 		glfwSwapInterval(m_vsync);
@@ -68,10 +73,10 @@ namespace Adonis {
 		glfwSetKeyCallback(m_window.get(), [] (GLFWwindow* window, int key, int scancode, int action, int mods){
 			switch (action) {
 			case GLFW_PRESS:
-				event::EventManager::queueEvent<event::KeyPressed>(key, mods);
+				EventManager::queueEvent<KeyPressed>(key, mods);
 				break;
 			case GLFW_RELEASE:
-				event::EventManager::queueEvent<event::KeyReleased>(key, mods);				
+				EventManager::queueEvent<KeyReleased>(key, mods);				
 				break;
 			case GLFW_REPEAT://TODO
 				break;
@@ -82,10 +87,10 @@ namespace Adonis {
 		glfwSetMouseButtonCallback(m_window.get(), [](GLFWwindow*, int button, int action, int mods) {
 			switch (action) {
 			case GLFW_PRESS:
-				event::EventManager::queueEvent<event::MouseButtonPressed>(button, mods);
+				EventManager::queueEvent<MouseButtonPressed>(button, mods);
 				break;
 			case GLFW_RELEASE:
-				event::EventManager::queueEvent<event::MouseButtonReleased>(button, mods);
+				EventManager::queueEvent<MouseButtonReleased>(button, mods);
 				break;
 			case GLFW_REPEAT://TODO
 				break;
@@ -94,22 +99,25 @@ namespace Adonis {
 		});
 
 		glfwSetCursorPosCallback(m_window.get(), [](GLFWwindow*, double x, double y) {
-			event::EventManager::queueEvent<event::MouseMovedEvent>(x, y);
+			EventManager::queueEvent<MouseMovedEvent>(x, y);
 		});
 
 		glfwSetScrollCallback(m_window.get(), [](GLFWwindow*, double xoffset, double yoffset) {
-			event::EventManager::queueEvent<event::MouseMovedEvent>(xoffset, yoffset);
+			EventManager::queueEvent<MouseMovedEvent>(xoffset, yoffset);
 		});
 
 		glfwSetWindowSizeCallback(m_window.get(), [](GLFWwindow*, int width, int height) {
-			event::EventManager::queueEvent<event::WindowResizeEvent>(width, height);
+			EventManager::queueEvent<WindowResizeEvent>(width, height);
 		});
 
 		glfwSetWindowCloseCallback(m_window.get(), [](GLFWwindow*) {
-			event::EventManager::queueEvent<event::WindowCloseEvent>();
+			EventManager::queueEvent<WindowCloseEvent>();
 		});
 
-		on_event<event::UpdateEvent>(std::bind(&WindowsWindow::on_update, this, std::placeholders::_1));
+		on_event<UpdateEvent>(  std::bind(&WindowsWindow::on_update, this, std::placeholders::_1));
+		on_event<PreRenderEvent>(  std::bind(&WindowsWindow::on_pre_render, this, std::placeholders::_1));
+		on_event<RenderEvent>(  std::bind(&WindowsWindow::on_render, this, std::placeholders::_1));
+		on_event<PostRenderEvent>( std::bind(&WindowsWindow::on_post_render, this, std::placeholders::_1));
 
 	}
 
@@ -126,10 +134,31 @@ namespace Adonis {
 		}
 	}
 
-	void WindowsWindow::on_update(event::event_ptr_t<event::UpdateEvent>& ev) {
-		glfwSwapBuffers(m_window.get());
+	void WindowsWindow::on_update(const event_ptr_t<UpdateEvent>& ev) {
+		glfwGetWindowSize(m_window.get(), &m_width, &m_height);
+		glfwGetFramebufferSize(m_window.get(), &m_framebuffer_width, &m_framebuffer_height);
+	}
+
+	void WindowsWindow::shutdown(GLFWwindow* window) {
+		glfwDestroyWindow(window);
+		glfwTerminate();
+	}
+
+	void WindowsWindow::on_exit(const event_ptr_t<WindowCloseEvent>& event) {
+	}
+
+	void WindowsWindow::on_pre_render(const event_ptr_t<PreRenderEvent>& event) {
 		glfwPollEvents();
-		//AD_CORE_INFO("Event: {0} captured by window", ev->name);
+		glClearColor(1.0, 0.0, 1.0, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	void WindowsWindow::on_render(const event_ptr_t<RenderEvent>& event) {
+		
+	}
+
+	void WindowsWindow::on_post_render(const event_ptr_t<PostRenderEvent>& event) {
+		glfwSwapBuffers(m_window.get());
 	}
 
 }

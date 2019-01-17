@@ -12,14 +12,17 @@
 #endif
 
 
+#ifdef ADONIS_PLATFORM_WINDOWS
+	#define AD_CLIENT_ASSERT(x, ...)\
+								if(!x){\
+									AD_CLIENT_ERROR("Assertion failed: {0}", __VA_ARGS__);\
+									__debugbreak();\
+								}
+	#define AD_CORE_ASSERT(x, ...)\
+								if(!x){\
+									AD_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__);\
+									__debugbreak();\
+								}
+#endif //ADONIS_PLATFORM_WINDOWS
 
-#define AD_CLIENT_ASSERT(x, ...)\
-							if(!x){\
-								AD_CLIENT_ERROR("Assertion failed: {0}", __VA_ARGS__);\
-								__debugbreak();\
-							}
-#define AD_CORE_ASSERT(x, ...)\
-							if(!x){\
-								AD_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__);\
-								__debugbreak();\
-							}
+#define AD_NAME_FROM_TYPE(type) std::string(#type)

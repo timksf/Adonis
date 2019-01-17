@@ -5,9 +5,8 @@
 
 extern Adonis::Application* Adonis::createApplication();
 
-int main(int argc, char** agrc) {
+int main(int argc, char** argv) {
 	Adonis::Log::init();
-
 	AD_CORE_INFO("Initialized loggers");
 
 	auto app = Adonis::createApplication();

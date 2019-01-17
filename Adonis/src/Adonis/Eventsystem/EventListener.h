@@ -6,17 +6,18 @@
 #include "Adonis/Log.h"
 
 namespace Adonis {
-	namespace event {
 		//class that keeps track of subscribed events w/ automatic unsubscribing
-		//TODO add support for multiple EventTypes
 		class ADONIS_API EventListener {
 		public:
+
+			virtual auto id()const->size_t = 0;
 
 			virtual ~EventListener() {
 				for (auto& subscription : m_subscriptions) {
 					EventManager::unsubscribe(subscription.first, subscription.second);
 				}
 			}
+
 
 			template<typename EventType>
 			inline auto on_event(const event_handler_t<EventType>& handler)->void{
@@ -26,7 +27,7 @@ namespace Adonis {
 						handler(casted_event);
 					}
 					else {
-						AD_CORE_ERROR("Passed pointer could not be resolved to an event");
+						AD_CORE_ERROR("Passed pointer could not be resolved to an event type");
 					}
 				});
 
@@ -36,18 +37,18 @@ namespace Adonis {
 		protected:
 
 			inline auto init(const Event::evID& id, event_handler handler)->void{
-				//Try to sub to event
-				if (EventManager::subscribe(id, handler)) {
-					m_subscriptions.push_back(std::make_pair(id, handler));
-				}
+				size_t offset = EventManager::subscribe(id, std::make_pair(this->id(), handler));
+				m_subscriptions.push_back(std::make_pair(id, offset));
 			}
 
 		private:
-
-			std::vector<std::pair<Event::evID, event_handler>> m_subscriptions;
+			std::vector<std::pair<Event::evID, size_t>> m_subscriptions;
 		};
 
-	}
+		#define DECLARE_LISTENER(type)\
+		static size_t address(){ return reinterpret_cast<size_t>(&address); };\
+		size_t id()const override{ return address(); };
+
 }
 
 

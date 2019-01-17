@@ -10,6 +10,12 @@
     <Filter Include="Adonis\Eventsystem\Events">
       <UniqueIdentifier>{1D0CF25A-89CE-25E5-D27E-B4713E80FEC2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Adonis\Layers">
+      <UniqueIdentifier>{62BDDF05-CE7D-5B3C-97B8-A4B90338A018}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Adonis\OpenGL">
+      <UniqueIdentifier>{D7CFE30D-4390-5F44-0CCB-A8C1784AA420}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Adonis.h" />
@@ -46,8 +52,23 @@
     <ClInclude Include="src\Adonis\Eventsystem\Events\WindowEvent.h">
       <Filter>Adonis\Eventsystem\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\Layers\ImGuiLayer.h">
+      <Filter>Adonis\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Layers\Layer.h">
+      <Filter>Adonis\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Layers\LayerStack.h">
+      <Filter>Adonis\Layers</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\Log.h">
       <Filter>Adonis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\OpenGL\ImGuiImpl.h">
+      <Filter>Adonis\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\OpenGL\ImGuiImplGLFW.h">
+      <Filter>Adonis\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Window.h">
       <Filter>Adonis</Filter>
@@ -73,12 +94,26 @@
     <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp">
       <Filter>Adonis\Eventsystem\Events</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\Layers\ImGuiLayer.cpp">
+      <Filter>Adonis\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\Layers\Layer.cpp">
+      <Filter>Adonis\Layers</Filter>
+    </ClCompile>
     <ClCompile Include="src\Adonis\Log.cpp">
       <Filter>Adonis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\OpenGL\ImGuiImpl.cpp">
+      <Filter>Adonis\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\OpenGL\ImGuiImplGLFW.cpp">
+      <Filter>Adonis\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\WindowsWindow.cpp">
       <Filter>Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Adonis\Window.cpp" />
+    <ClCompile Include="src\Adonis\Eventsystem\Events\RenderEvent.h" />
   </ItemGroup>
 </Project>

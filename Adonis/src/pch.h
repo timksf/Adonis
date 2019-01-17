@@ -15,12 +15,11 @@
 #include <functional>
 #include <type_traits>
 
-#include <GLFW/glfw3.h>
-
+//
 #include "Adonis/Log.h"
-
-
+//
 
 #ifdef ADONIS_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif
+

@@ -4,7 +4,6 @@
 
 
 namespace Adonis {
-	namespace event {
 
 		class ADONIS_API WindowResizeEvent : public Event {
 		public:
@@ -25,5 +24,4 @@ namespace Adonis {
 			inline WindowCloseEvent() {};
 		};
 
-	}
 }

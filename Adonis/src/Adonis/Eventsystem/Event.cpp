@@ -4,8 +4,6 @@
 
 namespace Adonis {
 
-	namespace event {
 
-	}
 
 }

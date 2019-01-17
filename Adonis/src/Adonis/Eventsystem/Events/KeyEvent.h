@@ -5,7 +5,6 @@
 
 namespace Adonis {
 
-	namespace event {
 
 		class ADONIS_API KeyEvent : public Event {
 		public:
@@ -34,7 +33,6 @@ namespace Adonis {
 			inline KeyReleased(int key_code, int mods) : KeyEvent(key_code, mods) {};
 		};
 
-	}
 
 }
 

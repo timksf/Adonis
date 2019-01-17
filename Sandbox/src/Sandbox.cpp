@@ -1,10 +1,12 @@
-#include <Adonis.h>
+#include "Adonis.h"
 #include <iostream>
 #include <memory>
 
 class Sandbox : public Adonis::Application {
 public:
-	Sandbox() {};
+	Sandbox() {
+		layers().push_layer<Adonis::ImGuiLayer>();
+	};
 	~Sandbox() {};
 };
 
@@ -12,3 +14,4 @@ public:
 Adonis::Application* Adonis::createApplication() {
 	return new Sandbox();
 }
+	

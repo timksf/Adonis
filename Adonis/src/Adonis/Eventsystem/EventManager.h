@@ -6,22 +6,15 @@
 
 namespace Adonis {
 
-	namespace event {
-
-		//class IEventManager {
-		//public:
-		//	virtual auto subscribe(size_t id, event_handler handler)->bool = 0;
-		//	virtual auto unsubscribe(size_t id, event_handler handler)->bool = 0;
-		//	virtual auto queueEvent(event_ptr event)->void = 0;
-		//	virtual auto processEvents()->void = 0;
-		//};
 
 		class ADONIS_API EventManager {
 		public:
-			static auto subscribe(size_t id, const event_handler& handler)->bool;
-			static auto unsubscribe(size_t id, const event_handler& handler)->bool;
+			static auto subscribe(size_t id, const std::pair<size_t, event_handler>& handler)->size_t;
+			static auto unsubscribe(size_t ev_id, const size_t& listener_id)->bool;
 			static auto queueEvent(event_ptr event)->void;
 			static auto processEvents()->void;
+
+			static inline auto n_queued_events()->size_t { return s_queue.size(); };
 
 			template<typename EventType, typename... Args>
 			static inline auto queueEvent(Args&&... args)->void {
@@ -45,10 +38,8 @@ namespace Adonis {
 				return std::is_base_of_v<Event, EventType>;
 			}
 
-			static std::mutex s_mutex;
 			static std::vector<event_ptr> s_queue;
-			static std::map<Event::evID, std::vector<event_handler>> s_subscriptions;
+			static std::map<Event::evID, std::vector<std::pair<size_t, event_handler>>> s_subscriptions;
 		};
 
-	}
 }

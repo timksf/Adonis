@@ -4,7 +4,6 @@
 #include "Adonis/Eventsystem/Event.h"
 
 namespace Adonis {
-	namespace event {
 
 		class MouseButtonEvent : public Event {
 		public:
@@ -58,5 +57,4 @@ namespace Adonis {
 			double m_yoff;
 		};
 
-	}
 }

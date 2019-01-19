@@ -26,3 +26,6 @@
 #endif //ADONIS_PLATFORM_WINDOWS
 
 #define AD_NAME_FROM_TYPE(type) std::string(#type)
+
+#define AD_C_STYLE_ARRAYSIZE(x) (static_cast<size_t>((sizeof(x) / sizeof(*x))))
+#define AD_ARRAYSIZE(x) AD_C_STYLE_ARRAYSIZE(x)

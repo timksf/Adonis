@@ -32,7 +32,8 @@ project "Adonis"
 
 	files{
 		"%{prj.name}/src/**.h", 
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/resources/WindowIcon.png"
 	}
 
 	includedirs{
@@ -53,6 +54,9 @@ project "Adonis"
 		"opengl32.lib"
 	}
 
+	filter "files:**.png"
+   		buildaction "Embed"
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
@@ -62,7 +66,8 @@ project "Adonis"
 			"ADONIS_PLATFORM_WINDOWS",
 			"ADONIS_BUILD_DLL",
 			"IMGUI_IMPL_OPENGL_LOADER_GLAD",
-			"_CRT_SECURE_NO_WARNINGS"
+			"_CRT_SECURE_NO_WARNINGS",
+			"STB_IMAGE_IMPLEMENTATION"
 		}
 
 		postbuildcommands{
@@ -96,17 +101,23 @@ project "Sandbox"
 
 	files{
 		"%{prj.name}/src/**.h", 
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"Adonis/resources/WindowIcon.png"
 	}
 
 	includedirs{
 		"Adonis/src",
-		"Adonis/vendor/spdlog/include"
+		"Adonis/vendor/spdlog/include",
+		"Adonis/vendor/glm",
+		"Adonis/vendor/stb/include"
 	}
 
 	links{
 		"Adonis"
 	}
+	
+	filter "files:**.png"
+		buildaction "Embed"
 
 	filter "system:windows"
 		cppdialect "C++17"

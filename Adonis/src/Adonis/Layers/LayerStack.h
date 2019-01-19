@@ -10,6 +10,10 @@ namespace Adonis {
 	public:
 
 		LayerStack() {};
+		~LayerStack() {
+			for (auto& layer : m_layers)
+				layer->detach();
+		};
 
 		template<typename LayerType, typename... Args>
 		inline auto push_layer(Args&& ...args) {

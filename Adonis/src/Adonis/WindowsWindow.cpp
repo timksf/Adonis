@@ -3,6 +3,7 @@
 
 #include "Adonis/Eventsystem/EventManager.h"
 #include "Adonis/Eventsystem/Events/Events.h"
+#include <stb_image.h>
 
 
 namespace Adonis {
@@ -68,6 +69,9 @@ namespace Adonis {
 		AD_CORE_ASSERT(status, "Failed to initialize GLAD");
 
 		//set vsync
+		#ifdef ADONIS_DEBUG
+			AD_CORE_INFO("Setting up window with vsync status: {0}", m_vsync);
+		#endif //ADONIS_DEBUG
 		glfwSwapInterval(m_vsync);
 		
 		glfwSetKeyCallback(m_window.get(), [] (GLFWwindow* window, int key, int scancode, int action, int mods){
@@ -103,7 +107,7 @@ namespace Adonis {
 		});
 
 		glfwSetScrollCallback(m_window.get(), [](GLFWwindow*, double xoffset, double yoffset) {
-			EventManager::queueEvent<MouseMovedEvent>(xoffset, yoffset);
+			EventManager::queueEvent<MouseScrolledEvent>(xoffset, yoffset);
 		});
 
 		glfwSetWindowSizeCallback(m_window.get(), [](GLFWwindow*, int width, int height) {
@@ -114,10 +118,29 @@ namespace Adonis {
 			EventManager::queueEvent<WindowCloseEvent>();
 		});
 
+		glfwSetCharCallback(m_window.get(), [](GLFWwindow*, unsigned int c) {
+			EventManager::queueEvent<CharTyped>(c);
+		});
+
 		on_event<UpdateEvent>(  std::bind(&WindowsWindow::on_update, this, std::placeholders::_1));
 		on_event<PreRenderEvent>(  std::bind(&WindowsWindow::on_pre_render, this, std::placeholders::_1));
 		on_event<RenderEvent>(  std::bind(&WindowsWindow::on_render, this, std::placeholders::_1));
 		on_event<PostRenderEvent>( std::bind(&WindowsWindow::on_post_render, this, std::placeholders::_1));
+
+		int width, height, n;
+		unsigned char * data = stbi_load("WindowIcon.png", &width, &height, &n, 0);
+		if (data == nullptr) {
+			AD_CORE_ERROR("Failed to load window icon");
+		}
+		else {
+			GLFWimage* image = new GLFWimage;
+			image->height = height;
+			image->width = width;
+			image->pixels = data;
+			glfwSetWindowIcon(m_window.get(), 1, image);
+			delete image;
+		}
+		stbi_image_free(data);
 
 	}
 
@@ -132,11 +155,13 @@ namespace Adonis {
 			glfwSetWindowMonitor(m_window.get(), nullptr, 0, 30, m_width, m_height, mode->refreshRate);
 			m_mode = WindowMode::Windowed;
 		}
+		glfwSwapInterval(m_vsync);
 	}
 
 	void WindowsWindow::on_update(const event_ptr_t<UpdateEvent>& ev) {
 		glfwGetWindowSize(m_window.get(), &m_width, &m_height);
 		glfwGetFramebufferSize(m_window.get(), &m_framebuffer_width, &m_framebuffer_height);
+		glfwGetCursorPos(m_window.get(), &m_mouse_pos.x, &m_mouse_pos.y);
 	}
 
 	void WindowsWindow::shutdown(GLFWwindow* window) {
@@ -161,4 +186,11 @@ namespace Adonis {
 		glfwSwapBuffers(m_window.get());
 	}
 
+	bool WindowsWindow::has_focus()const {
+		return static_cast<bool>(glfwGetWindowAttrib(m_window.get(), GLFW_FOCUSED));
+	}
+
+	void WindowsWindow::set_mouse_pos(double x, double y) {
+		glfwSetCursorPos(m_window.get(), x, y);
+	}
 }

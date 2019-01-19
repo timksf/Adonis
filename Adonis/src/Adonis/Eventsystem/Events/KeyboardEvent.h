@@ -33,6 +33,15 @@ namespace Adonis {
 			inline KeyReleased(int key_code, int mods) : KeyEvent(key_code, mods) {};
 		};
 
+		class ADONIS_API CharTyped: public Event{
+		public:
+			DECLARE_EVENT(CharTyped);
+			inline CharTyped(unsigned int c) : m_char(c) {};
+			auto inline character()->unsigned int { return m_char; };
+		private:
+			unsigned int m_char;
+		};
+
 
 }
 

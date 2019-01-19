@@ -1,119 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Adonis">
-      <UniqueIdentifier>{03A8CEA6-EF49-F97C-D804-0DD1C44580CD}</UniqueIdentifier>
+    <Filter Include="resources">
+      <UniqueIdentifier>{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Adonis\Eventsystem">
-      <UniqueIdentifier>{591E87D3-4502-4829-AE62-427C9A6532AB}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Adonis\Eventsystem\Events">
-      <UniqueIdentifier>{1D0CF25A-89CE-25E5-D27E-B4713E80FEC2}</UniqueIdentifier>
+    <Filter Include="src\Adonis">
+      <UniqueIdentifier>{3A812D04-2639-6F51-8F40-48AD7B170A42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Adonis\Layers">
-      <UniqueIdentifier>{62BDDF05-CE7D-5B3C-97B8-A4B90338A018}</UniqueIdentifier>
+    <Filter Include="src\Adonis\Eventsystem">
+      <UniqueIdentifier>{10825ECA-FC7B-871C-E5E8-1D2DD181ED88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Adonis\OpenGL">
-      <UniqueIdentifier>{D7CFE30D-4390-5F44-0CCB-A8C1784AA420}</UniqueIdentifier>
+    <Filter Include="src\Adonis\Eventsystem\Events">
+      <UniqueIdentifier>{F43B4BB2-6054-32DC-2901-C27595D8C675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Adonis\Layers">
+      <UniqueIdentifier>{B932157D-2549-1313-6EC0-9E34DA15E49A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Adonis\OpenGL">
+      <UniqueIdentifier>{2E451985-9A5B-171B-E3D2-A23C4F28E8A2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Adonis.h" />
+    <ClInclude Include="src\Adonis.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\Application.h">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Core.h">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\EntryPoint.h">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\Event.h">
-      <Filter>Adonis\Eventsystem</Filter>
+      <Filter>src\Adonis\Eventsystem</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\EventListener.h">
-      <Filter>Adonis\Eventsystem</Filter>
+      <Filter>src\Adonis\Eventsystem</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\EventManager.h">
-      <Filter>Adonis\Eventsystem</Filter>
+      <Filter>src\Adonis\Eventsystem</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\Events\ApplicationEvent.h">
-      <Filter>Adonis\Eventsystem\Events</Filter>
+      <Filter>src\Adonis\Eventsystem\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\Events\Events.h">
-      <Filter>Adonis\Eventsystem\Events</Filter>
+      <Filter>src\Adonis\Eventsystem\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\Eventsystem\Events\KeyEvent.h">
-      <Filter>Adonis\Eventsystem\Events</Filter>
+    <ClInclude Include="src\Adonis\Eventsystem\Events\KeyboardEvent.h">
+      <Filter>src\Adonis\Eventsystem\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\Events\MouseEvent.h">
-      <Filter>Adonis\Eventsystem\Events</Filter>
+      <Filter>src\Adonis\Eventsystem\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Eventsystem\Events\RenderEvent.h">
+      <Filter>src\Adonis\Eventsystem\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\Events\WindowEvent.h">
-      <Filter>Adonis\Eventsystem\Events</Filter>
+      <Filter>src\Adonis\Eventsystem\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Layers\ImGuiLayer.h">
-      <Filter>Adonis\Layers</Filter>
+      <Filter>src\Adonis\Layers</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Layers\Layer.h">
-      <Filter>Adonis\Layers</Filter>
+      <Filter>src\Adonis\Layers</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Layers\LayerStack.h">
-      <Filter>Adonis\Layers</Filter>
+      <Filter>src\Adonis\Layers</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Log.h">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImpl.h">
-      <Filter>Adonis\OpenGL</Filter>
+      <Filter>src\Adonis\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImplGLFW.h">
-      <Filter>Adonis\OpenGL</Filter>
+      <Filter>src\Adonis\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Window.h">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\WindowsWindow.h">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClInclude>
-    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\pch.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp">
-      <Filter>Adonis\Eventsystem</Filter>
+      <Filter>src\Adonis\Eventsystem</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\EventListener.cpp">
-      <Filter>Adonis\Eventsystem</Filter>
+      <Filter>src\Adonis\Eventsystem</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp">
-      <Filter>Adonis\Eventsystem</Filter>
+      <Filter>src\Adonis\Eventsystem</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp">
-      <Filter>Adonis\Eventsystem\Events</Filter>
+      <Filter>src\Adonis\Eventsystem\Events</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Layers\ImGuiLayer.cpp">
-      <Filter>Adonis\Layers</Filter>
+      <Filter>src\Adonis\Layers</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Layers\Layer.cpp">
-      <Filter>Adonis\Layers</Filter>
+      <Filter>src\Adonis\Layers</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Log.cpp">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImpl.cpp">
-      <Filter>Adonis\OpenGL</Filter>
+      <Filter>src\Adonis\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImplGLFW.cpp">
-      <Filter>Adonis\OpenGL</Filter>
+      <Filter>src\Adonis\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\Window.cpp">
+      <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\WindowsWindow.cpp">
-      <Filter>Adonis</Filter>
+      <Filter>src\Adonis</Filter>
     </ClCompile>
-    <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Adonis\Window.cpp" />
-    <ClCompile Include="src\Adonis\Eventsystem\Events\RenderEvent.h" />
+    <ClCompile Include="src\pch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\WindowIcon.png">
+      <Filter>resources</Filter>
+    </None>
   </ItemGroup>
 </Project>

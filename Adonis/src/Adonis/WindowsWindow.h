@@ -9,6 +9,7 @@
 #include "Adonis/Window.h"
 #include <GLFW/glfw3.h>
 
+
 namespace Adonis {
 
 
@@ -27,14 +28,21 @@ namespace Adonis {
 		virtual auto on_post_render(const event_ptr_t<PostRenderEvent>& ev)->void override;
 		auto init()->void override;																				
 		auto toggle_fullscreen()->void override;																
-		static auto shutdown(GLFWwindow* window)->void;															//Clean-up allocated storage									
+		auto set_mouse_pos(double x, double y)->void override;
 
+		auto has_focus()const->bool override;
+		
+		auto is_vsync()const->bool override { return m_vsync; };
+
+		inline auto button_state(int button)->int override { return glfwGetMouseButton(m_window.get(), button); };
+		inline auto mouse_pos()->glm::dvec2 override{ return m_mouse_pos; };
 		inline auto width()->uint16_t override { return static_cast<uint16_t>(m_width); };
 		inline auto height()->uint16_t override { return static_cast<uint16_t>(m_height); };
 		inline auto title()->std::string override { return m_title; };											
 		inline auto framebuffer_width()->uint16_t { return static_cast<uint16_t>(m_framebuffer_width); };
 		inline auto framebuffer_height()->uint16_t { return static_cast<uint16_t>(m_framebuffer_height); };
 
+		static auto shutdown(GLFWwindow* window)->void;															//Clean-up allocated storage									
 
 	private:
 		std::string m_title;
@@ -44,6 +52,7 @@ namespace Adonis {
 		int m_framebuffer_height;
 		WindowMode m_mode;
 		bool m_vsync;
+		glm::dvec2 m_mouse_pos;
 
 		std::unique_ptr<GLFWwindow, void(*)(GLFWwindow *)> m_window{ nullptr, shutdown };
 	};

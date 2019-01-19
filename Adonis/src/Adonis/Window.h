@@ -6,6 +6,8 @@
 #include "Adonis/Eventsystem/Events/Events.h"
 #include <string>
 #include <cstdint>
+#include <glm/glm.hpp>
+
 
 namespace Adonis {
 
@@ -29,7 +31,14 @@ namespace Adonis {
 		virtual auto on_exit(const event_ptr_t<WindowCloseEvent>& ev)->void = 0;
 		virtual auto init()->void = 0;																//Init underlying window
 		virtual auto toggle_fullscreen()->void = 0;													//Toggle fullscreen mode	
-																									
+		virtual auto set_mouse_pos(double x, double y)->void = 0;
+
+		virtual auto has_focus()const->bool = 0;
+
+		virtual auto is_vsync()const->bool = 0;
+									
+		virtual auto button_state(int button)->int = 0;
+		virtual auto mouse_pos()->glm::dvec2 = 0;
 		virtual auto width()->uint16_t = 0;
 		virtual auto height()->uint16_t = 0;														//Get width of window
 		virtual auto title()->std::string = 0;														//Get height of window		

@@ -79,7 +79,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;ADONIS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -103,7 +103,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;ADONIS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -131,7 +131,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;ADONIS_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -164,8 +164,9 @@
     <ClInclude Include="src\Adonis\Eventsystem\EventManager.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Events\Events.h" />
-    <ClInclude Include="src\Adonis\Eventsystem\Events\KeyEvent.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\Events\KeyboardEvent.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Events\MouseEvent.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\Events\RenderEvent.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Events\WindowEvent.h" />
     <ClInclude Include="src\Adonis\Layers\ImGuiLayer.h" />
     <ClInclude Include="src\Adonis\Layers\Layer.h" />
@@ -183,7 +184,6 @@
     <ClCompile Include="src\Adonis\Eventsystem\EventListener.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp" />
-    <ClCompile Include="src\Adonis\Eventsystem\Events\RenderEvent.h" />
     <ClCompile Include="src\Adonis\Layers\ImGuiLayer.cpp" />
     <ClCompile Include="src\Adonis\Layers\Layer.cpp" />
     <ClCompile Include="src\Adonis\Log.cpp" />
@@ -194,6 +194,9 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\WindowIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

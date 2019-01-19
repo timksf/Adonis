@@ -11,6 +11,11 @@ namespace Adonis {
 		on_event<PreRenderEvent>(std::bind(&ImGuiLayer::on_pre_render, this, std::placeholders::_1));
 		on_event<RenderEvent>(std::bind(&ImGuiLayer::on_render, this, std::placeholders::_1));
 		on_event<PostRenderEvent>(std::bind(&ImGuiLayer::on_post_render, this, std::placeholders::_1));
+		on_event<KeyPressed>(std::bind(&ImGuiLayer::on_key_press, this, std::placeholders::_1));
+		on_event<KeyReleased>(std::bind(&ImGuiLayer::on_key_release, this, std::placeholders::_1));
+		on_event<MouseButtonPressed>(std::bind(&ImGuiLayer::on_mouse_pressed, this, std::placeholders::_1));
+		on_event<MouseScrolledEvent>(std::bind(&ImGuiLayer::on_scroll, this, std::placeholders::_1));
+		on_event<CharTyped>(std::bind(&ImGuiLayer::on_chartyped, this, std::placeholders::_1));
 		attach();
 	}
 
@@ -72,7 +77,6 @@ namespace Adonis {
 	void ImGuiLayer::detach()const {
 
 		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 
 	}
@@ -82,6 +86,7 @@ namespace Adonis {
 
 	void ImGuiLayer::on_render(const event_ptr_t<RenderEvent>& ev) {
 		ImGui_ImplOpenGL3_NewFrame();
+		update_mouse();
 
 		ImGuiIO& io = ImGui::GetIO();
 		Application* app = Application::get();
@@ -96,8 +101,17 @@ namespace Adonis {
 		m_time = static_cast<float>(current_time);
 
 		ImGui::NewFrame();
-		static bool x = true;
-		ImGui::ShowDemoWindow(&x);
+
+		{
+			ImGui::Begin("Debug window");
+
+			static float col2[4] = { 0.4f,0.7f,0.0f,0.5f };
+			ImGui::ColorEdit4("Clear color", col2);
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::Text("VSYNC status: %d", app->consume_window()->is_vsync());
+			ImGui::End();
+		}
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
@@ -105,4 +119,69 @@ namespace Adonis {
 	void ImGuiLayer::on_post_render(const event_ptr_t<PostRenderEvent>& ev) {
 	}
 
+	void ImGuiLayer::on_mouse_pressed(const event_ptr_t<MouseButtonPressed>& event) {
+		if (event->button() >= 0 && event->button() < AD_ARRAYSIZE(m_mousejustpressed)) {
+			m_mousejustpressed[event->button()] = true;
+		}
+	}
+
+	void ImGuiLayer::on_scroll(const event_ptr_t<MouseScrolledEvent>& event) {
+		//AD_CORE_INFO("Mouse scrolled event captured by imgui layer: {0}, {1}", event->xoffset(), event->yoffset());
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseWheelH += static_cast<float>(event->xoffset());
+		io.MouseWheel += static_cast<float>(event->yoffset());
+	}
+
+	void ImGuiLayer::on_key_press(const event_ptr_t<KeyPressed>& event) {
+		ImGuiIO& io = ImGui::GetIO();
+		io.KeysDown[event->code()] = true;
+		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+		io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+	}
+
+	void ImGuiLayer::on_key_release(const event_ptr_t<KeyReleased>& event) {
+		ImGuiIO& io = ImGui::GetIO();
+		io.KeysDown[event->code()] = false;
+		// Modifiers are not reliable across systems
+		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+		io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+	}
+
+	void ImGuiLayer::update_mouse() {
+		ImGuiIO& io = ImGui::GetIO();
+		Application* app = Application::get();
+
+		for (size_t i = 0; i < AD_ARRAYSIZE(io.MouseDown); i++) {
+			io.MouseDown[i] = m_mousejustpressed[i] || app->consume_window()->button_state(static_cast<int>(i)) != 0;
+			m_mousejustpressed[i] = false;
+		}
+
+		auto mouse_pos_tmp = io.MousePos;
+		io.MousePos = ImVec2(-FLT_MAX, FLT_MAX);
+
+		bool focused = app->consume_window()->has_focus();
+
+		if (focused)
+		{
+			if (io.WantSetMousePos)
+			{
+				app->consume_window()->set_mouse_pos(static_cast<double>(mouse_pos_tmp.x), static_cast<double>(mouse_pos_tmp.x));
+			}
+			else
+			{
+				io.MousePos.x = static_cast<float>(app->consume_window()->mouse_pos().x);
+				io.MousePos.y = static_cast<float>(app->consume_window()->mouse_pos().y);
+			}
+		}
+	}
+
+	void ImGuiLayer::on_chartyped(const event_ptr_t<CharTyped>& event) {
+		ImGuiIO& io = ImGui::GetIO();
+		if (event->character() > 0 && event->character() < 0x10000)
+			io.AddInputCharacter(event->character());
+	}
 }

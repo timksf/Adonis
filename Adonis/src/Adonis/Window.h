@@ -24,18 +24,26 @@ namespace Adonis {
 
 		virtual ~IWindow() {};
 
-		virtual auto on_update(const event_ptr_t<UpdateEvent>& ev)->void = 0;			//Defines what should be executed on app's update event
-		virtual auto on_pre_render(const event_ptr_t<PreRenderEvent>& ev)->void = 0;
-		virtual auto on_render(const event_ptr_t<RenderEvent>& ev)->void = 0;
-		virtual auto on_post_render(const event_ptr_t<PostRenderEvent>& ev)->void = 0;
-		virtual auto on_exit(const event_ptr_t<WindowCloseEvent>& ev)->void = 0;
+		//virtual auto on_update(const event_ptr_t<UpdateEvent>& ev)->void = 0;			//Defines what should be executed on app's update event
+		//virtual auto on_pre_render(const event_ptr_t<PreRenderEvent>& ev)->void = 0;
+		//virtual auto on_render(const event_ptr_t<RenderEvent>& ev)->void = 0;
+		//virtual auto on_post_render(const event_ptr_t<PostRenderEvent>& ev)->void = 0;
+		//virtual auto on_exit(const event_ptr_t<WindowCloseEvent>& ev)->void = 0;
+		ON_EVENT_DECL_P_V(UpdateEvent);
+		ON_EVENT_DECL_P_V(PreRenderEvent);
+		ON_EVENT_DECL_P_V(RenderEvent);
+		ON_EVENT_DECL_P_V(PostRenderEvent);
+		ON_EVENT_DECL_P_V(WindowCloseEvent);
+
 		virtual auto init()->void = 0;																//Init underlying window
 		virtual auto toggle_fullscreen()->void = 0;													//Toggle fullscreen mode	
 		virtual auto set_mouse_pos(double x, double y)->void = 0;
+		virtual auto update_vsync()->void = 0;
 
 		virtual auto has_focus()const->bool = 0;
 
 		virtual auto is_vsync()const->bool = 0;
+		virtual auto vsync()->bool& = 0;
 									
 		virtual auto button_state(int button)->int = 0;
 		virtual auto mouse_pos()->glm::dvec2 = 0;

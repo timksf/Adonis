@@ -18,10 +18,9 @@ namespace Adonis {
 
 		auto run()->void;
 
-		auto onTestEvent(event_ptr_t<TestEvent>& ev)->void;
-		auto on_update_event(event_ptr_t<UpdateEvent>& ev)->void;
-		auto on_window_close(event_ptr_t<WindowCloseEvent>& ev)->void;
-		auto on_key_pressed(event_ptr_t<KeyPressed>& ev)->void;
+		ON_EVENT_DECL(UpdateEvent);
+		ON_EVENT_DECL(WindowCloseEvent);
+		ON_EVENT_DECL(KeyPressed);
 
 		inline auto consume_window()const->IWindow* { return m_window.get(); };
 		inline auto layers()->LayerStack& { return m_layers; };

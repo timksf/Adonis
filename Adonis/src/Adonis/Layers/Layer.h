@@ -16,7 +16,7 @@ namespace Adonis {
 
 		virtual auto attach()const->void = 0;
 		virtual auto detach()const->void = 0;
-		virtual auto on_update(const event_ptr_t<UpdateEvent>& ev)->void = 0;
+		ON_EVENT_DECL_P_V(UpdateEvent);
 
 	private:
 		std::string m_name;

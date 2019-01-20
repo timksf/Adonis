@@ -5,7 +5,7 @@
 class Sandbox : public Adonis::Application {
 public:
 	Sandbox() {
-		layers().push_layer<Adonis::ImGuiLayer>();
+		layers().push_layer<Adonis::ImGuiLayer>(Adonis::ImGuiLayer::Style::Extasy);
 	};
 	~Sandbox() {};
 };

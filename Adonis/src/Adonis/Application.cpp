@@ -22,9 +22,9 @@ namespace Adonis {
 
 	void Application::run(){
 		//Set event handlers
-		on_event<UpdateEvent>(std::bind(&Application::on_update_event, this, std::placeholders::_1));
-		on_event<WindowCloseEvent>(std::bind(&Application::on_window_close, this, std::placeholders::_1));
-		on_event<KeyPressed>(std::bind(&Application::on_key_pressed, this, std::placeholders::_1));
+		ON_EVENT_BIND(KeyPressed, Application, on_KeyPressed);
+		ON_EVENT_BIND(WindowCloseEvent, Application, on_WindowCloseEvent);
+		ON_EVENT_BIND(UpdateEvent, Application, on_UpdateEvent);
 
 		double time = glfwGetTime();
 
@@ -45,19 +45,16 @@ namespace Adonis {
 
 	}
 
-	void Application::onTestEvent(event_ptr_t<TestEvent>& ev) {
-		AD_CORE_INFO("Application's reaction to TestEvent");
+
+	void Application::on_UpdateEvent(const event_ptr_t<UpdateEvent>& ev) {
 	}
 
-	void Application::on_update_event(event_ptr_t<UpdateEvent>& ev) {
-	}
-
-	void Application::on_window_close(event_ptr_t<WindowCloseEvent>& ev) {
+	void Application::on_WindowCloseEvent(const event_ptr_t<WindowCloseEvent>& ev) {
 		m_window.reset();
 		m_running = false;
 	}
 
-	void Application::on_key_pressed(event_ptr_t<KeyPressed>& ev) {
+	void Application::on_KeyPressed(const event_ptr_t<KeyPressed>& ev) {
 		if (ev->code() == GLFW_KEY_F11) {
 			m_window->toggle_fullscreen();
 		}

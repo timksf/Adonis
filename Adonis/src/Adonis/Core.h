@@ -29,3 +29,16 @@
 
 #define AD_C_STYLE_ARRAYSIZE(x) (static_cast<size_t>((sizeof(x) / sizeof(*x))))
 #define AD_ARRAYSIZE(x) AD_C_STYLE_ARRAYSIZE(x)
+
+#define ON_EVENT_DECL(event_type) auto on_##event_type(const event_ptr_t<event_type>& event)->void								//straight decl
+#define ON_EVENT_DECL_OVERRIDE(event_type) auto on_##event_type(const event_ptr_t<event_type>& event)->void override			//overriding
+#define ON_EVENT_DECL_V(event_type) virtual auto on_##event_type(const event_ptr_t<event_type>& event)->void					//virtual
+#define ON_EVENT_DECL_P_V(event_type) virtual auto on_##event_type(const event_ptr_t<event_type>& event)->void = 0				//pure virtual
+#define ON_EVENT_DECL_V_OVERRIDE(event_type) virtual auto on_##event_type(const event_ptr_t<event_type>& event)->void override	//virtual and overriding
+
+
+#define BIND_FN(type, fn) std::bind(&type::fn, this, std::placeholders::_1)
+#define ON_EVENT(event_type, ...) on_event<event_type>(__VA_ARGS__)
+#define ON_EVENT_BIND(event_type, type, fn) ON_EVENT(event_type, BIND_FN(type, fn))
+
+#define ON_EVENT_BIND(event_type, type) ON_EVENT(event_type, BIND_FN(type, on_##event_type))

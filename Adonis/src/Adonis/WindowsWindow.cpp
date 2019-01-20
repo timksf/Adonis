@@ -9,6 +9,7 @@
 namespace Adonis {
 
 	static bool s_glfw_initialized = false;
+	static bool prev_vsync;
 
 	static void GLFWErrorCallback(int error, const char* desc) {
 		AD_CORE_ERROR("GLFW reported error: {0} with description: {1}", error, desc);
@@ -25,6 +26,7 @@ namespace Adonis {
 		m_mode(mode),
 		m_vsync(vsync){				
 		init();
+		prev_vsync = vsync;
 	}
 
 	WindowsWindow::~WindowsWindow() {
@@ -122,10 +124,14 @@ namespace Adonis {
 			EventManager::queueEvent<CharTyped>(c);
 		});
 
-		on_event<UpdateEvent>(  std::bind(&WindowsWindow::on_update, this, std::placeholders::_1));
-		on_event<PreRenderEvent>(  std::bind(&WindowsWindow::on_pre_render, this, std::placeholders::_1));
-		on_event<RenderEvent>(  std::bind(&WindowsWindow::on_render, this, std::placeholders::_1));
-		on_event<PostRenderEvent>( std::bind(&WindowsWindow::on_post_render, this, std::placeholders::_1));
+		//on_event<UpdateEvent>(  std::bind(&WindowsWindow::on_update, this, std::placeholders::_1));
+		//on_event<PreRenderEvent>(  std::bind(&WindowsWindow::on_pre_render, this, std::placeholders::_1));
+		//on_event<RenderEvent>(  std::bind(&WindowsWindow::on_render, this, std::placeholders::_1));
+		//on_event<PostRenderEvent>( std::bind(&WindowsWindow::on_post_render, this, std::placeholders::_1));
+		ON_EVENT_BIND(UpdateEvent, WindowsWindow, on_UpdateEvent);
+		ON_EVENT_BIND(PreRenderEvent, WindowsWindow, on_PreRenderEvent);
+		ON_EVENT_BIND(RenderEvent, WindowsWindow, on_RenderEvent);
+		ON_EVENT_BIND(PostRenderEvent, WindowsWindow, on_PostRenderEvent);
 
 		int width, height, n;
 		unsigned char * data = stbi_load("WindowIcon.png", &width, &height, &n, 0);
@@ -158,10 +164,15 @@ namespace Adonis {
 		glfwSwapInterval(m_vsync);
 	}
 
-	void WindowsWindow::on_update(const event_ptr_t<UpdateEvent>& ev) {
+	void WindowsWindow::on_UpdateEvent(const event_ptr_t<UpdateEvent>& ev) {
 		glfwGetWindowSize(m_window.get(), &m_width, &m_height);
 		glfwGetFramebufferSize(m_window.get(), &m_framebuffer_width, &m_framebuffer_height);
 		glfwGetCursorPos(m_window.get(), &m_mouse_pos.x, &m_mouse_pos.y);
+		if (prev_vsync != m_vsync) {
+			AD_CORE_INFO("VSYNC STATUS CHANGED");
+			update_vsync();
+		}
+		prev_vsync = m_vsync;
 	}
 
 	void WindowsWindow::shutdown(GLFWwindow* window) {
@@ -169,20 +180,20 @@ namespace Adonis {
 		glfwTerminate();
 	}
 
-	void WindowsWindow::on_exit(const event_ptr_t<WindowCloseEvent>& event) {
+	void WindowsWindow::on_WindowCloseEvent(const event_ptr_t<WindowCloseEvent>& event) {
 	}
 
-	void WindowsWindow::on_pre_render(const event_ptr_t<PreRenderEvent>& event) {
+	void WindowsWindow::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& event) {
 		glfwPollEvents();
-		glClearColor(1.0, 0.0, 1.0, 1.0);
+		glClearColor(0.2f, 0.7f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void WindowsWindow::on_render(const event_ptr_t<RenderEvent>& event) {
+	void WindowsWindow::on_RenderEvent(const event_ptr_t<RenderEvent>& event) {
 		
 	}
 
-	void WindowsWindow::on_post_render(const event_ptr_t<PostRenderEvent>& event) {
+	void WindowsWindow::on_PostRenderEvent(const event_ptr_t<PostRenderEvent>& event) {
 		glfwSwapBuffers(m_window.get());
 	}
 
@@ -192,5 +203,13 @@ namespace Adonis {
 
 	void WindowsWindow::set_mouse_pos(double x, double y) {
 		glfwSetCursorPos(m_window.get(), x, y);
+	}
+
+	bool& WindowsWindow::vsync() {
+		return m_vsync;
+	}
+
+	void WindowsWindow::update_vsync() {
+		glfwSwapInterval(m_vsync);
 	}
 }

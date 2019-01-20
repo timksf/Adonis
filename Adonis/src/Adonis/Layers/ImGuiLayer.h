@@ -15,7 +15,10 @@ namespace Adonis {
 		enum class Style {
 			Classic,
 			Dark,
-			Light
+			Light,
+			Grey,
+			Cherry,
+			Extasy
 		};
 
 		ImGuiLayer(Style style = Style::Dark);
@@ -23,15 +26,19 @@ namespace Adonis {
 		auto attach()const->void override;
 		auto detach()const->void override;
 
-		auto on_update(const event_ptr_t<UpdateEvent>& event)->void override;
-		auto on_pre_render(const event_ptr_t<PreRenderEvent>& event)->void;
-		auto on_render(const event_ptr_t<RenderEvent>& event)->void;
-		auto on_post_render(const event_ptr_t<PostRenderEvent>& event)->void;
-		auto on_mouse_pressed(const event_ptr_t<MouseButtonPressed>& event)->void;
-		auto on_scroll(const event_ptr_t<MouseScrolledEvent>& event)->void;
-		auto on_key_press(const event_ptr_t<KeyPressed>& event)->void;
-		auto on_key_release(const event_ptr_t<KeyReleased>& event)->void;
-		auto on_chartyped(const event_ptr_t<CharTyped>& event)->void;
+		ON_EVENT_DECL(UpdateEvent);
+		ON_EVENT_DECL(PreRenderEvent);
+		ON_EVENT_DECL(RenderEvent);
+		ON_EVENT_DECL(PostRenderEvent);
+		ON_EVENT_DECL(MouseButtonPressed);
+		ON_EVENT_DECL(MouseScrolledEvent);
+		ON_EVENT_DECL(KeyPressed);
+		ON_EVENT_DECL(KeyReleased);
+		ON_EVENT_DECL(CharTyped);
+
+		auto setup_grey_style()const->void;
+		auto setup_cherry_style()const->void;
+		auto setup_extasy_style()const->void;
 
 		auto update_mouse()->void;
 	private:

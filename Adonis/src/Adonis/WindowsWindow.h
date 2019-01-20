@@ -21,18 +21,27 @@ namespace Adonis {
 
 		virtual ~WindowsWindow();
 
-		auto on_update(const event_ptr_t<UpdateEvent>& ev)->void override;						
+		/*auto on_update(const event_ptr_t<UpdateEvent>& ev)->void override;						
 		auto on_exit(const event_ptr_t<WindowCloseEvent>& ev)->void override;			
 		virtual auto on_pre_render(const event_ptr_t<PreRenderEvent>& ev)->void override;
 		virtual auto on_render(const event_ptr_t<RenderEvent>& ev)->void override;
-		virtual auto on_post_render(const event_ptr_t<PostRenderEvent>& ev)->void override;
+		virtual auto on_post_render(const event_ptr_t<PostRenderEvent>& ev)->void override;*/
+
+		ON_EVENT_DECL_V_OVERRIDE(UpdateEvent);
+		ON_EVENT_DECL_V_OVERRIDE(PreRenderEvent);
+		ON_EVENT_DECL_V_OVERRIDE(RenderEvent);
+		ON_EVENT_DECL_V_OVERRIDE(PostRenderEvent);
+		ON_EVENT_DECL_V_OVERRIDE(WindowCloseEvent);
+
 		auto init()->void override;																				
 		auto toggle_fullscreen()->void override;																
 		auto set_mouse_pos(double x, double y)->void override;
+		auto update_vsync()->void override;
 
 		auto has_focus()const->bool override;
 		
 		auto is_vsync()const->bool override { return m_vsync; };
+		auto vsync()->bool& override;
 
 		inline auto button_state(int button)->int override { return glfwGetMouseButton(m_window.get(), button); };
 		inline auto mouse_pos()->glm::dvec2 override{ return m_mouse_pos; };

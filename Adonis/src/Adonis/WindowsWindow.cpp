@@ -124,14 +124,10 @@ namespace Adonis {
 			EventManager::queueEvent<CharTyped>(c);
 		});
 
-		//on_event<UpdateEvent>(  std::bind(&WindowsWindow::on_update, this, std::placeholders::_1));
-		//on_event<PreRenderEvent>(  std::bind(&WindowsWindow::on_pre_render, this, std::placeholders::_1));
-		//on_event<RenderEvent>(  std::bind(&WindowsWindow::on_render, this, std::placeholders::_1));
-		//on_event<PostRenderEvent>( std::bind(&WindowsWindow::on_post_render, this, std::placeholders::_1));
-		ON_EVENT_BIND(UpdateEvent, WindowsWindow, on_UpdateEvent);
-		ON_EVENT_BIND(PreRenderEvent, WindowsWindow, on_PreRenderEvent);
-		ON_EVENT_BIND(RenderEvent, WindowsWindow, on_RenderEvent);
-		ON_EVENT_BIND(PostRenderEvent, WindowsWindow, on_PostRenderEvent);
+		ON_EVENT_BIND(UpdateEvent,		WindowsWindow);
+		ON_EVENT_BIND(PreRenderEvent,	WindowsWindow);
+		ON_EVENT_BIND(RenderEvent,		WindowsWindow);
+		ON_EVENT_BIND(PostRenderEvent,	WindowsWindow);
 
 		int width, height, n;
 		unsigned char * data = stbi_load("WindowIcon.png", &width, &height, &n, 0);

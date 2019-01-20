@@ -22,9 +22,9 @@ namespace Adonis {
 
 	void Application::run(){
 		//Set event handlers
-		ON_EVENT_BIND(KeyPressed, Application, on_KeyPressed);
-		ON_EVENT_BIND(WindowCloseEvent, Application, on_WindowCloseEvent);
-		ON_EVENT_BIND(UpdateEvent, Application, on_UpdateEvent);
+		ON_EVENT_BIND(KeyPressed,		Application);
+		ON_EVENT_BIND(WindowCloseEvent, Application);
+		ON_EVENT_BIND(UpdateEvent,		Application);
 
 		double time = glfwGetTime();
 

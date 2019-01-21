@@ -1,31 +1,23 @@
 #pragma once
 
 #include "pch.h"
-#include <glad/glad.h>
 #include "Adonis/Core.h"
 #include "Adonis/Eventsystem/EventListener.h"
 #include "Adonis/Eventsystem/Events/Events.h"
 
 #include "Adonis/Window.h"
-#include <GLFW/glfw3.h>
 
 
 namespace Adonis {
 
 
-	class WindowsWindow: public IWindow{
+	class WindowGLFW: public IWindow{
 	public:
-		DECLARE_LISTENER(WindowsWindow);
+		DECLARE_LISTENER(WindowGLFW);
 
-		WindowsWindow(const uint16_t& width, const uint16_t& height, const std::string& title, WindowMode mode, const bool& vsync);
+		WindowGLFW(const uint16_t& width, const uint16_t& height, const std::string& title, WindowMode mode, const bool& vsync);
 
-		virtual ~WindowsWindow();
-
-		/*auto on_update(const event_ptr_t<UpdateEvent>& ev)->void override;						
-		auto on_exit(const event_ptr_t<WindowCloseEvent>& ev)->void override;			
-		virtual auto on_pre_render(const event_ptr_t<PreRenderEvent>& ev)->void override;
-		virtual auto on_render(const event_ptr_t<RenderEvent>& ev)->void override;
-		virtual auto on_post_render(const event_ptr_t<PostRenderEvent>& ev)->void override;*/
+		virtual ~WindowGLFW();
 
 		ON_EVENT_DECL_V_OVERRIDE(UpdateEvent);
 		ON_EVENT_DECL_V_OVERRIDE(PreRenderEvent);
@@ -50,6 +42,7 @@ namespace Adonis {
 		inline auto title()->std::string override { return m_title; };											
 		inline auto framebuffer_width()->uint16_t { return static_cast<uint16_t>(m_framebuffer_width); };
 		inline auto framebuffer_height()->uint16_t { return static_cast<uint16_t>(m_framebuffer_height); };
+		inline auto get_time()->double override{ return glfwGetTime(); };
 
 		static auto shutdown(GLFWwindow* window)->void;															//Clean-up allocated storage									
 

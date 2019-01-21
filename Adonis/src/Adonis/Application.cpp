@@ -3,7 +3,6 @@
 #include "Eventsystem/EventManager.h"
 #include "Eventsystem/EventListener.h"
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 
 namespace Adonis {
@@ -55,7 +54,7 @@ namespace Adonis {
 	}
 
 	void Application::on_KeyPressed(const event_ptr_t<KeyPressed>& ev) {
-		if (ev->code() == GLFW_KEY_F11) {
+		if (ev->code() == ADONIS_KEY_F11) {
 			m_window->toggle_fullscreen();
 		}
 	}

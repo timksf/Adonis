@@ -61,8 +61,6 @@
 #include "TargetConditionals.h"
 #endif
 
-#include <glad/glad.h>
-
 
 // OpenGL Data
 static char         g_GlslVersionString[32] = "";

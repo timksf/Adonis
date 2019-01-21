@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "ImGuiLayer.h"
 #include "Adonis/OpenGL/ImGuiImpl.h"
-#include "Adonis/OpenGL/ImGuiImplGLFW.h"
 #include "Adonis/Application.h"
-#include <GLFW/glfw3.h>
 
 namespace Adonis {
 
@@ -53,30 +51,30 @@ namespace Adonis {
 		ImGuiIO& io = ImGui::GetIO();
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
 		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;          // We can honor io.WantSetMousePos requests (optional, rarely used)
-		io.BackendPlatformName = "imgui_impl_glfw";
+		io.BackendPlatformName = ADONIS_WINDOW_CONTEXT_LIB;
 
 		// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
-		io.KeyMap[ImGuiKey_Tab] = GLFW_KEY_TAB;
-		io.KeyMap[ImGuiKey_LeftArrow] = GLFW_KEY_LEFT;
-		io.KeyMap[ImGuiKey_RightArrow] = GLFW_KEY_RIGHT;
-		io.KeyMap[ImGuiKey_UpArrow] = GLFW_KEY_UP;
-		io.KeyMap[ImGuiKey_DownArrow] = GLFW_KEY_DOWN;
-		io.KeyMap[ImGuiKey_PageUp] = GLFW_KEY_PAGE_UP;
-		io.KeyMap[ImGuiKey_PageDown] = GLFW_KEY_PAGE_DOWN;
-		io.KeyMap[ImGuiKey_Home] = GLFW_KEY_HOME;
-		io.KeyMap[ImGuiKey_End] = GLFW_KEY_END;
-		io.KeyMap[ImGuiKey_Insert] = GLFW_KEY_INSERT;
-		io.KeyMap[ImGuiKey_Delete] = GLFW_KEY_DELETE;
-		io.KeyMap[ImGuiKey_Backspace] = GLFW_KEY_BACKSPACE;
-		io.KeyMap[ImGuiKey_Space] = GLFW_KEY_SPACE;
-		io.KeyMap[ImGuiKey_Enter] = GLFW_KEY_ENTER;
-		io.KeyMap[ImGuiKey_Escape] = GLFW_KEY_ESCAPE;
-		io.KeyMap[ImGuiKey_A] = GLFW_KEY_A;
-		io.KeyMap[ImGuiKey_C] = GLFW_KEY_C;
-		io.KeyMap[ImGuiKey_V] = GLFW_KEY_V;
-		io.KeyMap[ImGuiKey_X] = GLFW_KEY_X;
-		io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
-		io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
+		io.KeyMap[ImGuiKey_Tab] =			ADONIS_KEY_TAB;
+		io.KeyMap[ImGuiKey_LeftArrow] =		ADONIS_KEY_LEFT;
+		io.KeyMap[ImGuiKey_RightArrow] =	ADONIS_KEY_RIGHT;
+		io.KeyMap[ImGuiKey_UpArrow] =		ADONIS_KEY_UP;
+		io.KeyMap[ImGuiKey_DownArrow] =		ADONIS_KEY_DOWN;
+		io.KeyMap[ImGuiKey_PageUp] =		ADONIS_KEY_PAGE_UP;
+		io.KeyMap[ImGuiKey_PageDown] =		ADONIS_KEY_PAGE_DOWN;
+		io.KeyMap[ImGuiKey_Home] =			ADONIS_KEY_HOME;
+		io.KeyMap[ImGuiKey_End] =			ADONIS_KEY_END;
+		io.KeyMap[ImGuiKey_Insert] =		ADONIS_KEY_INSERT;
+		io.KeyMap[ImGuiKey_Delete] =		ADONIS_KEY_DELETE;
+		io.KeyMap[ImGuiKey_Backspace] =		ADONIS_KEY_BACKSPACE;
+		io.KeyMap[ImGuiKey_Space] =			ADONIS_KEY_SPACE;
+		io.KeyMap[ImGuiKey_Enter] =			ADONIS_KEY_ENTER;
+		io.KeyMap[ImGuiKey_Escape] =		ADONIS_KEY_ESCAPE;
+		io.KeyMap[ImGuiKey_A] =				ADONIS_KEY_A;
+		io.KeyMap[ImGuiKey_C] =				ADONIS_KEY_C;
+		io.KeyMap[ImGuiKey_V] =				ADONIS_KEY_V;
+		io.KeyMap[ImGuiKey_X] =				ADONIS_KEY_X;
+		io.KeyMap[ImGuiKey_Y] =				ADONIS_KEY_Y;
+		io.KeyMap[ImGuiKey_Z] =				ADONIS_KEY_Z;
 
 		ImGui_ImplOpenGL3_Init("#version 410");
 
@@ -104,7 +102,7 @@ namespace Adonis {
 		io.DisplaySize = ImVec2(width, height);
 		io.DisplayFramebufferScale = ImVec2(width > 0 ? (static_cast<float>(app->consume_window()->framebuffer_width()) / width) : 0, height > 0 ? (static_cast<float>(app->consume_window()->framebuffer_height()) / height) : 0);
 
-		double current_time = glfwGetTime();
+		double current_time = app->consume_window()->get_time();
 		io.DeltaTime = m_time > 0.0 ? static_cast<float>(current_time - m_time) : static_cast<float>(1.0f / 60.0f);
 		m_time = static_cast<float>(current_time);
 
@@ -118,7 +116,6 @@ namespace Adonis {
 			static float col2[4] = { 0.4f,0.7f,0.0f,0.5f };
 			ImGui::ColorEdit4("Clear color", col2);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			//ImGui::Text("VSYNC status: %d", app->consume_window()->is_vsync());
 			ImGui::Checkbox("VSYNC", &app->consume_window()->vsync());
 			ImGui::End();
 		}
@@ -146,20 +143,20 @@ namespace Adonis {
 	void ImGuiLayer::on_KeyPressed(const event_ptr_t<KeyPressed>& event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[event->code()] = true;
-		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
-		io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+		io.KeyCtrl	= io.KeysDown[ADONIS_KEY_LEFT_CONTROL]	|| io.KeysDown[ADONIS_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[ADONIS_KEY_LEFT_SHIFT]	|| io.KeysDown[ADONIS_KEY_RIGHT_SHIFT];
+		io.KeyAlt	= io.KeysDown[ADONIS_KEY_LEFT_ALT]		|| io.KeysDown[ADONIS_KEY_RIGHT_ALT];
+		io.KeySuper = io.KeysDown[ADONIS_KEY_LEFT_SUPER]	|| io.KeysDown[ADONIS_KEY_RIGHT_SUPER];
 	}
 
 	void ImGuiLayer::on_KeyReleased(const event_ptr_t<KeyReleased>& event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[event->code()] = false;
 		// Modifiers are not reliable across systems
-		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
-		io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+		io.KeyCtrl = io.KeysDown[ADONIS_KEY_LEFT_CONTROL]	|| io.KeysDown[ADONIS_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[ADONIS_KEY_LEFT_SHIFT]	|| io.KeysDown[ADONIS_KEY_RIGHT_SHIFT];
+		io.KeyAlt = io.KeysDown[ADONIS_KEY_LEFT_ALT]		|| io.KeysDown[ADONIS_KEY_RIGHT_ALT];
+		io.KeySuper = io.KeysDown[ADONIS_KEY_LEFT_SUPER]	|| io.KeysDown[ADONIS_KEY_RIGHT_SUPER];
 	}
 
 	void ImGuiLayer::update_mouse() {

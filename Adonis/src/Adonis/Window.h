@@ -47,12 +47,13 @@ namespace Adonis {
 									
 		virtual auto button_state(int button)->int = 0;
 		virtual auto mouse_pos()->glm::dvec2 = 0;
-		virtual auto width()->uint16_t = 0;
-		virtual auto height()->uint16_t = 0;														//Get width of window
-		virtual auto title()->std::string = 0;														//Get height of window		
-		virtual auto framebuffer_width()->uint16_t = 0;												//Get title of window
-		virtual auto framebuffer_height()->uint16_t = 0;											//Get width of framebuffer
-																									//Get height of framebuffer
+		virtual auto width()->uint16_t = 0;															//Get width of window				
+		virtual auto height()->uint16_t = 0;														//Get height of window	
+		virtual auto title()->std::string = 0;														//Get title of window		
+		virtual auto framebuffer_width()->uint16_t = 0;												//Get width of framebuffer
+		virtual auto framebuffer_height()->uint16_t = 0;											//Get height of framebuffer
+		virtual auto get_time()->double = 0;														//Get time in seconds since initialization of window lib
+																									
 
 	};
 

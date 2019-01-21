@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "WindowsWindow.h"
+#include "WindowGLFW.h"
 
 #include "Adonis/Eventsystem/EventManager.h"
 #include "Adonis/Eventsystem/Events/Events.h"
@@ -16,10 +16,10 @@ namespace Adonis {
 	}
 
 	std::unique_ptr<IWindow> IWindow::create(const uint16_t& width, const uint16_t& height, const std::string& title, WindowMode mode, const bool& vsync) {
-		return std::make_unique<WindowsWindow>(width, height, title, mode, vsync);
+		return std::make_unique<WindowGLFW>(width, height, title, mode, vsync);
 	}
 
-	WindowsWindow::WindowsWindow(const uint16_t& width, const uint16_t& height, const std::string& title, WindowMode mode, const bool& vsync) :
+	WindowGLFW::WindowGLFW(const uint16_t& width, const uint16_t& height, const std::string& title, WindowMode mode, const bool& vsync) :
 		m_width(width),
 		m_height(height),
 		m_title(title),
@@ -29,10 +29,10 @@ namespace Adonis {
 		prev_vsync = vsync;
 	}
 
-	WindowsWindow::~WindowsWindow() {
+	WindowGLFW::~WindowGLFW() {
 	}
 
-	void WindowsWindow::init() {
+	void WindowGLFW::init() {
 		
 		if (!s_glfw_initialized) {
 			int status = glfwInit();
@@ -43,7 +43,7 @@ namespace Adonis {
 
 		switch (m_mode) {
 		case WindowMode::Windowed:
-			m_window = std::unique_ptr<GLFWwindow, void(*)(GLFWwindow *)>(glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr), WindowsWindow::shutdown);
+			m_window = std::unique_ptr<GLFWwindow, void(*)(GLFWwindow *)>(glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr), WindowGLFW::shutdown);
 			break;
 		case WindowMode::Borderless:
 		{
@@ -124,10 +124,10 @@ namespace Adonis {
 			EventManager::queueEvent<CharTyped>(c);
 		});
 
-		ON_EVENT_BIND(UpdateEvent,		WindowsWindow);
-		ON_EVENT_BIND(PreRenderEvent,	WindowsWindow);
-		ON_EVENT_BIND(RenderEvent,		WindowsWindow);
-		ON_EVENT_BIND(PostRenderEvent,	WindowsWindow);
+		ON_EVENT_BIND(UpdateEvent,		WindowGLFW);
+		ON_EVENT_BIND(PreRenderEvent,	WindowGLFW);
+		ON_EVENT_BIND(RenderEvent,		WindowGLFW);
+		ON_EVENT_BIND(PostRenderEvent,	WindowGLFW);
 
 		int width, height, n;
 		unsigned char * data = stbi_load("WindowIcon.png", &width, &height, &n, 0);
@@ -146,7 +146,7 @@ namespace Adonis {
 
 	}
 
-	void WindowsWindow::toggle_fullscreen() {
+	void WindowGLFW::toggle_fullscreen() {
 		auto monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 		if (m_mode != WindowMode::Fullscreen) {
@@ -160,7 +160,7 @@ namespace Adonis {
 		glfwSwapInterval(m_vsync);
 	}
 
-	void WindowsWindow::on_UpdateEvent(const event_ptr_t<UpdateEvent>& ev) {
+	void WindowGLFW::on_UpdateEvent(const event_ptr_t<UpdateEvent>& ev) {
 		glfwGetWindowSize(m_window.get(), &m_width, &m_height);
 		glfwGetFramebufferSize(m_window.get(), &m_framebuffer_width, &m_framebuffer_height);
 		glfwGetCursorPos(m_window.get(), &m_mouse_pos.x, &m_mouse_pos.y);
@@ -171,41 +171,41 @@ namespace Adonis {
 		prev_vsync = m_vsync;
 	}
 
-	void WindowsWindow::shutdown(GLFWwindow* window) {
+	void WindowGLFW::shutdown(GLFWwindow* window) {
 		glfwDestroyWindow(window);
 		glfwTerminate();
 	}
 
-	void WindowsWindow::on_WindowCloseEvent(const event_ptr_t<WindowCloseEvent>& event) {
+	void WindowGLFW::on_WindowCloseEvent(const event_ptr_t<WindowCloseEvent>& event) {
 	}
 
-	void WindowsWindow::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& event) {
+	void WindowGLFW::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& event) {
 		glfwPollEvents();
 		glClearColor(0.2f, 0.7f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void WindowsWindow::on_RenderEvent(const event_ptr_t<RenderEvent>& event) {
+	void WindowGLFW::on_RenderEvent(const event_ptr_t<RenderEvent>& event) {
 		
 	}
 
-	void WindowsWindow::on_PostRenderEvent(const event_ptr_t<PostRenderEvent>& event) {
+	void WindowGLFW::on_PostRenderEvent(const event_ptr_t<PostRenderEvent>& event) {
 		glfwSwapBuffers(m_window.get());
 	}
 
-	bool WindowsWindow::has_focus()const {
+	bool WindowGLFW::has_focus()const {
 		return static_cast<bool>(glfwGetWindowAttrib(m_window.get(), GLFW_FOCUSED));
 	}
 
-	void WindowsWindow::set_mouse_pos(double x, double y) {
+	void WindowGLFW::set_mouse_pos(double x, double y) {
 		glfwSetCursorPos(m_window.get(), x, y);
 	}
 
-	bool& WindowsWindow::vsync() {
+	bool& WindowGLFW::vsync() {
 		return m_vsync;
 	}
 
-	void WindowsWindow::update_vsync() {
+	void WindowGLFW::update_vsync() {
 		glfwSwapInterval(m_vsync);
 	}
 }

@@ -84,7 +84,7 @@
     <ClInclude Include="src\Adonis\Window.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\WindowsWindow.h">
+    <ClInclude Include="src\Adonis\WindowGLFW.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h">
@@ -125,7 +125,7 @@
     <ClCompile Include="src\Adonis\Window.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
-    <ClCompile Include="src\Adonis\WindowsWindow.cpp">
+    <ClCompile Include="src\Adonis\WindowGLFW.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp">

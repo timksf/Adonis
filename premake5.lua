@@ -54,6 +54,10 @@ project "Adonis"
 		"opengl32.lib"
 	}
 
+	defines{
+		"ADONIS_USE_GLFW"
+	}
+
 	filter "files:**.png"
    		buildaction "Embed"
 
@@ -65,6 +69,7 @@ project "Adonis"
 		defines{
 			"ADONIS_PLATFORM_WINDOWS",
 			"ADONIS_BUILD_DLL",
+			"ADONIS_GLLOADER_GLAD",
 			"IMGUI_IMPL_OPENGL_LOADER_GLAD",
 			"_CRT_SECURE_NO_WARNINGS",
 			"STB_IMAGE_IMPLEMENTATION"

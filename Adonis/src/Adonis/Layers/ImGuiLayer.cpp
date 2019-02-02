@@ -114,7 +114,7 @@ namespace Adonis {
 			ImGui::Begin("Debug window");
 
 			static float col2[4] = { 0.4f,0.7f,0.0f,0.5f };
-			ImGui::ColorEdit4("Clear color", col2);
+			ImGui::ColorEdit4("Clear color", reinterpret_cast<float*>(&app->consume_renderer()->clear_color.data));
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::Checkbox("VSYNC", &app->consume_window()->vsync());
 			ImGui::End();

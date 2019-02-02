@@ -6,6 +6,7 @@
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "Adonis/Window.h"
 #include "Adonis/Layers/LayerStack.h"
+#include "Adonis/RenderDevice.h"
 
 namespace Adonis {
 
@@ -23,6 +24,7 @@ namespace Adonis {
 		ON_EVENT_DECL(KeyPressed);
 
 		inline auto consume_window()const->IWindow* { return m_window.get(); };
+		inline auto consume_renderer()const->render::RenderDevice* { return m_renderer.get(); };
 		inline auto layers()->LayerStack& { return m_layers; };
 
 		static inline auto get()->Application* { return s_instance; };
@@ -30,6 +32,7 @@ namespace Adonis {
 	private:
 		static Application* s_instance;
 		std::unique_ptr<IWindow> m_window;
+		std::unique_ptr<render::RenderDevice> m_renderer;
 		LayerStack m_layers;
 		bool m_running{ true };
 	};

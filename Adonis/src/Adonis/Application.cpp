@@ -13,6 +13,7 @@ namespace Adonis {
 		AD_CORE_ASSERT((s_instance == nullptr), "Only one application object can exist");
 		s_instance = this;
 		m_window = IWindow::create(1280, 720);
+		m_renderer = render::RenderDevice::create();
 	}
 
 

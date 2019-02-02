@@ -90,15 +90,14 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\RenderDevice.h" />
+    <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp">
-      <Filter>src\Adonis\Eventsystem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Adonis\Eventsystem\EventListener.cpp">
       <Filter>src\Adonis\Eventsystem</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp">
@@ -122,15 +121,13 @@
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImplGLFW.cpp">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\Adonis\Window.cpp">
-      <Filter>src\Adonis</Filter>
-    </ClCompile>
     <ClCompile Include="src\Adonis\WindowGLFW.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\WindowIcon.png">

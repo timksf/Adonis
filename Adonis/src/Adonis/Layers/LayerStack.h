@@ -19,6 +19,7 @@ namespace Adonis {
 		inline auto push_layer(Args&& ...args) {
 			if (!std::is_base_of_v<Layer, LayerType>) {
 				AD_CORE_CRITICAL("{0} is not derived from Layer class", AD_NAME_FROM_TYPE(LayerType));
+				return;
 			}
 			m_layers.push_back( std::make_unique<LayerType>(std::forward<Args>(args)...) );
 		};

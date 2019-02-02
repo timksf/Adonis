@@ -171,7 +171,9 @@
     <ClInclude Include="src\Adonis\Layers\ImGuiLayer.h" />
     <ClInclude Include="src\Adonis\Layers\Layer.h" />
     <ClInclude Include="src\Adonis\Layers\LayerStack.h" />
+    <ClInclude Include="src\Adonis\RenderDevice.h" />
     <ClInclude Include="src\Adonis\Log.h" />
+    <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h" />
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImpl.h" />
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImplGLFW.h" />
     <ClInclude Include="src\Adonis\Window.h" />
@@ -181,15 +183,14 @@
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp" />
-    <ClCompile Include="src\Adonis\Eventsystem\EventListener.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp" />
     <ClCompile Include="src\Adonis\Layers\ImGuiLayer.cpp" />
     <ClCompile Include="src\Adonis\Layers\Layer.cpp" />
     <ClCompile Include="src\Adonis\Log.cpp" />
+    <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImpl.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImplGLFW.cpp" />
-    <ClCompile Include="src\Adonis\Window.cpp" />
     <ClCompile Include="src\Adonis\WindowGLFW.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

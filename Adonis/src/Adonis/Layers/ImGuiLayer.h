@@ -26,7 +26,7 @@ namespace Adonis {
 		auto attach()const->void override;
 		auto detach()const->void override;
 
-		ON_EVENT_DECL(UpdateEvent);
+		ON_EVENT_DECL_OVERRIDE(UpdateEvent);
 		ON_EVENT_DECL(PreRenderEvent);
 		ON_EVENT_DECL(RenderEvent);
 		ON_EVENT_DECL(PostRenderEvent);

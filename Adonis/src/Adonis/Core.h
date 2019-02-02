@@ -41,7 +41,7 @@
 
 
 #ifdef ADONIS_USE_GLFW
-	#define ADONIS_WINDOW_CONTEXT_LIB	"GLFW"
+	#define ADONIS_WINDOW_CONTEXT_LIB_NAME	"GLFW"
 	#define	ADONIS_KEY_SPACE     		GLFW_KEY_SPACE              
 	#define	ADONIS_KEY_APOSTROPHE   	GLFW_KEY_APOSTROPHE         
 	#define	ADONIS_KEY_COMMA        	GLFW_KEY_COMMA              

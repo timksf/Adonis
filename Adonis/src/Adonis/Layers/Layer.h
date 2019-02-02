@@ -18,6 +18,8 @@ namespace Adonis {
 		virtual auto detach()const->void = 0;
 		ON_EVENT_DECL_P_V(UpdateEvent);
 
+
+
 	private:
 		std::string m_name;
 	};

@@ -79,7 +79,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -103,7 +103,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -131,7 +131,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;IMGUI_IMPL_OPENGL_LOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>

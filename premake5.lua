@@ -55,7 +55,7 @@ project "Adonis"
 	}
 
 	defines{
-		"ADONIS_USE_GLFW"
+		"ADONIS_USE_GLFW",
 	}
 
 	filter "files:**.png"
@@ -70,7 +70,6 @@ project "Adonis"
 			"ADONIS_PLATFORM_WINDOWS",
 			"ADONIS_BUILD_DLL",
 			"ADONIS_GLLOADER_GLAD",
-			"IMGUI_IMPL_OPENGL_LOADER_GLAD",
 			"_CRT_SECURE_NO_WARNINGS",
 			"STB_IMAGE_IMPLEMENTATION"
 		}
@@ -114,7 +113,9 @@ project "Sandbox"
 		"Adonis/src",
 		"Adonis/vendor/spdlog/include",
 		"Adonis/vendor/glm",
-		"Adonis/vendor/stb/include"
+		"Adonis/vendor/stb/include",
+		"Adonis/vendor/glad/include",
+		"Adonis/vendor/GLFW/include"
 	}
 
 	links{
@@ -129,9 +130,8 @@ project "Sandbox"
 		staticruntime "On"
 		systemversion "latest"
 
-		defines
-		{
-			"ADONIS_PLATFORM_WINDOWS"
+		defines{
+			"ADONIS_PLATFORM_WINDOWS",
 		}
 
 	filter "configurations:Debug"

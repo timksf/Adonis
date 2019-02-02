@@ -24,11 +24,6 @@ namespace Adonis {
 
 		virtual ~IWindow() {};
 
-		//virtual auto on_update(const event_ptr_t<UpdateEvent>& ev)->void = 0;			//Defines what should be executed on app's update event
-		//virtual auto on_pre_render(const event_ptr_t<PreRenderEvent>& ev)->void = 0;
-		//virtual auto on_render(const event_ptr_t<RenderEvent>& ev)->void = 0;
-		//virtual auto on_post_render(const event_ptr_t<PostRenderEvent>& ev)->void = 0;
-		//virtual auto on_exit(const event_ptr_t<WindowCloseEvent>& ev)->void = 0;
 		ON_EVENT_DECL_P_V(UpdateEvent);
 		ON_EVENT_DECL_P_V(PreRenderEvent);
 		ON_EVENT_DECL_P_V(RenderEvent);

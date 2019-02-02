@@ -51,7 +51,7 @@ namespace Adonis {
 		ImGuiIO& io = ImGui::GetIO();
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
 		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;          // We can honor io.WantSetMousePos requests (optional, rarely used)
-		io.BackendPlatformName = ADONIS_WINDOW_CONTEXT_LIB;
+		io.BackendPlatformName = ADONIS_WINDOW_CONTEXT_LIB_NAME;
 
 		// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
 		io.KeyMap[ImGuiKey_Tab] =			ADONIS_KEY_TAB;

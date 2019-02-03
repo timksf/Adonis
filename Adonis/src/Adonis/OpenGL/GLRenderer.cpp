@@ -35,14 +35,6 @@ namespace Adonis {
 
 		}
 
-		void GLRenderer::attach()const {
-
-		}
-
-		void GLRenderer::detach()const {
-
-		}
-
 		void GLRenderer::on_UpdateEvent(const event_ptr_t<UpdateEvent>& e) {
 
 		}
@@ -100,12 +92,22 @@ namespace Adonis {
 			glDeleteShader(m_id);
 		}
 
-		std::shared_ptr<VertexShader> VertexShader::create(const std::string& code) {
-			return std::make_shared<GLVertexShader>(code);
+		std::unique_ptr<VertexShader> VertexShader::create(const std::string& code) {
+			return std::make_unique<GLVertexShader>(code);
 		}
 
-		std::shared_ptr<FragmentShader> FragmentShader::create(const std::string& code) {
-			return std::make_shared<GLFragmentShader>(code);
+		std::unique_ptr<FragmentShader> FragmentShader::create(const std::string& code) {
+			return std::make_unique<GLFragmentShader>(code);
+		}
+
+		/*
+			Render Pipeline
+		*/
+
+		GLRenderPipeline::GLRenderPipeline(std::unique_ptr<VertexShader> vertex_shader, std::unique_ptr<FragmentShader> frag_shader):
+			m_vertex_shader(std::move(vertex_shader)),
+			m_fragment_shader(std::move(frag_shader))
+		{
 		}
 
 	}

@@ -19,8 +19,6 @@ namespace Adonis {
 			ON_EVENT_DECL_OVERRIDE(RenderEvent);
 			ON_EVENT_DECL_OVERRIDE(UpdateEvent);
 
-			auto attach()const->void override;
-			auto detach()const->void override;
 			auto clear()->void override;
 
 
@@ -59,10 +57,12 @@ namespace Adonis {
 		class ADONIS_API GLRenderPipeline : RenderPipeline {
 		public:
 
-			GLRenderPipeline(GLVertexShader);
+			GLRenderPipeline(std::unique_ptr<VertexShader> vertex_shader, std::unique_ptr<FragmentShader> frag_shader);
 
 			auto program_id()->GLuint;
 		private:
+			std::unique_ptr<VertexShader> m_vertex_shader;
+			std::unique_ptr<FragmentShader> m_fragment_shader;
 			GLuint m_program_id;
 		};
 

@@ -38,8 +38,6 @@ namespace Adonis {
 			ON_EVENT_DECL_P_V(RenderEvent);
 			ON_EVENT_DECL_P_V(UpdateEvent);
 
-			virtual auto attach()const->void = 0;
-			virtual auto detach()const->void = 0;
 			virtual auto clear()->void = 0;
 
 
@@ -58,13 +56,13 @@ namespace Adonis {
 
 		class ADONIS_API VertexShader: public Shader{
 		public:
-			static auto create(const std::string& code)->std::shared_ptr<VertexShader>;
+			static auto create(const std::string& code)->std::unique_ptr<VertexShader>;
 			VertexShader(const std::string& code) :Shader(code){};
 		};
 
 		class ADONIS_API FragmentShader : public Shader {
 		public:
-			static auto create(const std::string& code)->std::shared_ptr<FragmentShader>;
+			static auto create(const std::string& code)->std::unique_ptr<FragmentShader>;
 			FragmentShader(const std::string& code) :Shader(code) {};
 		};
 

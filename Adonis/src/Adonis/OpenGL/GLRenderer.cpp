@@ -90,7 +90,7 @@ namespace Adonis {
 
 		GLFragmentShader::GLFragmentShader(const std::string& code): FragmentShader(code) {
 			const char* code_c = code.c_str();
-			m_id = glCreateShader(GL_VERTEX_SHADER);
+			m_id = glCreateShader(GL_FRAGMENT_SHADER);
 			glShaderSource(m_id, 1, &code_c, NULL);
 			glCompileShader(m_id);
 			GLUtil::check(m_id, "Fragment");

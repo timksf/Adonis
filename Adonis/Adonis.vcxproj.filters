@@ -75,11 +75,17 @@
     <ClInclude Include="src\Adonis\Log.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h">
+      <Filter>src\Adonis\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImpl.h">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImplGLFW.h">
       <Filter>src\Adonis\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\RenderDevice.h">
+      <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Window.h">
       <Filter>src\Adonis</Filter>
@@ -90,8 +96,6 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\RenderDevice.h" />
-    <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
@@ -115,6 +119,9 @@
     <ClCompile Include="src\Adonis\Log.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp">
+      <Filter>src\Adonis\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImpl.cpp">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClCompile>
@@ -127,11 +134,10 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\WindowIcon.png">
+    <Image Include="resources\WindowIcon.png">
       <Filter>resources</Filter>
-    </None>
+    </Image>
   </ItemGroup>
 </Project>

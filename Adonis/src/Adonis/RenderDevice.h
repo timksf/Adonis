@@ -45,6 +45,37 @@ namespace Adonis {
 
 			Color clear_color;
 		};
+
+		class ADONIS_API Shader {
+		public:
+
+			Shader(const std::string& code) {};
+			virtual ~Shader() {};
+
+			virtual auto id()->unsigned int = 0;
+
+		};
+
+		class ADONIS_API VertexShader: public Shader{
+		public:
+			static auto create(const std::string& code)->std::shared_ptr<VertexShader>;
+			VertexShader(const std::string& code) :Shader(code){};
+		};
+
+		class ADONIS_API FragmentShader : public Shader {
+		public:
+			static auto create(const std::string& code)->std::shared_ptr<FragmentShader>;
+			FragmentShader(const std::string& code) :Shader(code) {};
+		};
+
+		class ADONIS_API RenderPipeline {
+		public: 
+			static auto create(const std::string& code)->std::unique_ptr<RenderPipeline>;
+
+			virtual ~RenderPipeline() {};
+
+		};
+
 	}
 
 }

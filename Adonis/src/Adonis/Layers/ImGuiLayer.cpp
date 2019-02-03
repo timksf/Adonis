@@ -117,6 +117,7 @@ namespace Adonis {
 			ImGui::ColorEdit4("Clear color", reinterpret_cast<float*>(&app->consume_renderer()->clear_color.data));
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::Checkbox("VSYNC", &app->consume_window()->vsync());
+			ImGui::SliderFloat("Font-scale", &ImGui::GetIO().FontGlobalScale, 1.0f, 3.0f);
 			ImGui::End();
 		}
 

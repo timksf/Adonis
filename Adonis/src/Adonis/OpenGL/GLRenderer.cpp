@@ -46,6 +46,68 @@ namespace Adonis {
 		void GLRenderer::on_UpdateEvent(const event_ptr_t<UpdateEvent>& e) {
 
 		}
+
+		/*
+			SHADER
+		*/
+
+
+		void GLUtil::check(GLuint shader_id, const std::string& type) {
+			int success;
+			char infoLog[1024];
+			if (type == "PROGRAM") {
+				glGetProgramiv(shader_id, GL_LINK_STATUS, &success);
+				if (!success) {
+					glGetProgramInfoLog(shader_id, 1024, NULL, infoLog);
+					AD_CORE_ERROR("Linking error in shader program: ");
+					AD_CORE_ERROR(infoLog);
+					AD_CORE_ERROR(" ------------------------------------------------------- ");
+				}
+			}
+			else {
+				glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
+				if (!success) {
+					glGetShaderInfoLog(shader_id, 1024, NULL, infoLog);
+					AD_CORE_ERROR("Compile error in shader of type: {0}", type);
+					AD_CORE_ERROR(infoLog);
+					AD_CORE_ERROR(" ------------------------------------------------------- ");
+				}
+			}
+		}
+
+
+		GLVertexShader::GLVertexShader(const std::string& code): VertexShader(code) {
+			const char* code_c = code.c_str();
+			m_id = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(m_id, 1, &code_c, NULL);
+			glCompileShader(m_id);
+			GLUtil::check(m_id, "Vertex");
+		}
+
+		GLVertexShader::~GLVertexShader() {
+			glDeleteShader(m_id);
+		}
+
+		GLFragmentShader::GLFragmentShader(const std::string& code): FragmentShader(code) {
+			const char* code_c = code.c_str();
+			m_id = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(m_id, 1, &code_c, NULL);
+			glCompileShader(m_id);
+			GLUtil::check(m_id, "Fragment");
+		}
+
+		GLFragmentShader::~GLFragmentShader() {
+			glDeleteShader(m_id);
+		}
+
+		std::shared_ptr<VertexShader> VertexShader::create(const std::string& code) {
+			return std::make_shared<GLVertexShader>(code);
+		}
+
+		std::shared_ptr<FragmentShader> FragmentShader::create(const std::string& code) {
+			return std::make_shared<GLFragmentShader>(code);
+		}
+
 	}
 
 }

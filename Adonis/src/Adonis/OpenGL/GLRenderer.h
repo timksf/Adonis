@@ -26,6 +26,46 @@ namespace Adonis {
 
 		};
 
+		class ADONIS_API GLUtil {
+		public:
+			static auto check(GLuint shader_id, const std::string& type)->void;
+
+		};
+
+		class ADONIS_API GLVertexShader : public VertexShader {
+		public:
+
+			GLVertexShader(const std::string& code);
+			~GLVertexShader() override;
+
+			inline auto id()->GLuint override { return m_id; };
+			
+		private:
+			GLuint m_id;
+		};
+
+		class ADONIS_API GLFragmentShader : public FragmentShader {
+		public:
+
+			GLFragmentShader(const std::string& code);
+			~GLFragmentShader() override;
+
+			inline auto id()->GLuint override { return m_id; };
+
+		private:
+			GLuint m_id;
+		};
+
+		class ADONIS_API GLRenderPipeline : RenderPipeline {
+		public:
+
+			GLRenderPipeline(GLVertexShader);
+
+			auto program_id()->GLuint;
+		private:
+			GLuint m_program_id;
+		};
+
 	}
 
 }

@@ -83,8 +83,7 @@
       <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -110,8 +109,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -138,8 +136,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalOptions>Release %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -171,11 +169,11 @@
     <ClInclude Include="src\Adonis\Layers\ImGuiLayer.h" />
     <ClInclude Include="src\Adonis\Layers\Layer.h" />
     <ClInclude Include="src\Adonis\Layers\LayerStack.h" />
-    <ClInclude Include="src\Adonis\RenderDevice.h" />
     <ClInclude Include="src\Adonis\Log.h" />
     <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h" />
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImpl.h" />
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImplGLFW.h" />
+    <ClInclude Include="src\Adonis\RenderDevice.h" />
     <ClInclude Include="src\Adonis\Window.h" />
     <ClInclude Include="src\Adonis\WindowGLFW.h" />
     <ClInclude Include="src\pch.h" />
@@ -197,7 +195,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\WindowIcon.png" />
+    <Image Include="resources\WindowIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

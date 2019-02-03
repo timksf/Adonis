@@ -129,7 +129,7 @@ namespace Adonis {
 		ON_EVENT_BIND(RenderEvent,		WindowGLFW);
 		ON_EVENT_BIND(PostRenderEvent,	WindowGLFW);
 
-		int width, height, n;
+		/*int width, height, n;
 		unsigned char * data = stbi_load("WindowIcon.png", &width, &height, &n, 0);
 		if (data == nullptr) {
 			AD_CORE_ERROR("Failed to load window icon");
@@ -141,8 +141,8 @@ namespace Adonis {
 			image->pixels = data;
 			glfwSetWindowIcon(m_window.get(), 1, image);
 			delete image;
-		}
-		stbi_image_free(data);
+			stbi_image_free(data);
+		}*/
 
 	}
 

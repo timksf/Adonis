@@ -23,6 +23,8 @@ project "Adonis"
 	location "Adonis"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
+
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -58,12 +60,8 @@ project "Adonis"
 		"ADONIS_USE_GLFW",
 	}
 
-	filter "files:**.png"
-   		buildaction "Embed"
-
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines{
@@ -82,23 +80,25 @@ project "Adonis"
 		
 	filter "configurations:Debug"
 		defines "ADONIS_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 		
 	filter "configurations:Release"
 		defines "ADONIS_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "ADONIS_DIST"
-		buildoptions "/MD"
+		buildoptions "Release"
 		optimize "On"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
+
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -121,13 +121,9 @@ project "Sandbox"
 	links{
 		"Adonis"
 	}
-	
-	filter "files:**.png"
-		buildaction "Embed"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines{
@@ -136,12 +132,12 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "ADONIS_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "ADONIS_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"

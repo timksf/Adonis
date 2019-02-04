@@ -74,6 +74,28 @@ namespace Adonis {
 
 		};
 
+		class ADONIS_API PipelineParam {
+		public:
+			virtual ~PipelineParam() {};
+
+			virtual auto set_int(int32_t)		->void = 0;
+			virtual auto set_uint(uint32_t)		->void = 0;
+			virtual auto set_float(float)		->void = 0;
+			virtual auto set_double(double)		->void = 0;
+			virtual auto set_bool(bool)			->void = 0;
+			virtual auto set_vec2b(glm::bvec2)	->void = 0;
+			virtual auto set_vec2i(glm::ivec2)	->void = 0;
+			virtual auto set_vec2u(glm::uvec2)	->void = 0;
+			virtual auto set_vec2f(glm::fvec2)	->void = 0;
+			virtual auto set_vec3b(glm::bvec3)	->void = 0;
+			virtual auto set_vec3i(glm::ivec3)	->void = 0;
+			virtual auto set_vec3u(glm::uvec3)	->void = 0;
+			virtual auto set_vec3f(glm::fvec3)	->void = 0;
+			virtual auto set_mat3f(glm::fmat3)	->void = 0;
+			virtual auto set_mat4f(glm::fmat4)	->void = 0;
+
+		};
+
 	}
 
 }

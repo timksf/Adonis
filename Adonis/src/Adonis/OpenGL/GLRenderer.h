@@ -66,7 +66,7 @@ namespace Adonis {
 			GLRenderPipeline(std::unique_ptr<VertexShader> vertex_shader, std::unique_ptr<FragmentShader> frag_shader);
 			~GLRenderPipeline()	override;
 
-			auto get_param(const std::string& name)->std::shared_ptr<GLPipelineParam>;
+			auto get_param(const std::string& name)->std::shared_ptr<PipelineParam>;
 
 			auto program_id()->GLuint;
 		private:
@@ -79,7 +79,7 @@ namespace Adonis {
 		class ADONIS_API GLPipelineParam : public PipelineParam {
 		public:
 
-			GLPipelineParam(const std::string& name, GLint location);
+			GLPipelineParam(const std::string& name, GLint location, GLuint proragm_id);
 
 			auto set_int(int32_t)		->void override;
 			auto set_uint(uint32_t)		->void override;
@@ -102,6 +102,7 @@ namespace Adonis {
 
 		private:
 			GLint m_location;
+			GLuint m_program_id;
 			std::string m_name;
 		};
 

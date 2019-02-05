@@ -66,11 +66,14 @@ namespace Adonis {
 			FragmentShader(const std::string& code) :Shader(code) {};
 		};
 
+		class PipelineParam;
+
 		class ADONIS_API RenderPipeline {
 		public: 
-			static auto create(const std::string& code)->std::unique_ptr<RenderPipeline>;
+			static auto create(std::unique_ptr<VertexShader>, std::unique_ptr<FragmentShader>)->std::unique_ptr<RenderPipeline>;
 
 			virtual ~RenderPipeline() {};
+			virtual auto get_param(const std::string& name)->std::shared_ptr<PipelineParam> = 0;
 
 		};
 

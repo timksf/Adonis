@@ -60,3 +60,5 @@
 #else
 	#error Please define ADONIS_USE_GLFW
 #endif 
+
+#define ADONIS_USE_OPENGL

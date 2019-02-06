@@ -15,9 +15,11 @@ IncludeDir["GLAD"] = "Adonis/vendor/glad/include"
 IncludeDir["IMGUI"] = "Adonis/vendor/imgui"
 IncludeDir["GLM"] = "Adonis/vendor/glm"
 
-include "Adonis/vendor/GLFW"
-include "Adonis/vendor/glad"
-include "Adonis/vendor/imgui"
+group "Dependencies"
+	include "Adonis/vendor/GLFW"
+	include "Adonis/vendor/glad"
+	include "Adonis/vendor/imgui"
+group ""
 
 project "Adonis"
 	location "Adonis"
@@ -35,6 +37,8 @@ project "Adonis"
 	files{
 		"%{prj.name}/src/**.h", 
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.vert",
+		"%{prj.name}/src/**.frag",
 		"%{prj.name}/resources/WindowIcon.png"
 	}
 

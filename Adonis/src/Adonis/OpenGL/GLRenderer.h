@@ -61,7 +61,7 @@ namespace Adonis {
 		class GLPipelineParam;
 
 		class ADONIS_API GLRenderPipeline : public RenderPipeline {
-		public:
+		public: 
 
 			GLRenderPipeline(std::unique_ptr<VertexShader> vertex_shader, std::unique_ptr<FragmentShader> frag_shader);
 			~GLRenderPipeline()	override;
@@ -105,6 +105,7 @@ namespace Adonis {
 			GLuint m_program_id;
 			std::string m_name;
 		};
+
 
 	}
 

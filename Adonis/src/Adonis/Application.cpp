@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Eventsystem/EventManager.h"
 #include "Eventsystem/EventListener.h"
+#include "Adonis/OpenGL/GLRenderer.h"
 #include <glad/glad.h>
 
 
@@ -14,8 +15,8 @@ namespace Adonis {
 		s_instance = this;
 		m_window = IWindow::create(1280, 720);
 		m_renderer = render::RenderDevice::create();
+		auto test_pipe = render::RenderPipeline::test_pipeline_2D();
 	}
-
 
 	Application::~Application(){
 	}

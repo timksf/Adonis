@@ -22,6 +22,9 @@
     <Filter Include="src\Adonis\OpenGL">
       <UniqueIdentifier>{2E451985-9A5B-171B-E3D2-A23C4F28E8A2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Adonis\OpenGL\Shaders">
+      <UniqueIdentifier>{07B8CE55-737A-02E0-BC2A-916C282CDBBD}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Adonis.h">
@@ -139,5 +142,11 @@
     <Image Include="resources\WindowIcon.png">
       <Filter>resources</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Adonis\OpenGL\Shaders\2DTest.vert">
+      <Filter>src\Adonis\OpenGL\Shaders</Filter>
+    </None>
+    <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag" />
   </ItemGroup>
 </Project>

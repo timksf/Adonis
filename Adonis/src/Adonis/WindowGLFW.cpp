@@ -41,6 +41,12 @@ namespace Adonis {
 			s_glfw_initialized = true;
 		}
 
+#ifdef ADONIS_USE_OPENGL
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#endif ADONIS_USE_OPENGL
+
 		switch (m_mode) {
 		case WindowMode::Windowed:
 			m_window = std::unique_ptr<GLFWwindow, void(*)(GLFWwindow *)>(glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr), WindowGLFW::shutdown);
@@ -68,6 +74,7 @@ namespace Adonis {
 
 		glfwMakeContextCurrent(m_window.get());
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+#define LEL
 		AD_CORE_ASSERT(status, "Failed to initialize GLAD");
 
 		//set vsync
@@ -129,7 +136,8 @@ namespace Adonis {
 		ON_EVENT_BIND(RenderEvent,		WindowGLFW);
 		ON_EVENT_BIND(PostRenderEvent,	WindowGLFW);
 
-		/*int width, height, n;
+		//TEMPORARY
+		int width, height, n;
 		unsigned char * data = stbi_load("WindowIcon.png", &width, &height, &n, 0);
 		if (data == nullptr) {
 			AD_CORE_ERROR("Failed to load window icon");
@@ -142,7 +150,8 @@ namespace Adonis {
 			glfwSetWindowIcon(m_window.get(), 1, image);
 			delete image;
 			stbi_image_free(data);
-		}*/
+		}
+		//END
 
 	}
 

@@ -128,7 +128,6 @@ namespace Adonis {
 			m_program_id = glCreateProgram();
 			glAttachShader(m_program_id, m_vertex_shader->id());
 			glAttachShader(m_program_id, m_fragment_shader->id());
-			
 			glLinkProgram(m_program_id);
 			GLUtil::check_program(m_program_id);
 		}
@@ -147,17 +146,28 @@ namespace Adonis {
 				return *param;
 			}
 			else {
-				const char * c_name = name.c_str();
-				GLint loc = glGetUniformLocation(m_program_id, c_name);
+				GLint loc = glGetUniformLocation(m_program_id, name.c_str());
 				if (loc != -1) {
 					m_params.push_back(std::make_shared<GLPipelineParam>(name, loc, m_program_id));
 					return *(m_params.end() - 1);
 				}
 				else {
-					AD_CORE_WARN("Pipeline param: {0} does not exist", name);
+					AD_CORE_WARN("Pipeline param: \"{0}\" does not exist", name);
+					AD_CORE_WARN(loc);
 				}
 			}
 			return nullptr;
+		}
+
+		std::unique_ptr<RenderPipeline> RenderPipeline::test_pipeline_2D() {
+			return std::make_unique<GLRenderPipeline>(
+				std::make_unique<GLVertexShader>(
+					#include "Adonis/OpenGL/Shaders/2DTest.vert"
+				),
+				std::make_unique<GLFragmentShader>(
+					#include "Adonis/OpenGL/Shaders/2DTest.frag"
+				)
+			);
 		}
 
 		GLPipelineParam::GLPipelineParam(const std::string& name, GLint location, GLuint program_id) :

@@ -60,6 +60,7 @@ namespace Adonis {
 					return ss.str();
 				}
 
+				return std::string();
 			}
 
 			Shader(const std::string& code) {};
@@ -86,6 +87,7 @@ namespace Adonis {
 		class ADONIS_API RenderPipeline {
 		public: 
 			static auto create(std::unique_ptr<VertexShader>, std::unique_ptr<FragmentShader>)->std::unique_ptr<RenderPipeline>;
+			static auto test_pipeline_2D()->std::unique_ptr<RenderPipeline>;
 
 			virtual ~RenderPipeline() {};
 			virtual auto get_param(const std::string& name)->std::shared_ptr<PipelineParam> = 0;

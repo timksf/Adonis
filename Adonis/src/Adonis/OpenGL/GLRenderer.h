@@ -58,7 +58,6 @@ namespace Adonis {
 			GLuint m_id;
 		};
 
-		class GLPipelineParam;
 
 		class ADONIS_API GLRenderPipeline : public RenderPipeline {
 		public: 
@@ -73,7 +72,7 @@ namespace Adonis {
 			std::unique_ptr<VertexShader> m_vertex_shader;
 			std::unique_ptr<FragmentShader> m_fragment_shader;
 			GLuint m_program_id;
-			std::vector<std::shared_ptr<GLPipelineParam>> m_params;
+			std::vector<std::shared_ptr<PipelineParam>> m_params;
 		};
 
 		class ADONIS_API GLPipelineParam : public PipelineParam {
@@ -104,6 +103,15 @@ namespace Adonis {
 			GLint m_location;
 			GLuint m_program_id;
 			std::string m_name;
+		};
+
+
+		class ADONIS_API VertexBuffer {
+
+		};
+
+		class ADONIS_API IndexBuffer {
+
 		};
 
 

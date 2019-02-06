@@ -16,6 +16,7 @@ namespace Adonis {
 		m_window = IWindow::create(1280, 720);
 		m_renderer = render::RenderDevice::create();
 		auto test_pipe = render::RenderPipeline::test_pipeline_2D();
+		test_pipe->get_param("x")->set_int(10);
 	}
 
 	Application::~Application(){

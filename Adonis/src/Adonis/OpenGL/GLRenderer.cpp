@@ -141,7 +141,7 @@ namespace Adonis {
 		}
 
 		std::shared_ptr<PipelineParam> GLRenderPipeline::get_param(const std::string& name) {
-			auto param = std::find_if(m_params.begin(), m_params.end(), [&](std::shared_ptr<GLPipelineParam> p) { return p->name() == name; });
+			auto param = std::find_if(m_params.begin(), m_params.end(), [&](std::shared_ptr<PipelineParam> p) { return p->name() == name; });
 			if (param != m_params.end()) {
 				return *param;
 			}

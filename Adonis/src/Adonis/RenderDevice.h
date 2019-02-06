@@ -82,18 +82,6 @@ namespace Adonis {
 			FragmentShader(const std::string& code) :Shader(code) {};
 		};
 
-		class PipelineParam;
-
-		class ADONIS_API RenderPipeline {
-		public: 
-			static auto create(std::unique_ptr<VertexShader>, std::unique_ptr<FragmentShader>)->std::unique_ptr<RenderPipeline>;
-			static auto test_pipeline_2D()->std::unique_ptr<RenderPipeline>;
-
-			virtual ~RenderPipeline() {};
-			virtual auto get_param(const std::string& name)->std::shared_ptr<PipelineParam> = 0;
-
-		};
-
 		class ADONIS_API PipelineParam {
 		public:
 			virtual ~PipelineParam() {};
@@ -113,6 +101,18 @@ namespace Adonis {
 			virtual auto set_vec3f(glm::fvec3)	->void = 0;
 			virtual auto set_mat3f(glm::fmat3)	->void = 0;
 			virtual auto set_mat4f(glm::fmat4)	->void = 0;
+
+			virtual auto name()->std::string = 0;
+
+		};
+
+		class ADONIS_API RenderPipeline {
+		public: 
+			static auto create(std::unique_ptr<VertexShader>, std::unique_ptr<FragmentShader>)->std::unique_ptr<RenderPipeline>;
+			static auto test_pipeline_2D()->std::unique_ptr<RenderPipeline>;
+
+			virtual ~RenderPipeline() {};
+			virtual auto get_param(const std::string& name)->std::shared_ptr<PipelineParam> = 0;
 
 		};
 

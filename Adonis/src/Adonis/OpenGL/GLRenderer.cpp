@@ -51,7 +51,6 @@ namespace Adonis {
 			SHADER
 		*/
 
-
 		void GLUtil::check(GLuint shader_id, const std::string& type) {
 			int success;
 			char infoLog[1024];

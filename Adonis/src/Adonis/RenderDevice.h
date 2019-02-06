@@ -49,6 +49,21 @@ namespace Adonis {
 		class ADONIS_API Shader {
 		public:
 
+			static inline auto load_shader(const std::string& file_name)->std::string {
+
+				std::ifstream src(file_name);
+
+				if (!src.good()) {
+					AD_CORE_WARN("Failed to load shader: {0}", file_name);
+				}
+				else {
+					std::stringstream ss;
+					ss << src.rdbuf();
+					return ss.str();
+				}
+
+			}
+
 			Shader(const std::string& code) {};
 			virtual ~Shader() {};
 

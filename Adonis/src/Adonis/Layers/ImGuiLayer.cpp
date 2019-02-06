@@ -107,8 +107,6 @@ namespace Adonis {
 		m_time = static_cast<float>(current_time);
 
 		ImGui::NewFrame();
-		bool show_demo = true;
-		ImGui::ShowDemoWindow(&show_demo);
 
 		{
 			ImGui::Begin("Debug window");

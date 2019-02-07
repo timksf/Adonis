@@ -20,8 +20,16 @@ namespace Adonis {
 			ON_EVENT_DECL_OVERRIDE(UpdateEvent);
 
 			auto clear()->void override;
+			auto set_pipeline(std::shared_ptr<RenderPipeline> pipe)->void override;
 
+			inline auto renderer()->std::string override { return m_renderer; };
+			inline auto version()->std::string override { return m_version; };
+			inline auto sl_language_version()->std::string override { return m_glslversion; };
 
+		private:
+			std::string m_renderer;
+			std::string m_version;
+			std::string m_glslversion;
 		};
 
 		class ADONIS_API GLUtil {

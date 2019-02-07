@@ -11,4 +11,9 @@ namespace Adonis {
 			DECLARE_EVENT(UpdateEvent);
 		};
 
+		class AppStartEvent : public Event {
+		public:
+			DECLARE_EVENT(AppStartEvent);
+		};
+
 }

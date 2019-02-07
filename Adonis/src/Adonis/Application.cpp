@@ -15,8 +15,6 @@ namespace Adonis {
 		s_instance = this;
 		m_window = IWindow::create(1280, 720);
 		m_renderer = render::RenderDevice::create();
-		auto test_pipe = render::RenderPipeline::test_pipeline_2D();
-		AD_CORE_INFO(glGetString(GL_SHADING_LANGUAGE_VERSION));
 	}
 
 	Application::~Application(){
@@ -61,4 +59,13 @@ namespace Adonis {
 			m_window->toggle_fullscreen();
 		}
 	}
+
+	void Application::on_AppStartEvent(const event_ptr_t<AppStartEvent>& ev) {
+		#ifdef ADONIS_DEBUG
+				AD_CORE_INFO(m_renderer->sl_language_version());
+				AD_CORE_INFO(m_renderer->renderer());
+				AD_CORE_INFO(m_renderer->version());
+		#endif
+	}
+
 }

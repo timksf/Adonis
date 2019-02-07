@@ -13,6 +13,9 @@ namespace Adonis {
 			ON_EVENT_BIND(PreRenderEvent,	GLRenderer);
 			ON_EVENT_BIND(RenderEvent,		GLRenderer);
 			ON_EVENT_BIND(UpdateEvent,		GLRenderer);
+			m_renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+			m_glslversion = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+			m_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 		}
 
 		GLRenderer::~GLRenderer() {
@@ -26,6 +29,10 @@ namespace Adonis {
 		void GLRenderer::clear() {
 			glClearColor(clear_color.r(), clear_color.g(), clear_color.b(), clear_color.a());
 			glClear(GL_COLOR_BUFFER_BIT);
+		}
+
+		void GLRenderer::set_pipeline(std::shared_ptr<RenderPipeline> pipe) {
+			glUseProgram(std::dynamic_pointer_cast<GLRenderPipeline>(pipe)->program_id());
 		}
 
 		void GLRenderer::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& ev) {
@@ -117,8 +124,8 @@ namespace Adonis {
 			Render Pipeline
 		*/
 
-		std::unique_ptr<RenderPipeline> RenderPipeline::create(std::unique_ptr<VertexShader> vert_shader, std::unique_ptr<FragmentShader> frag_shader) {
-			return std::make_unique<GLRenderPipeline>(std::move(vert_shader), std::move(frag_shader));
+		std::shared_ptr<RenderPipeline> RenderPipeline::create(std::unique_ptr<VertexShader> vert_shader, std::unique_ptr<FragmentShader> frag_shader) {
+			return std::make_shared<GLRenderPipeline>(std::move(vert_shader), std::move(frag_shader));
 		}
 
 		GLRenderPipeline::GLRenderPipeline(std::unique_ptr<VertexShader> vertex_shader, std::unique_ptr<FragmentShader> frag_shader):

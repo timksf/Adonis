@@ -25,6 +25,8 @@ namespace Adonis {
 			}
 		};
 
+		class RenderPipeline;
+
 		class ADONIS_API RenderDevice : public EventListener {
 		public:
 
@@ -39,7 +41,11 @@ namespace Adonis {
 			ON_EVENT_DECL_P_V(UpdateEvent);
 
 			virtual auto clear()->void = 0;
+			virtual auto set_pipeline(std::shared_ptr<RenderPipeline> pipe)->void = 0;
 
+			virtual auto renderer()->std::string = 0;
+			virtual auto version()->std::string = 0;
+			virtual auto sl_language_version()->std::string = 0;
 
 			Color clear_color;
 		};
@@ -108,7 +114,7 @@ namespace Adonis {
 
 		class ADONIS_API RenderPipeline {
 		public: 
-			static auto create(std::unique_ptr<VertexShader>, std::unique_ptr<FragmentShader>)->std::unique_ptr<RenderPipeline>;
+			static auto create(std::unique_ptr<VertexShader>, std::unique_ptr<FragmentShader>)->std::shared_ptr<RenderPipeline>;
 			static auto test_pipeline_2D()->std::unique_ptr<RenderPipeline>;
 
 			virtual ~RenderPipeline() {};

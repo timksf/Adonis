@@ -22,6 +22,7 @@ namespace Adonis {
 		ON_EVENT_DECL(UpdateEvent);
 		ON_EVENT_DECL(WindowCloseEvent);
 		ON_EVENT_DECL(KeyPressed);
+		ON_EVENT_DECL(AppStartEvent);
 
 		inline auto consume_window()const->IWindow* { return m_window.get(); };
 		inline auto consume_renderer()const->render::RenderDevice* { return m_renderer.get(); };

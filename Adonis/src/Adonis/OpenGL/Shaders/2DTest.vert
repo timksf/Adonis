@@ -1,5 +1,5 @@
 R""(
-#version 450
+#version 440
 
 layout(location = 0) in vec3 pos;
 

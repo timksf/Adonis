@@ -246,6 +246,27 @@ namespace Adonis {
 			glUseProgram(m_program_id);
 			glUniformMatrix3fv(m_location, 4*4, false, glm::value_ptr(v[0]));
 		}
+
+		/*
+			Buffers
+		*/
+
+		GLVertexBuffer::GLVertexBuffer() : VertexBuffer() {
+			glCreateBuffers(1, &m_id);
+		}
+
+		GLVertexBuffer::~GLVertexBuffer() {
+			glDeleteBuffers(1, &m_id);
+		}
+
+		GLIndexBuffer::GLIndexBuffer() : IndexBuffer() {
+			glCreateBuffers(1, &m_id);
+		}
+
+		GLIndexBuffer::~GLIndexBuffer() {
+			glDeleteBuffers(1, &m_id);
+		}
+
 }
 
 }

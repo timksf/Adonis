@@ -116,6 +116,27 @@ namespace Adonis {
 
 		};
 
+		class ADONIS_API Buffer {
+		public:
+
+			virtual ~Buffer() {};
+
+		};
+
+		class ADONIS_API VertexBuffer: public Buffer {
+		public:
+			static auto create()->std::unique_ptr<VertexBuffer>;
+
+
+		};
+
+		class ADONIS_API IndexBuffer : public Buffer {
+		public:
+			static auto create()->std::unique_ptr<IndexBuffer>;
+
+
+		};
+
 	}
 
 }

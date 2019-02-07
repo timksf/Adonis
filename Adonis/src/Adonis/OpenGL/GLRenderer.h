@@ -106,12 +106,23 @@ namespace Adonis {
 		};
 
 
-		class ADONIS_API VertexBuffer {
+		class ADONIS_API GLVertexBuffer: public VertexBuffer {
+		public:
 
+			GLVertexBuffer();
+			~GLVertexBuffer() override;
+
+		private:
+			GLuint m_id;
 		};
 
-		class ADONIS_API IndexBuffer {
+		class ADONIS_API GLIndexBuffer: public IndexBuffer {
+		public:
+			GLIndexBuffer();
+			~GLIndexBuffer() override;
 
+		private:
+			GLuint m_id;
 		};
 
 

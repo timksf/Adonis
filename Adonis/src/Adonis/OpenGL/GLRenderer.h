@@ -133,6 +133,27 @@ namespace Adonis {
 			GLuint m_id;
 		};
 
+		class ADONIS_API GLVertexAttributeDesc : VertexAttributeDesc {
+		public:
+			GLuint binding;
+			GLintptr baseoffset;
+			GLintptr stride;
+			GLenum type;
+			GLuint size;
+		};
+
+		class ADONIS_API GLVertexArray : VertexArray {
+		public:
+
+			GLVertexArray();
+			~GLVertexArray() override;
+			auto add_buffer(GLuint id, std::shared_ptr<VertexAttributeDesc> attrib_desc)->bool override;
+
+		private:
+			std::unordered_map<GLuint, std::shared_ptr<VertexAttributeDesc>> m_vbuffers;
+			GLuint m_id;
+		};
+
 
 	}
 

@@ -143,6 +143,18 @@ namespace Adonis {
 
 		};
 
+		class ADONIS_API VertexAttributeDesc {
+
+		};
+
+		class ADONIS_API VertexArray {
+		public:
+
+			virtual ~VertexArray() {};
+			virtual auto add_buffer(uint32_t id, std::shared_ptr<VertexAttributeDesc> attrib_desc)->bool = 0;
+
+		};
+
 	}
 
 }

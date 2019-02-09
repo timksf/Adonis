@@ -286,20 +286,21 @@ namespace Adonis {
 			glDeleteVertexArrays(1, &m_id);
 		}
 
-		bool GLVertexArray::add_buffer(GLuint id, std::shared_ptr<VertexAttributeDesc> desc) {
+		bool GLVertexArray::add_buffer(GLuint id, std::shared_ptr<VertexArrayDesc> desc) {
 			m_vbuffers[id] = desc;
-			auto gldesc = std::dynamic_pointer_cast<GLVertexAttributeDesc>(desc);
-			glBindVertexBuffer(gldesc->binding, id, gldesc->baseoffset, gldesc->stride);
+			//for (auto& attrib : desc->attribs()) {
+
+			//}
+			//glBindVertexBuffer(gldesc->binding, id, gldesc->baseoffset, gldesc->stride);
 			//POS glVertexAttribformat(/**/)
-			glEnableVertexArrayAttrib(m_id, 0);
-			glVertexArrayAttribBinding(m_id, 0, id);
+
+			//glVertexArrayAttribFormat(m_id, 0, )
 			//NORMAL
-			glEnableVertexArrayAttrib(m_id, 1);
-			glVertexArrayAttribBinding(m_id, 1, id);
+
 			//COLOR
-			glEnableVertexArrayAttrib(m_id, 2);
-			glVertexArrayAttribBinding(m_id, 2, id);
+
 			//MORE??? Tangent/Bitangent, UVs, ...
+			return false;
 		}
 
 }

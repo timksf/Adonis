@@ -139,14 +139,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resources\WindowIcon.png">
-      <Filter>resources</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag">
+      <Filter>src\Adonis\OpenGL\Shaders</Filter>
+    </None>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.vert">
       <Filter>src\Adonis\OpenGL\Shaders</Filter>
     </None>
-    <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\WindowIcon.png">
+      <Filter>resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

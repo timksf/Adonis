@@ -15,6 +15,7 @@ namespace Adonis {
 		s_instance = this;
 		m_window = IWindow::create(1280, 720);
 		m_renderer = render::RenderDevice::create();
+		AD_CORE_INFO(m_renderer->version());
 	}
 
 	Application::~Application(){

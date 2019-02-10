@@ -258,30 +258,30 @@ namespace Adonis {
 			Buffers
 		*/
 
-		GLVertexBuffer::GLVertexBuffer(int64_t size, const void* data) : VertexBuffer() {
+		GLVertexBuffer::GLVertexBuffer(int64_t size, const void* data, GLenum usage) : VertexBuffer() {
 			glCreateBuffers(1, &m_id);
-			glNamedBufferData(m_id, size, data, GL_STATIC_DRAW);
+			glNamedBufferData(m_id, size, data, usage);
 		}
 
 		GLVertexBuffer::~GLVertexBuffer() {
 			glDeleteBuffers(1, &m_id);
 		}
 
-		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data) : IndexBuffer() {
+		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data, GLenum usage) : IndexBuffer() {
 			glCreateBuffers(1, &m_id);
-			glNamedBufferData(m_id, size, data, GL_STATIC_DRAW);
+			glNamedBufferData(m_id, size, data, usage);
 		}
 
 		GLIndexBuffer::~GLIndexBuffer() {
 			glDeleteBuffers(1, &m_id);
 		}
 
-		std::unique_ptr<VertexBuffer> VertexBuffer::create(int64_t size, const void* data) {
-			return std::make_unique<GLVertexBuffer>(size, data);
+		std::unique_ptr<VertexBuffer> VertexBuffer::create(int64_t size, const void* data, uint32_t flags) {
+			return std::make_unique<GLVertexBuffer>(size, data, flags);
 		}
 
-		std::unique_ptr<IndexBuffer> IndexBuffer::create(int64_t size, const void* data) {
-			return std::make_unique<GLIndexBuffer>(size, data);
+		std::unique_ptr<IndexBuffer> IndexBuffer::create(int64_t size, const void* data, uint32_t flags) {
+			return std::make_unique<GLIndexBuffer>(size, data, flags);
 		}
 
 		/*

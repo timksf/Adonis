@@ -117,7 +117,7 @@ namespace Adonis {
 		class ADONIS_API GLVertexBuffer: public VertexBuffer {
 		public:
 
-			GLVertexBuffer(int64_t size, const void* data);
+			GLVertexBuffer(int64_t size, const void* data, GLenum usage);
 			~GLVertexBuffer() override;
 
 		private:
@@ -127,7 +127,7 @@ namespace Adonis {
 		class ADONIS_API GLIndexBuffer: public IndexBuffer {
 		public:
 
-			GLIndexBuffer(int64_t size, const void* data);
+			GLIndexBuffer(int64_t size, const void* data, GLenum usage);
 			~GLIndexBuffer() override;
 
 		private:

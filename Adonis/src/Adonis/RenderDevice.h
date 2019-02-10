@@ -131,14 +131,14 @@ namespace Adonis {
 
 		class ADONIS_API VertexBuffer: public Buffer {
 		public:
-			static auto create(int64_t size, const void* data)->std::unique_ptr<VertexBuffer>;
+			static auto create(int64_t size, const void* data, uint32_t flags)->std::unique_ptr<VertexBuffer>;
 
 
 		};
 
 		class ADONIS_API IndexBuffer : public Buffer {
 		public:
-			static auto create(int64_t size, const void* data)->std::unique_ptr<IndexBuffer>;
+			static auto create(int64_t size, const void* data, uint32_t flags)->std::unique_ptr<IndexBuffer>;
 
 
 		};

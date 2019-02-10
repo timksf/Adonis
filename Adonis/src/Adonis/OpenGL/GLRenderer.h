@@ -117,7 +117,7 @@ namespace Adonis {
 		class ADONIS_API GLVertexBuffer: public VertexBuffer {
 		public:
 
-			GLVertexBuffer();
+			GLVertexBuffer(int64_t size, const void* data);
 			~GLVertexBuffer() override;
 
 		private:
@@ -126,7 +126,8 @@ namespace Adonis {
 
 		class ADONIS_API GLIndexBuffer: public IndexBuffer {
 		public:
-			GLIndexBuffer();
+
+			GLIndexBuffer(int64_t size, const void* data);
 			~GLIndexBuffer() override;
 
 		private:
@@ -135,18 +136,30 @@ namespace Adonis {
 
 		class ADONIS_API GLVertexAttrib : public VertexAttrib {
 		public:
-			GLuint binding;
-			GLuint index;
-			GLintptr baseoffset;
-			GLintptr stride;
-			GLenum type;
-			GLuint size;
+
+			GLVertexAttrib(GLuint, GLuint, GLuint, GLsizei, GLenum, GLuint, GLboolean);
+
+			GLuint _binding;
+			GLuint _index;
+			GLuint _offset;
+			GLsizei _stride;
+			GLenum _type;
+			GLuint _size;
+			GLboolean _normalized;
 		};
 
 		class ADONIS_API GLVertexArrayDesc : public VertexArrayDesc {
 		public:
-			//auto attribs()->std::vector<std::unique_ptr<VertexAttrib>>&;
+			GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>> attribs, GLuint baseoffset);
+
+			//dont allow copy operations
+			GLVertexArrayDesc(const GLVertexArrayDesc&) = delete;
+			GLVertexArrayDesc& operator=(const GLVertexArrayDesc&) = delete;
+
+			auto attribs()->std::vector<std::unique_ptr<VertexAttrib>>& override;
+			inline auto baseoffset()->GLuint override { return m_baseoffset; };
 		private:
+			GLuint m_baseoffset;
 			std::vector<std::unique_ptr<VertexAttrib>> m_attribs;
 		};
 

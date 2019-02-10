@@ -80,7 +80,7 @@ namespace Adonis {
 				glGetShaderiv(id, GL_COMPILE_STATUS, &success);
 				if (!success) {
 					glGetShaderInfoLog(id, 1024, NULL, infoLog);
-					AD_CORE_ERROR("Compile error in shader of type: {0}", type);
+					AD_CORE_ERROR("Compile error in shader of _type: {0}", type);
 					AD_CORE_ERROR(infoLog);
 					AD_CORE_ERROR(" ------------------------------------------------------- ");
 				}
@@ -258,24 +258,61 @@ namespace Adonis {
 			Buffers
 		*/
 
-		GLVertexBuffer::GLVertexBuffer() : VertexBuffer() {
+		GLVertexBuffer::GLVertexBuffer(int64_t size, const void* data) : VertexBuffer() {
 			glCreateBuffers(1, &m_id);
+			glNamedBufferData(m_id, size, data, GL_STATIC_DRAW);
 		}
 
 		GLVertexBuffer::~GLVertexBuffer() {
 			glDeleteBuffers(1, &m_id);
 		}
 
-		GLIndexBuffer::GLIndexBuffer() : IndexBuffer() {
+		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data) : IndexBuffer() {
 			glCreateBuffers(1, &m_id);
+			glNamedBufferData(m_id, size, data, GL_STATIC_DRAW);
 		}
 
 		GLIndexBuffer::~GLIndexBuffer() {
 			glDeleteBuffers(1, &m_id);
 		}
 
+		std::unique_ptr<VertexBuffer> VertexBuffer::create(int64_t size, const void* data) {
+			return std::make_unique<GLVertexBuffer>(size, data);
+		}
+
+		std::unique_ptr<IndexBuffer> IndexBuffer::create(int64_t size, const void* data) {
+			return std::make_unique<GLIndexBuffer>(size, data);
+		}
+
 		/*
-			Vertex Array
+			Vertex Attributes
+		*/
+
+		GLVertexAttrib::GLVertexAttrib(GLuint binding, GLuint index, GLuint offset, GLsizei stride, GLenum type, GLuint size, GLboolean normalized) {
+			_binding = binding;
+			_index = index;
+			_offset = offset;
+			_stride = stride;
+			_type = type;
+			_size = size;
+			_normalized = normalized;
+		}
+
+		/*
+			Vertex Array/Buffer Description
+		*/
+
+		GLVertexArrayDesc::GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>> attribs, GLuint baseoffset) :
+			m_attribs(std::move(attribs)) {
+			m_baseoffset = baseoffset;
+		}
+
+		std::vector<std::unique_ptr<VertexAttrib>>& GLVertexArrayDesc::attribs() {
+			return m_attribs;
+		}
+		
+		/*
+			Vertex Array Object
 		*/
 
 		GLVertexArray::GLVertexArray() {
@@ -288,19 +325,14 @@ namespace Adonis {
 
 		bool GLVertexArray::add_buffer(GLuint id, std::shared_ptr<VertexArrayDesc> desc) {
 			m_vbuffers[id] = desc;
-			//for (auto& attrib : desc->attribs()) {
-
-			//}
-			//glBindVertexBuffer(gldesc->binding, id, gldesc->baseoffset, gldesc->stride);
-			//POS glVertexAttribformat(/**/)
-
-			//glVertexArrayAttribFormat(m_id, 0, )
-			//NORMAL
-
-			//COLOR
-
-			//MORE??? Tangent/Bitangent, UVs, ...
-			return false;
+			for (auto& attrib : desc->attribs()) {
+				auto glattrib = dynamic_cast<GLVertexAttrib*>(attrib.get());
+				GLuint bindingindex = static_cast<uint32_t>(m_vbuffers.size() - 1);
+				glVertexArrayVertexBuffer(m_id, bindingindex, id, desc->baseoffset(), glattrib->_stride);
+				glVertexArrayAttribFormat(m_id, glattrib->_index, glattrib->_size, glattrib->_type, glattrib->_normalized, glattrib->_offset);
+				glVertexArrayAttribBinding(m_id, glattrib->_index, bindingindex);
+			}
+			return true;
 		}
 
 }

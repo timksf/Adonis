@@ -131,14 +131,14 @@ namespace Adonis {
 
 		class ADONIS_API VertexBuffer: public Buffer {
 		public:
-			static auto create()->std::unique_ptr<VertexBuffer>;
+			static auto create(int64_t size, const void* data)->std::unique_ptr<VertexBuffer>;
 
 
 		};
 
 		class ADONIS_API IndexBuffer : public Buffer {
 		public:
-			static auto create()->std::unique_ptr<IndexBuffer>;
+			static auto create(int64_t size, const void* data)->std::unique_ptr<IndexBuffer>;
 
 
 		};
@@ -150,10 +150,11 @@ namespace Adonis {
 
 		class ADONIS_API VertexArrayDesc {
 		public:
-			VertexArrayDesc(const VertexArrayDesc&) = delete;
-			VertexArrayDesc& operator=(const VertexArrayDesc&) = delete;
+
 			virtual ~VertexArrayDesc() {};
-			//virtual auto attribs()->std::vector<std::unique_ptr<VertexAttrib>>& = 0;
+
+			virtual auto attribs()->std::vector<std::unique_ptr<VertexAttrib>>& = 0;
+			virtual auto baseoffset()->uint32_t = 0;
 		};
 
 		class ADONIS_API VertexArray {

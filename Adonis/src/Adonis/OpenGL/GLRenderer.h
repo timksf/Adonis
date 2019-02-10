@@ -25,11 +25,13 @@ namespace Adonis {
 			inline auto renderer()->std::string override { return m_renderer; };
 			inline auto version()->std::string override { return m_version; };
 			inline auto sl_language_version()->std::string override { return m_glslversion; };
+			inline auto vendor()->std::string override { return m_vendor; };
 
 		private:
 			std::string m_renderer;
 			std::string m_version;
 			std::string m_glslversion;
+			std::string m_vendor;
 		};
 
 		class ADONIS_API GLUtil {

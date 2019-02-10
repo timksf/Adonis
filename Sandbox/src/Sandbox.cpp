@@ -2,6 +2,12 @@
 #include <iostream>
 #include <memory>
 
+#ifdef ADONIS_PLATFORM_WINDOWS
+extern "C" {
+	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
+#endif
+
 class Sandbox : public Adonis::Application {
 public:
 	Sandbox() {

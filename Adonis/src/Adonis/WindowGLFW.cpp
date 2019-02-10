@@ -74,13 +74,7 @@ namespace Adonis {
 
 		glfwMakeContextCurrent(m_window.get());
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-#define LEL
 		AD_CORE_ASSERT(status, "Failed to initialize GLAD");
-
-		//set vsync
-		#ifdef ADONIS_DEBUG
-			AD_CORE_INFO("Setting up window with vsync status: {0}", m_vsync);
-		#endif //ADONIS_DEBUG
 		glfwSwapInterval(m_vsync);
 		
 		glfwSetKeyCallback(m_window.get(), [] (GLFWwindow* window, int key, int scancode, int action, int mods){
@@ -174,7 +168,6 @@ namespace Adonis {
 		glfwGetFramebufferSize(m_window.get(), &m_framebuffer_width, &m_framebuffer_height);
 		glfwGetCursorPos(m_window.get(), &m_mouse_pos.x, &m_mouse_pos.y);
 		if (prev_vsync != m_vsync) {
-			AD_CORE_INFO("VSYNC STATUS CHANGED");
 			update_vsync();
 		}
 		prev_vsync = m_vsync;

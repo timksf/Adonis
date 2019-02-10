@@ -11,9 +11,6 @@ namespace Adonis {
 			auto where = s_subscriptions.find(id);
 
 			if (where == s_subscriptions.end()) {
-				#ifdef ADONIS_DEBUG
-					AD_CORE_INFO("{0}, adding i: {1} to subscription map", typeid(EventManager).name(), id);
-				#endif
 				s_subscriptions[id] = std::vector<std::pair<size_t, event_handler>>();
 			}
 			{
@@ -24,9 +21,6 @@ namespace Adonis {
 						return false;
 					}
 				}
-				#ifdef ADONIS_DEBUG
-					AD_CORE_INFO("{0}, registered new handler for event with id: {1}", typeid(EventManager).name(), id);
-				#endif		
 				registered_handlers.push_back(handler);
 				return handler.first;
 			}
@@ -40,9 +34,6 @@ namespace Adonis {
 				for (auto it = registered_handlers.begin(); it != registered_handlers.end();) {
 					auto& entry = *it;
 					if (entry.first == listener_id) {
-						#ifdef ADONIS_DEBUG
-							AD_CORE_INFO("Unsubscribing from event {0}", ev_id);
-						#endif ADONIS_DEBUG
 						it = registered_handlers.erase(it);
 					}
 					else {
@@ -59,9 +50,7 @@ namespace Adonis {
 		}
 
 		void EventManager::processEvents() {
-			//AD_CORE_INFO("New iter");
 			while (s_queue.size() > 0) {
-				//AD_CORE_INFO("Processing event: {0}", s_queue[0]->name());
 				auto&& entry = s_subscriptions.find(s_queue[0]->id());
 				if (entry != s_subscriptions.end()) {
 					auto& handlers = entry->second;

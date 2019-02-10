@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "pch.h"
 #include "ImGuiLayer.h"
 #include "Adonis/OpenGL/ImGuiImpl.h"
 #include "Adonis/Application.h"
@@ -14,7 +15,6 @@ namespace Adonis {
 		ON_EVENT_BIND(MouseButtonPressed,	ImGuiLayer);
 		ON_EVENT_BIND(MouseScrolledEvent,	ImGuiLayer);
 		ON_EVENT_BIND(CharTyped,			ImGuiLayer);
-		AD_CORE_INFO(__func__);
 		attach();
 	}
 

@@ -46,6 +46,7 @@ namespace Adonis {
 			virtual auto renderer()->std::string = 0;
 			virtual auto version()->std::string = 0;
 			virtual auto sl_language_version()->std::string = 0;
+			virtual auto vendor()->std::string = 0;
 
 			Color clear_color;
 		};

@@ -9,7 +9,9 @@ namespace Adonis {
 
 	namespace render {
 
-		GLRenderer::GLRenderer(const Color& clear_color) : RenderDevice(clear_color){
+		static float vertices[] { 0, 1, 1, 0 };
+
+		GLRenderer::GLRenderer(const Color& clear_color) : RenderDevice(clear_color) {
 			ON_EVENT_BIND(PreRenderEvent,	GLRenderer);
 			ON_EVENT_BIND(RenderEvent,		GLRenderer);
 			ON_EVENT_BIND(UpdateEvent,		GLRenderer);
@@ -33,7 +35,7 @@ namespace Adonis {
 		}
 
 		void GLRenderer::set_pipeline(std::shared_ptr<RenderPipeline> pipe) {
-			glUseProgram(std::dynamic_pointer_cast<GLRenderPipeline>(pipe)->program_id());
+			pipe->activate();
 		}
 
 		void GLRenderer::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& ev) {
@@ -41,7 +43,6 @@ namespace Adonis {
 		}
 
 		void GLRenderer::on_RenderEvent(const event_ptr_t<RenderEvent>& e) {
-
 		}
 
 		void GLRenderer::on_UpdateEvent(const event_ptr_t<UpdateEvent>& e) {
@@ -148,6 +149,10 @@ namespace Adonis {
 			return m_program_id;
 		}
 
+		void GLRenderPipeline::activate()const {
+			glUseProgram(m_program_id);
+		}
+
 		std::shared_ptr<PipelineParam> GLRenderPipeline::get_param(const std::string& name) {
 			auto param = std::find_if(m_params.begin(), m_params.end(), [&](std::shared_ptr<PipelineParam> p) { return p->name() == name; });
 			if (param != m_params.end()) {
@@ -177,6 +182,10 @@ namespace Adonis {
 				)
 			);
 		}
+
+		/*
+			Pipeline param
+		*/
 
 		GLPipelineParam::GLPipelineParam(const std::string& name, GLint location, GLuint program_id) :
 			m_name(name),

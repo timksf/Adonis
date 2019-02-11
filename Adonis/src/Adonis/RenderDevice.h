@@ -119,8 +119,9 @@ namespace Adonis {
 			static auto test_pipeline_2D()->std::unique_ptr<RenderPipeline>;
 
 			virtual ~RenderPipeline() {};
+			virtual auto activate()const ->void = 0;
 			virtual auto get_param(const std::string& name)->std::shared_ptr<PipelineParam> = 0;
-
+		private:
 		};
 
 		class ADONIS_API Buffer {

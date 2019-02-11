@@ -75,8 +75,9 @@ namespace Adonis {
 			GLRenderPipeline(std::unique_ptr<VertexShader> vertex_shader, std::unique_ptr<FragmentShader> frag_shader);
 			~GLRenderPipeline()	override;
 
-			auto get_param(const std::string& name)->std::shared_ptr<PipelineParam>;
-
+			auto activate()const ->void override;
+			auto get_param(const std::string& name)->std::shared_ptr<PipelineParam> override;
+			
 			auto program_id()->GLuint;
 		private:
 			std::unique_ptr<VertexShader> m_vertex_shader;

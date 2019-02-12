@@ -8,9 +8,6 @@ namespace Adonis {
 
 	namespace render {
 
-		template<typename T, typename... Args>
-		auto create(Args&&... args)->std::unique_ptr<T>;
-
 		struct Color {
 
 			glm::fvec4 data = glm::fvec4(1.0f);
@@ -170,14 +167,6 @@ namespace Adonis {
 			virtual auto add_buffer(uint32_t id, std::shared_ptr<VertexArrayDesc> attrib_desc)->bool = 0;
 
 		};
-
-
-		template<typename RenderDevice, typename... Args>
-		auto create<RenderDevice, Args...>(Args&&... args)->std::unique_ptr<RenderDevice> {
-			return RenderDevice::create(std::forward<Args>(args)...);
-		}
-
-
 
 
 	}

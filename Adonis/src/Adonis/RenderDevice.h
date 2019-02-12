@@ -8,9 +8,12 @@ namespace Adonis {
 
 	namespace render {
 
+		template<typename T, typename... Args>
+		auto create(Args&&... args)->std::unique_ptr<T>;
+
 		struct Color {
 
-			glm::fvec4 data;
+			glm::fvec4 data = glm::fvec4(1.0f);
 			float& r() {
 				return data[0];
 			}
@@ -79,6 +82,7 @@ namespace Adonis {
 
 		class ADONIS_API VertexShader: public Shader{
 		public:
+			
 			static auto create(const std::string& code)->std::unique_ptr<VertexShader>;
 			VertexShader(const std::string& code) :Shader(code){};
 		};
@@ -166,6 +170,15 @@ namespace Adonis {
 			virtual auto add_buffer(uint32_t id, std::shared_ptr<VertexArrayDesc> attrib_desc)->bool = 0;
 
 		};
+
+
+		template<typename RenderDevice, typename... Args>
+		auto create<RenderDevice, Args...>(Args&&... args)->std::unique_ptr<RenderDevice> {
+			return RenderDevice::create(std::forward<Args>(args)...);
+		}
+
+
+
 
 	}
 

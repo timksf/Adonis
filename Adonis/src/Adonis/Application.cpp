@@ -14,7 +14,7 @@ namespace Adonis {
 		AD_CORE_ASSERT((s_instance == nullptr), "Only one application object can exist");
 		s_instance = this;
 		m_window = IWindow::create(1280, 720);
-		m_renderer = render::RenderDevice::create();
+		m_renderer = render::create<render::RenderDevice>(render::Color());
 		AD_CORE_INFO("Renderer version: {0}", m_renderer->version());
 		AD_CORE_INFO("Render device: {0}", m_renderer->renderer());
 		AD_CORE_INFO("Shading language version: {0}", m_renderer->sl_language_version());;

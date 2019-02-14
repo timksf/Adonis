@@ -9,12 +9,12 @@ namespace Adonis {
 
 	namespace render {
 
-		static float vertices[] { 0, 1, 1, 0 };
+		static float vertices[]{ 0, 1, 1, 0 };
 
 		GLRenderer::GLRenderer(const Color& clear_color) : RenderDevice(clear_color) {
-			ON_EVENT_BIND(PreRenderEvent,	GLRenderer);
-			ON_EVENT_BIND(RenderEvent,		GLRenderer);
-			ON_EVENT_BIND(UpdateEvent,		GLRenderer);
+			ON_EVENT_BIND(PreRenderEvent, GLRenderer);
+			ON_EVENT_BIND(RenderEvent, GLRenderer);
+			ON_EVENT_BIND(UpdateEvent, GLRenderer);
 			m_renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 			m_glslversion = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 			m_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
@@ -90,7 +90,7 @@ namespace Adonis {
 		}
 
 
-		GLVertexShader::GLVertexShader(const std::string& code): VertexShader(code) {
+		GLVertexShader::GLVertexShader(const std::string& code) : VertexShader(code) {
 			const char* code_c = code.c_str();
 			m_id = glCreateShader(GL_VERTEX_SHADER);
 			glShaderSource(m_id, 1, &code_c, NULL);
@@ -102,7 +102,7 @@ namespace Adonis {
 			glDeleteShader(m_id);
 		}
 
-		GLFragmentShader::GLFragmentShader(const std::string& code): FragmentShader(code) {
+		GLFragmentShader::GLFragmentShader(const std::string& code) : FragmentShader(code) {
 			const char* code_c = code.c_str();
 			m_id = glCreateShader(GL_FRAGMENT_SHADER);
 			glShaderSource(m_id, 1, &code_c, NULL);
@@ -130,7 +130,7 @@ namespace Adonis {
 			return std::make_shared<GLRenderPipeline>(std::move(vert_shader), std::move(frag_shader));
 		}
 
-		GLRenderPipeline::GLRenderPipeline(std::unique_ptr<VertexShader> vertex_shader, std::unique_ptr<FragmentShader> frag_shader):
+		GLRenderPipeline::GLRenderPipeline(std::unique_ptr<VertexShader> vertex_shader, std::unique_ptr<FragmentShader> frag_shader) :
 			m_vertex_shader(std::move(vertex_shader)),
 			m_fragment_shader(std::move(frag_shader))
 		{
@@ -145,7 +145,7 @@ namespace Adonis {
 			glDeleteProgram(m_program_id);
 		}
 
-		GLuint GLRenderPipeline::program_id(){
+		GLuint GLRenderPipeline::program_id() {
 			return m_program_id;
 		}
 
@@ -175,12 +175,12 @@ namespace Adonis {
 		std::unique_ptr<RenderPipeline> RenderPipeline::test_pipeline_2D() {
 			return std::make_unique<GLRenderPipeline>(
 				std::make_unique<GLVertexShader>(
-					#include "Adonis/OpenGL/Shaders/2DTest.vert"
-				),
+#include "Adonis/OpenGL/Shaders/2DTest.vert"
+					),
 				std::make_unique<GLFragmentShader>(
-					#include "Adonis/OpenGL/Shaders/2DTest.frag"
-				)
-			);
+#include "Adonis/OpenGL/Shaders/2DTest.frag"
+					)
+				);
 		}
 
 		/*
@@ -195,11 +195,11 @@ namespace Adonis {
 
 		}
 
-		std::string GLPipelineParam::name(){
+		std::string GLPipelineParam::name() {
 			return m_name;
 		}
 
-		GLint GLPipelineParam::location(){
+		GLint GLPipelineParam::location() {
 			return m_location;
 		}
 
@@ -257,29 +257,29 @@ namespace Adonis {
 		}
 		void GLPipelineParam::set_mat3f(glm::fmat3 v) {
 			glUseProgram(m_program_id);
-			glUniformMatrix3fv(m_location, 3*3, false, glm::value_ptr(v[0]));
+			glUniformMatrix3fv(m_location, 3 * 3, false, glm::value_ptr(v[0]));
 		}
 		void GLPipelineParam::set_mat4f(glm::fmat4 v) {
 			glUseProgram(m_program_id);
-			glUniformMatrix3fv(m_location, 4*4, false, glm::value_ptr(v[0]));
+			glUniformMatrix3fv(m_location, 4 * 4, false, glm::value_ptr(v[0]));
 		}
 
 		/*
 			Buffers
 		*/
 
-		GLVertexBuffer::GLVertexBuffer(int64_t size, const void* data, GLenum usage) : VertexBuffer() {
+		GLVertexBuffer::GLVertexBuffer(int64_t size, const void* data, GLbitfield flags) : VertexBuffer() {
 			glCreateBuffers(1, &m_id);
-			glNamedBufferData(m_id, size, data, usage);
+			glNamedBufferStorage(m_id, size, data, flags);
 		}
 
 		GLVertexBuffer::~GLVertexBuffer() {
 			glDeleteBuffers(1, &m_id);
 		}
 
-		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data, GLenum usage) : IndexBuffer() {
+		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data, GLbitfield flags) : IndexBuffer() {
 			glCreateBuffers(1, &m_id);
-			glNamedBufferData(m_id, size, data, usage);
+			glNamedBufferStorage(m_id, size, data, flags);
 		}
 
 		GLIndexBuffer::~GLIndexBuffer() {
@@ -298,11 +298,9 @@ namespace Adonis {
 			Vertex Attributes
 		*/
 
-		GLVertexAttrib::GLVertexAttrib(GLuint binding, GLuint index, GLuint offset, GLsizei stride, GLenum type, GLuint size, GLboolean normalized) {
-			_binding = binding;
+		GLVertexAttrib::GLVertexAttrib(GLuint index, GLuint offset, GLenum type, GLuint size, GLboolean normalized) {
 			_index = index;
 			_offset = offset;
-			_stride = stride;
 			_type = type;
 			_size = size;
 			_normalized = normalized;
@@ -312,15 +310,16 @@ namespace Adonis {
 			Vertex Array/Buffer Description
 		*/
 
-		GLVertexArrayDesc::GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>> attribs, GLuint baseoffset) :
+		GLVertexArrayDesc::GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>> attribs, GLuint baseoffset, GLsizei stride) :
 			m_attribs(std::move(attribs)) {
 			m_baseoffset = baseoffset;
+			m_stride = stride;
 		}
 
 		std::vector<std::unique_ptr<VertexAttrib>>& GLVertexArrayDesc::attribs() {
 			return m_attribs;
 		}
-		
+
 		/*
 			Vertex Array Object
 		*/
@@ -333,18 +332,19 @@ namespace Adonis {
 			glDeleteVertexArrays(1, &m_id);
 		}
 
-		bool GLVertexArray::add_buffer(GLuint id, std::shared_ptr<VertexArrayDesc> desc) {
-			m_vbuffers[id] = desc;
+		bool GLVertexArray::add_buffer(GLuint vbo, std::shared_ptr<VertexArrayDesc> desc) {
+			m_vbuffers[vbo] = desc;
+			GLuint bindingindex = static_cast<uint32_t>(m_vbuffers.size() - 1);
+			glVertexArrayVertexBuffer(m_id, bindingindex, vbo, desc->baseoffset(), desc->stride());
 			for (auto& attrib : desc->attribs()) {
 				auto glattrib = dynamic_cast<GLVertexAttrib*>(attrib.get());
-				GLuint bindingindex = static_cast<uint32_t>(m_vbuffers.size() - 1);
-				glVertexArrayVertexBuffer(m_id, bindingindex, id, desc->baseoffset(), glattrib->_stride);
+				glEnableVertexArrayAttrib(m_id, glattrib->_index);
 				glVertexArrayAttribFormat(m_id, glattrib->_index, glattrib->_size, glattrib->_type, glattrib->_normalized, glattrib->_offset);
 				glVertexArrayAttribBinding(m_id, glattrib->_index, bindingindex);
 			}
 			return true;
 		}
 
-}
+	}
 
 }

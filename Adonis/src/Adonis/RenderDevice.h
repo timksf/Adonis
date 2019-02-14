@@ -158,6 +158,7 @@ namespace Adonis {
 
 			virtual auto attribs()->std::vector<std::unique_ptr<VertexAttrib>>& = 0;
 			virtual auto baseoffset()->uint32_t = 0;
+			virtual auto stride()->uint32_t = 0;
 		};
 
 		class ADONIS_API VertexArray {

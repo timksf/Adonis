@@ -10,6 +10,9 @@
 
 namespace Adonis {
 
+	/**
+	*	@brief This class contains the main loop and manages all involved systems
+	*/
 	class ADONIS_API Application: public EventListener {
 	public:
 		DECLARE_LISTENER(Application);
@@ -38,6 +41,6 @@ namespace Adonis {
 		bool m_running{ true };
 	};
 
-	Application* createApplication();
+	Application* create_application();
 
 }

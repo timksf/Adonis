@@ -17,9 +17,20 @@ namespace Adonis {
 		Fullscreen
 	};
 
+	/**
+	*	@brief Interface for platform/api specific window class implementations
+	*/
 	class ADONIS_API IWindow: public EventListener{
 	public:
 
+		/**
+		*	@return				A pointer to the created window object
+		*	@param width		Window width in pixels
+		*	@param height		Window height in pixels
+		*	@param title		Window title as string
+		*	@param mode			Mode used to init window, of type WindowMode
+		*	@param vsync		Initial vsync status (enabled/disabled)
+		*/
 		static std::unique_ptr<IWindow> create(const uint16_t& width = 640, const uint16_t& height = 480, const std::string& title = "Window", WindowMode mode = WindowMode::Windowed, const bool& vsnyc = true);
 
 		virtual ~IWindow() {};
@@ -30,11 +41,29 @@ namespace Adonis {
 		ON_EVENT_DECL_P_V(PostRenderEvent);
 		ON_EVENT_DECL_P_V(WindowCloseEvent);
 
+		/**
+		*	@brief	Initializes underlying api/platform specific window
+		*/
 		virtual auto init()->void = 0;																//Init underlying window
+
+		/**
+		*	@brief	Toggle between fullscreen/borderless mode and windowed mode
+		*/
 		virtual auto toggle_fullscreen()->void = 0;													//Toggle fullscreen mode	
+
+		/**
+		*	@brief	Change the cursor position
+		*/
 		virtual auto set_mouse_pos(double x, double y)->void = 0;
+
+		/**
+		*	@brief	Adapts window's vsync status to vsync class member
+		*/
 		virtual auto update_vsync()->void = 0;
 
+		/**
+		*	@return	
+		*/
 		virtual auto has_focus()const->bool = 0;
 
 		virtual auto is_vsync()const->bool = 0;

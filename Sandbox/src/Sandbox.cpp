@@ -17,7 +17,7 @@ public:
 };
 
 
-Adonis::Application* Adonis::createApplication() {
+Adonis::Application* Adonis::create_application() {
 	return new Sandbox();
 }
 	

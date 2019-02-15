@@ -19,6 +19,7 @@ namespace Adonis {
 			m_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 			m_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
 
+			//TEMP
 			float vertices[] = 
 			{ /*pos:*/ 0.0f, 0.0f, 0.0f,
 					0.5f, 0.5f, 0.5f,
@@ -35,6 +36,7 @@ namespace Adonis {
 			m_vao = VertexArray::create();
 			m_vao->add_buffer(m_vbo->id(), std::move(desc));
 			m_pipe = RenderPipeline::test_pipeline_2D();
+			//TEMP
 		}
 
 		GLRenderer::~GLRenderer() {
@@ -59,9 +61,11 @@ namespace Adonis {
 		}
 
 		void GLRenderer::on_RenderEvent(const event_ptr_t<RenderEvent>& e) {
+			//TEMP
 			m_pipe->activate();
 			m_vao->bind();
 			glDrawArrays(GL_TRIANGLES, 0, 9);
+			//TEMP
 		}
 
 		void GLRenderer::on_UpdateEvent(const event_ptr_t<UpdateEvent>& e) {

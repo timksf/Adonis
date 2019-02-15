@@ -59,9 +59,11 @@ namespace Adonis {
 			std::string m_version;
 			std::string m_glslversion;
 			std::string m_vendor;
+			//TEMP
 			std::unique_ptr<VertexBuffer> m_vbo;
 			std::unique_ptr<VertexArray> m_vao;
 			std::unique_ptr<RenderPipeline> m_pipe;
+			//TEMP
 		};
 
 		class ADONIS_API GLUtil {

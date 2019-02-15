@@ -276,11 +276,30 @@ namespace Adonis {
 		private:
 		};
 
+		enum class VertexType: uint32_t {
+			FLOAT = 0,
+			HALF_FLOAT = 1,
+			DOUBLE = 2,
+			BYTE = 3,
+			UNSIGNED_BYTE = 4,
+			SHORT = 5,
+			UNSIGNED_SHORT = 6,
+			INTEGER = 7,
+			UNSIGNED_INTEGER = 8,
+			NORMALIZED_BYTE = 9,
+			NORMALIZED_UNSIGNED_BYTE = 10,
+			NORMALIZED_SHORT = 11,
+			NORMALIZED_UNSIGNED_SHORT = 12,
+			NORMALIZED_INTEGER = 13,
+			NORMALIZED_UNSIGNED_INTEGER = 14
+		};
+
 		class ADONIS_API Buffer {
 		public:
 
 			virtual ~Buffer() {};
-
+			virtual auto id()->uint32_t = 0;
+			virtual auto bind()->void = 0;
 		};
 
 		class ADONIS_API VertexBuffer: public Buffer {
@@ -294,7 +313,7 @@ namespace Adonis {
 			*	@param flags	A bitfield specifying the intended use of the buffers data storage
 			*	@return			A pointer to the constructed object
 			*/
-			static auto create(int64_t size, const void* data, uint32_t flags)->std::unique_ptr<VertexBuffer>;
+			static auto create(int64_t size, const void* data, uint32_t flags = 0)->std::unique_ptr<VertexBuffer>;
 		};
 
 		class ADONIS_API IndexBuffer : public Buffer {
@@ -307,17 +326,29 @@ namespace Adonis {
 			*	@param data		A pointer to the data, which should be used for the initialization of the buffer, may be nullptr
 			*	@param flags	A bitfield specifying the intended use of the buffers data storage
 			*/
-			static auto create(int64_t size, const void* data, uint32_t flags)->std::unique_ptr<IndexBuffer>;
+			static auto create(int64_t size, const void* data, uint32_t flags = 0)->std::unique_ptr<IndexBuffer>;
 		};
 
 		class ADONIS_API VertexAttrib {
 		public:
+
+			/*
+			*	@brief				Create a vertex attribute object
+			*	@param index		The index of the attribute in the buffer
+			*	@param offset		The distance in bytes from the beginning of a vertex to the attribute
+			*	@param type			The type of the attribute, also specifies if the values should be normalized
+			*	@param size			The number of values 
+			*/
+			static auto create(uint32_t index, uint32_t offset, VertexType type, uint32_t size)->std::unique_ptr<VertexAttrib>;
+
 			virtual ~VertexAttrib() {};
 		};
 
 		
 		class ADONIS_API VertexArrayDesc {
 		public:
+
+			static auto create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride)->std::unique_ptr<VertexArrayDesc>;
 
 			virtual ~VertexArrayDesc() {};
 
@@ -340,7 +371,14 @@ namespace Adonis {
 		class ADONIS_API VertexArray {
 		public:
 
+			static auto create()->std::unique_ptr<VertexArray>;
+
 			virtual ~VertexArray() {};
+
+			/**
+			*	@brief Enable underlying vertex array object 
+			*/
+			virtual auto bind()->void = 0;
 
 			/**
 			*	@brief					Add a buffer to the vertex array object with a corresponding description of the buffer's structure
@@ -348,7 +386,7 @@ namespace Adonis {
 			*	@param	vbo				the name/id of the vertex buffer object
 			*	@param	attrib_desc		the description of the buffer's structure, basically a list of attribute formats
 			*/
-			virtual auto add_buffer(uint32_t id, std::shared_ptr<VertexArrayDesc> attrib_desc)->bool = 0;
+			virtual auto add_buffer(uint32_t id, std::unique_ptr<VertexArrayDesc> attrib_desc)->bool = 0;
 
 		};
 

@@ -39,6 +39,8 @@
 #define ON_EVENT(event_type, ...)				on_event<event_type>(__VA_ARGS__)
 #define ON_EVENT_BIND(event_type, type)			ON_EVENT(event_type, BIND_FN(type, on_##event_type))
 
+#define AD_FALSE 0
+#define AD_TRUE 1
 
 #ifdef ADONIS_USE_GLFW
 	#define ADONIS_WINDOW_CONTEXT_LIB_NAME	"GLFW"

@@ -19,6 +19,10 @@ namespace Adonis {
 			ON_EVENT_DECL_OVERRIDE(RenderEvent);
 			ON_EVENT_DECL_OVERRIDE(UpdateEvent);
 
+			GLRenderer(const GLRenderer& other) = delete;
+
+			GLRenderer& operator=(const GLRenderer& other) = delete;
+
 			/**
 			*	@brief	Clear the current active framebuffer with the renderer's clear color
 			*/
@@ -55,10 +59,14 @@ namespace Adonis {
 			std::string m_version;
 			std::string m_glslversion;
 			std::string m_vendor;
+			std::unique_ptr<VertexBuffer> m_vbo;
+			std::unique_ptr<VertexArray> m_vao;
+			std::unique_ptr<RenderPipeline> m_pipe;
 		};
 
 		class ADONIS_API GLUtil {
 		public:
+
 			/**
 			*	@brief	Check the info log of the shader's compilation
 			*/
@@ -174,21 +182,95 @@ namespace Adonis {
 			*/
 			GLPipelineParam(const std::string& name, GLint location, GLuint program_id);
 
-			auto set_int(int32_t)		->void override;
-			auto set_uint(uint32_t)		->void override;
-			auto set_float(float)		->void override;
-			auto set_double(double)		->void override;
-			auto set_bool(bool)			->void override;
-			auto set_vec2b(glm::bvec2)	->void override;
-			auto set_vec2i(glm::ivec2)	->void override;
-			auto set_vec2u(glm::uvec2)	->void override;
-			auto set_vec2f(glm::fvec2)	->void override;
-			auto set_vec3b(glm::bvec3)	->void override;
-			auto set_vec3i(glm::ivec3)	->void override;
-			auto set_vec3u(glm::uvec3)	->void override;
-			auto set_vec3f(glm::fvec3)	->void override;
-			auto set_mat3f(glm::fmat3)	->void override;
-			auto set_mat4f(glm::fmat4)	->void override;
+			/**
+			*	@brief			Set the value of the shader uniform as an int
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_int(int32_t)		->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as an unsigned int
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_uint(uint32_t)		->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a float
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_float(float)		->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a double
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_double(double)		->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a boolean
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_bool(bool)			->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a vector of two booleans
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_vec2b(glm::bvec2)	->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as vector of two integers
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_vec2i(glm::ivec2)	->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a vector of two unsigned integers
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_vec2u(glm::uvec2)	->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a vector of two floats
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_vec2f(glm::fvec2)	->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a vector of three booleans
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_vec3b(glm::bvec3)	->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a vector of three integers
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_vec3i(glm::ivec3)	->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a vector of htree unsigned integers
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_vec3u(glm::uvec3)	->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a vector of three floats
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_vec3f(glm::fvec3)	->void override;
+
+			/**
+			*	@brief		Set the value of the shader uniform as a 3x3 matrix of floats
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_mat3f(glm::fmat3)	->void override;
+
+			/**
+			*	@brief			Set the value of the shader uniform as a 4x4 matrix of floats
+			*	@param value	The value which the uniform will be assigned to
+			*/
+			virtual auto set_mat4f(glm::fmat4)	->void override;
 
 			/**
 			*	@return	the name of the uniform, which the pipeline param object grants access to
@@ -225,6 +307,10 @@ namespace Adonis {
 			*/
 			~GLVertexBuffer() override;
 
+			auto id()->GLuint;
+
+			auto bind()->void;
+
 		private:
 			GLuint m_id;
 		};
@@ -247,12 +333,18 @@ namespace Adonis {
 			*/
 			~GLIndexBuffer() override;
 
+			auto id()->GLuint;
+
+			auto bind()->void;
+
 		private:
 			GLuint m_id;
 		};
 
 		class ADONIS_API GLVertexAttrib : public VertexAttrib {
 		public:
+
+			static GLenum GLVertexTypes[9];
 
 			/**
 			*	@brief				Construct a GLVertexAttrib which specifies the format for a vertex array attribute
@@ -280,7 +372,7 @@ namespace Adonis {
 			*	@param baseoffset	the offset of the vertex buffer data from the beginning of the actual vertex buffer object in bytes
 			*	@param stride		the number of bytes between vertex elements, usually the size of the vertex type used in the buffer
 			*/
-			GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>> attribs, GLuint baseoffset, GLsizei stride);
+			GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, GLuint baseoffset, GLsizei stride);
 
 			/**
 			*	@brief Deleted copy constructor to restrict copy constructing, because of the owned unique pointers
@@ -313,7 +405,7 @@ namespace Adonis {
 			std::vector<std::unique_ptr<VertexAttrib>> m_attribs;
 		};
 
-		class ADONIS_API GLVertexArray : VertexArray {
+		class ADONIS_API GLVertexArray : public VertexArray {
 		public:
 
 			/**
@@ -327,15 +419,30 @@ namespace Adonis {
 			~GLVertexArray() override;
 
 			/**
+			*	@brief Prohibit copy construction because m_vbuffers member contains unique_ptr s
+			*/
+			GLVertexArray(const GLVertexArray& other) = delete;
+
+			/**
+			*	@brief Prohibit copy assignment because m_vbuffers member contains unique_ptr s
+			*/
+			GLVertexArray& operator=(const GLVertexArray& other) = delete;
+
+			/**
 			*	@brief					Add a buffer to the vertex array object with a corresponding description of the buffer's structure
 			*	
 			*	@param	vbo				the name/id of the vertex buffer object
 			*	@param	attrib_desc		the description of the buffer's structure, basically a list of attribute formats
 			*/
-			auto add_buffer(GLuint vbo, std::shared_ptr<VertexArrayDesc> attrib_desc)->bool override;
+			auto add_buffer(GLuint vbo, std::unique_ptr<VertexArrayDesc> attrib_desc)->bool override;
+
+			/**
+			*	@brief	Enable underlying OpenGL vertex array object
+			*/
+			auto bind()->void;
 
 		private:
-			std::unordered_map<GLuint, std::shared_ptr<VertexArrayDesc>> m_vbuffers;
+			std::unordered_map<GLuint, std::unique_ptr<VertexArrayDesc>> m_vbuffers;
 			GLuint m_id;
 		};
 

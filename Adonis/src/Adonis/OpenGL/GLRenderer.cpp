@@ -9,7 +9,6 @@ namespace Adonis {
 
 	namespace render {
 
-		static float vertices[]{ 0, 1, 1, 0 };
 
 		GLRenderer::GLRenderer(const Color& clear_color) : RenderDevice(clear_color) {
 			ON_EVENT_BIND(PreRenderEvent, GLRenderer);
@@ -19,6 +18,23 @@ namespace Adonis {
 			m_glslversion = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 			m_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 			m_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
+
+			float vertices[] = 
+			{ /*pos:*/ 0.0f, 0.0f, 0.0f,
+					0.5f, 0.5f, 0.5f,
+					1.f, 0.0f, 1.0f
+			};
+
+			auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
+			//auto col_attr = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
+			m_vbo = VertexBuffer::create(sizeof(vertices), vertices);
+			auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
+			attribs.push_back(std::move(pos_attr));
+			//attribs.push_back(std::move(col_attr));
+			auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 3);
+			m_vao = VertexArray::create();
+			m_vao->add_buffer(m_vbo->id(), std::move(desc));
+			m_pipe = RenderPipeline::test_pipeline_2D();
 		}
 
 		GLRenderer::~GLRenderer() {
@@ -43,6 +59,9 @@ namespace Adonis {
 		}
 
 		void GLRenderer::on_RenderEvent(const event_ptr_t<RenderEvent>& e) {
+			m_pipe->activate();
+			m_vao->bind();
+			glDrawArrays(GL_TRIANGLES, 0, 9);
 		}
 
 		void GLRenderer::on_UpdateEvent(const event_ptr_t<UpdateEvent>& e) {
@@ -268,6 +287,10 @@ namespace Adonis {
 			Buffers
 		*/
 
+		/*
+			Vertex buffer
+		*/
+
 		GLVertexBuffer::GLVertexBuffer(int64_t size, const void* data, GLbitfield flags) : VertexBuffer() {
 			glCreateBuffers(1, &m_id);
 			glNamedBufferStorage(m_id, size, data, flags);
@@ -276,6 +299,22 @@ namespace Adonis {
 		GLVertexBuffer::~GLVertexBuffer() {
 			glDeleteBuffers(1, &m_id);
 		}
+
+		GLuint GLVertexBuffer::id() {
+			return m_id;
+		}
+
+		void GLVertexBuffer::bind() {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
+		}
+
+		std::unique_ptr<VertexBuffer> VertexBuffer::create(int64_t size, const void* data, uint32_t flags) {
+			return std::make_unique<GLVertexBuffer>(size, data, flags);
+		}
+
+		/*
+			Index buffer
+		*/
 
 		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data, GLbitfield flags) : IndexBuffer() {
 			glCreateBuffers(1, &m_id);
@@ -286,8 +325,12 @@ namespace Adonis {
 			glDeleteBuffers(1, &m_id);
 		}
 
-		std::unique_ptr<VertexBuffer> VertexBuffer::create(int64_t size, const void* data, uint32_t flags) {
-			return std::make_unique<GLVertexBuffer>(size, data, flags);
+		GLuint GLIndexBuffer::id() {
+			return m_id;
+		}
+
+		void GLIndexBuffer::bind() {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
 		}
 
 		std::unique_ptr<IndexBuffer> IndexBuffer::create(int64_t size, const void* data, uint32_t flags) {
@@ -298,6 +341,8 @@ namespace Adonis {
 			Vertex Attributes
 		*/
 
+		GLenum GLVertexAttrib::GLVertexTypes[9] = { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT };
+
 		GLVertexAttrib::GLVertexAttrib(GLuint index, GLuint offset, GLenum type, GLuint size, GLboolean normalized) {
 			_index = index;
 			_offset = offset;
@@ -306,11 +351,17 @@ namespace Adonis {
 			_normalized = normalized;
 		}
 
+
+		std::unique_ptr<VertexAttrib> VertexAttrib::create(uint32_t index, uint32_t offset, VertexType type, uint32_t size) {
+			bool normalized = (static_cast<std::underlying_type_t<VertexType>>(type) > 8);
+			return std::make_unique<GLVertexAttrib>(index, offset, GLVertexAttrib::GLVertexTypes[static_cast<std::underlying_type_t<VertexType>>(type)], size, static_cast<GLboolean>(normalized));
+		}
+
 		/*
 			Vertex Array/Buffer Description
 		*/
 
-		GLVertexArrayDesc::GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>> attribs, GLuint baseoffset, GLsizei stride) :
+		GLVertexArrayDesc::GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, GLuint baseoffset, GLsizei stride) :
 			m_attribs(std::move(attribs)) {
 			m_baseoffset = baseoffset;
 			m_stride = stride;
@@ -318,6 +369,10 @@ namespace Adonis {
 
 		std::vector<std::unique_ptr<VertexAttrib>>& GLVertexArrayDesc::attribs() {
 			return m_attribs;
+		}
+
+		std::unique_ptr<VertexArrayDesc> VertexArrayDesc::create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride) {
+			return std::make_unique<GLVertexArrayDesc>(std::move(attribs), baseoffset, stride);
 		}
 
 		/*
@@ -332,17 +387,25 @@ namespace Adonis {
 			glDeleteVertexArrays(1, &m_id);
 		}
 
-		bool GLVertexArray::add_buffer(GLuint vbo, std::shared_ptr<VertexArrayDesc> desc) {
-			m_vbuffers[vbo] = desc;
+		std::unique_ptr<VertexArray> VertexArray::create() {
+			return std::make_unique<GLVertexArray>();
+		}
+
+		bool GLVertexArray::add_buffer(GLuint vbo, std::unique_ptr<VertexArrayDesc> desc) {
+			m_vbuffers.insert(std::make_pair(vbo, std::move(desc)));
 			GLuint bindingindex = static_cast<uint32_t>(m_vbuffers.size() - 1);
-			glVertexArrayVertexBuffer(m_id, bindingindex, vbo, desc->baseoffset(), desc->stride());
-			for (auto& attrib : desc->attribs()) {
+			glVertexArrayVertexBuffer(m_id, bindingindex, vbo, m_vbuffers[vbo]->baseoffset(), m_vbuffers[vbo]->stride());
+			for (auto& attrib : m_vbuffers[vbo]->attribs()) {
 				auto glattrib = dynamic_cast<GLVertexAttrib*>(attrib.get());
 				glEnableVertexArrayAttrib(m_id, glattrib->_index);
 				glVertexArrayAttribFormat(m_id, glattrib->_index, glattrib->_size, glattrib->_type, glattrib->_normalized, glattrib->_offset);
 				glVertexArrayAttribBinding(m_id, glattrib->_index, bindingindex);
 			}
 			return true;
+		}
+
+		void GLVertexArray::bind() {
+			glBindVertexArray(m_id);
 		}
 
 	}

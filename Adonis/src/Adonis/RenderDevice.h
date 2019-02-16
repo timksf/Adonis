@@ -45,6 +45,7 @@ namespace Adonis {
 			ON_EVENT_DECL_P_V(PreRenderEvent);
 			ON_EVENT_DECL_P_V(RenderEvent);
 			ON_EVENT_DECL_P_V(UpdateEvent);
+			ON_EVENT_DECL_P_V(WindowResizeEvent);
 
 			virtual auto clear()->void = 0;
 
@@ -276,7 +277,7 @@ namespace Adonis {
 		private:
 		};
 
-		enum class VertexType: uint32_t {
+		enum class ADONIS_API VertexType: uint32_t {
 			FLOAT = 0,
 			HALF_FLOAT = 1,
 			DOUBLE = 2,

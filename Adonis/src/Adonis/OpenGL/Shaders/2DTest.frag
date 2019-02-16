@@ -1,11 +1,12 @@
 R""(
-#version 440
+#version 450
 
 in vec3 vert_pos;
+in vec3 vert_color;
 
 void main(){
 
-	gl_FragColor = vec4(1.0);
+	gl_FragColor = vec4(vert_color, 1.0);
 
 }
 

@@ -14,6 +14,7 @@ namespace Adonis {
 			ON_EVENT_BIND(PreRenderEvent, GLRenderer);
 			ON_EVENT_BIND(RenderEvent, GLRenderer);
 			ON_EVENT_BIND(UpdateEvent, GLRenderer);
+			ON_EVENT_BIND(WindowResizeEvent, GLRenderer);
 			m_renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 			m_glslversion = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 			m_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
@@ -21,18 +22,18 @@ namespace Adonis {
 
 			//TEMP
 			float vertices[] = 
-			{ /*pos:*/ 0.0f, 0.0f, 0.0f,
-					0.5f, 0.5f, 0.5f,
-					1.f, 0.0f, 1.0f
+			{ /*pos:*/ 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+					0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+					1.f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
 			};
 
 			auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
-			//auto col_attr = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
+			auto col_attr = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
 			m_vbo = VertexBuffer::create(sizeof(vertices), vertices);
 			auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
 			attribs.push_back(std::move(pos_attr));
-			//attribs.push_back(std::move(col_attr));
-			auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 3);
+			attribs.push_back(std::move(col_attr));
+			auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
 			m_vao = VertexArray::create();
 			m_vao->add_buffer(m_vbo->id(), std::move(desc));
 			m_pipe = RenderPipeline::test_pipeline_2D();
@@ -64,12 +65,16 @@ namespace Adonis {
 			//TEMP
 			m_pipe->activate();
 			m_vao->bind();
-			glDrawArrays(GL_TRIANGLES, 0, 9);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
 			//TEMP
 		}
 
 		void GLRenderer::on_UpdateEvent(const event_ptr_t<UpdateEvent>& e) {
 
+		}
+
+		void GLRenderer::on_WindowResizeEvent(const event_ptr_t<WindowResizeEvent>& e) {
+			glViewport(0, 0, e->width(), e->height());
 		}
 
 		/*

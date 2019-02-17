@@ -306,6 +306,9 @@ namespace Adonis {
 		class ADONIS_API VertexBuffer: public Buffer {
 		public:
 
+			static constexpr uint8_t NUMBER_OF_VERTEX_TYPES = 15;
+			static uint32_t vertex_type_mapping[NUMBER_OF_VERTEX_TYPES];
+
 			/**
 			*	@brief			This function is defined by the different implementations, of which only omne will be active
 			*					A wrapper for an underlying vertex buffer

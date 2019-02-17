@@ -347,8 +347,6 @@ namespace Adonis {
 		class ADONIS_API GLVertexAttrib : public VertexAttrib {
 		public:
 
-			static GLenum GLVertexTypes[9];
-
 			/**
 			*	@brief				Construct a GLVertexAttrib which specifies the format for a vertex array attribute
 			*

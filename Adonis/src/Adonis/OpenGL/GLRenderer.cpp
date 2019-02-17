@@ -22,9 +22,9 @@ namespace Adonis {
 
 			//TEMP
 			float vertices[] = 
-			{ /*pos:*/ 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-					0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-					1.f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+			{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+						0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+						0.0f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,
 			};
 
 			auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
@@ -350,7 +350,7 @@ namespace Adonis {
 			Vertex Attributes
 		*/
 
-		GLenum GLVertexAttrib::GLVertexTypes[9] = { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT };
+		uint32_t VertexBuffer::vertex_type_mapping[VertexBuffer::NUMBER_OF_VERTEX_TYPES] = { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT };
 
 		GLVertexAttrib::GLVertexAttrib(GLuint index, GLuint offset, GLenum type, GLuint size, GLboolean normalized) {
 			_index = index;
@@ -363,7 +363,7 @@ namespace Adonis {
 
 		std::unique_ptr<VertexAttrib> VertexAttrib::create(uint32_t index, uint32_t offset, VertexType type, uint32_t size) {
 			bool normalized = (static_cast<std::underlying_type_t<VertexType>>(type) > 8);
-			return std::make_unique<GLVertexAttrib>(index, offset, GLVertexAttrib::GLVertexTypes[static_cast<std::underlying_type_t<VertexType>>(type)], size, static_cast<GLboolean>(normalized));
+			return std::make_unique<GLVertexAttrib>(index, offset, VertexBuffer::vertex_type_mapping[static_cast<std::underlying_type_t<VertexType>>(type)], size, static_cast<GLboolean>(normalized));
 		}
 
 		/*

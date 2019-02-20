@@ -303,7 +303,7 @@ namespace Adonis {
 			*	@param flags	specifies intented usage of the buffer's data store; default flag allows data to be updated through glBufferSubData;
 			*					see https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferStorage.xhtml for more information on the flag parameter
 			*/
-			GLVertexBuffer(int64_t size, const void* data, GLbitfield flags = GL_DYNAMIC_STORAGE_BIT);
+			GLVertexBuffer(int64_t size, const void* data, BufferBit flags);
 
 			/**
 			*	@brief Properly deletes the underlying OpenGL buffer object
@@ -329,7 +329,7 @@ namespace Adonis {
 			*	@param flags	specifies intented usage of the buffer's data store; default flag allows data to be updated through glBufferSubData; 
 			*					see https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferStorage.xhtml for more information on the flag parameter
 			*/
-			GLIndexBuffer(int64_t size, const void* data, GLbitfield flags = GL_DYNAMIC_STORAGE_BIT);
+			GLIndexBuffer(int64_t size, const void* data, BufferBit flags);
 
 			/**
 			*	@brief Properly deletes the underlying OpenGL buffer object

@@ -295,12 +295,34 @@ namespace Adonis {
 			NORMALIZED_UNSIGNED_INTEGER = 14
 		};
 
+		enum class ADONIS_API BufferBit : uint32_t {
+			DYNAMIC_STORAGE = 0,
+			MAP_READ,
+			MAP_WRITE
+		};
+
+		inline BufferBit operator|(BufferBit a, BufferBit b) {
+			return static_cast<BufferBit>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
+		}
+
+		inline BufferBit operator&(BufferBit a, BufferBit b) {
+			return static_cast<BufferBit>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
+		}
+
+		inline BufferBit operator^(BufferBit a, BufferBit b) {
+			return static_cast<BufferBit>(static_cast<uint32_t>(a) ^ static_cast<uint32_t>(b));
+		}
+
 		class ADONIS_API Buffer {
 		public:
+
+			static constexpr uint8_t NUMBER_OF_BUFFER_BITS = 3;
+			static uint32_t buffer_bit_lookup[NUMBER_OF_BUFFER_BITS];
 
 			virtual ~Buffer() {};
 			virtual auto id()->uint32_t = 0;
 			virtual auto bind()->void = 0;
+			//virtual auto update(int64_t size, const void* data, uint32_t offset)->void = 0;
 		};
 
 		class ADONIS_API VertexBuffer: public Buffer {
@@ -317,7 +339,7 @@ namespace Adonis {
 			*	@param flags	A bitfield specifying the intended use of the buffers data storage
 			*	@return			A pointer to the constructed object
 			*/
-			static auto create(int64_t size, const void* data, uint32_t flags = 0)->std::unique_ptr<VertexBuffer>;
+			static auto create(int64_t size, const void* data, BufferBit flags)->std::unique_ptr<VertexBuffer>;
 		};
 
 		class ADONIS_API IndexBuffer : public Buffer {
@@ -330,7 +352,7 @@ namespace Adonis {
 			*	@param data		A pointer to the data, which should be used for the initialization of the buffer, may be nullptr
 			*	@param flags	A bitfield specifying the intended use of the buffers data storage
 			*/
-			static auto create(int64_t size, const void* data, uint32_t flags = 0)->std::unique_ptr<IndexBuffer>;
+			static auto create(int64_t size, const void* data, BufferBit flags)->std::unique_ptr<IndexBuffer>;
 		};
 
 		class ADONIS_API VertexAttrib {

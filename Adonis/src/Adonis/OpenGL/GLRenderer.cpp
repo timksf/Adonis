@@ -29,7 +29,7 @@ namespace Adonis {
 
 			auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
 			auto col_attr = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
-			m_vbo = VertexBuffer::create(sizeof(vertices), vertices);
+			m_vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 			auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
 			attribs.push_back(std::move(pos_attr));
 			attribs.push_back(std::move(col_attr));
@@ -296,13 +296,27 @@ namespace Adonis {
 			Buffers
 		*/
 
+		uint32_t Buffer::buffer_bit_lookup[Buffer::NUMBER_OF_BUFFER_BITS] = { GL_DYNAMIC_STORAGE_BIT, GL_MAP_READ_BIT, GL_MAP_WRITE_BIT };
+
 		/*
 			Vertex buffer
 		*/
 
-		GLVertexBuffer::GLVertexBuffer(int64_t size, const void* data, GLbitfield flags) : VertexBuffer() {
+		GLVertexBuffer::GLVertexBuffer(int64_t size, const void* data, BufferBit flags) : VertexBuffer() {
 			glCreateBuffers(1, &m_id);
-			glNamedBufferStorage(m_id, size, data, flags);
+			std::stringstream ss;
+			ss << std::hex << std::showbase << static_cast<uint32_t>(flags);
+			AD_CORE_INFO("VertexBuffer flags before: {0}", ss.str());
+			ss.str(std::string());
+			GLbitfield glflags = 0;
+			for (uint32_t i = 0; i < Buffer::NUMBER_OF_BUFFER_BITS; i++) {
+				if ((i & static_cast<uint32_t>(flags)) == i) {
+					glflags |= Buffer::buffer_bit_lookup[i];
+				}
+			}
+			ss << std::hex << static_cast<uint32_t>(glflags);
+			AD_CORE_INFO("VertexBuffer flags after: {0}", ss.str());
+			glNamedBufferStorage(m_id, size, data, glflags);
 		}
 
 		GLVertexBuffer::~GLVertexBuffer() {
@@ -317,7 +331,7 @@ namespace Adonis {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
 		}
 
-		std::unique_ptr<VertexBuffer> VertexBuffer::create(int64_t size, const void* data, uint32_t flags) {
+		std::unique_ptr<VertexBuffer> VertexBuffer::create(int64_t size, const void* data, BufferBit flags) {
 			return std::make_unique<GLVertexBuffer>(size, data, flags);
 		}
 
@@ -325,9 +339,21 @@ namespace Adonis {
 			Index buffer
 		*/
 
-		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data, GLbitfield flags) : IndexBuffer() {
+		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data, BufferBit flags) : IndexBuffer() {
 			glCreateBuffers(1, &m_id);
-			glNamedBufferStorage(m_id, size, data, flags);
+			std::stringstream ss;
+			ss << std::hex << std::showbase << static_cast<uint32_t>(flags);
+			AD_CORE_INFO("IndexBuffer flags before: {0}", ss.str());
+			ss.str(std::string());
+			GLbitfield glflags = 0;
+			for (uint32_t i = 0; i < Buffer::NUMBER_OF_BUFFER_BITS; i++) {
+				if ((i & static_cast<uint32_t>(flags)) == 1) {
+					glflags |= Buffer::buffer_bit_lookup[i];
+				}
+			}
+			ss << std::hex << static_cast<uint32_t>(glflags);
+			AD_CORE_INFO("IndexBuffer flags after: {0}", ss.str());
+			glNamedBufferStorage(m_id, size, data, glflags);
 		}
 
 		GLIndexBuffer::~GLIndexBuffer() {
@@ -342,7 +368,7 @@ namespace Adonis {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
 		}
 
-		std::unique_ptr<IndexBuffer> IndexBuffer::create(int64_t size, const void* data, uint32_t flags) {
+		std::unique_ptr<IndexBuffer> IndexBuffer::create(int64_t size, const void* data, BufferBit flags) {
 			return std::make_unique<GLIndexBuffer>(size, data, flags);
 		}
 

@@ -99,6 +99,7 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\Math\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
@@ -137,6 +138,7 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\Math\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag">
@@ -145,6 +147,8 @@
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.vert">
       <Filter>src\Adonis\OpenGL\Shaders</Filter>
     </None>
+    <None Include="src\Adonis\OpenGL\Shaders\3DTest.vert" />
+    <None Include="src\Adonis\OpenGL\Shaders\3DTest.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\WindowIcon.png">

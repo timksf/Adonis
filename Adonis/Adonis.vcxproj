@@ -153,6 +153,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Adonis\Math\Math.h" />
     <ClInclude Include="src\Adonis.h" />
     <ClInclude Include="src\Adonis\Application.h" />
     <ClInclude Include="src\Adonis\Core.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Adonis\Math\Math.cpp" />
     <ClCompile Include="src\Adonis\Application.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp" />
@@ -197,6 +199,8 @@
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag" />
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.vert" />
+    <None Include="src\Adonis\OpenGL\Shaders\3DTest.frag" />
+    <None Include="src\Adonis\OpenGL\Shaders\3DTest.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\WindowIcon.png" />

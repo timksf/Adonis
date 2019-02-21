@@ -14,6 +14,7 @@
 #include <list>
 #include <functional>
 #include <type_traits>
+#include <cmath>
 
 //
 #include "Adonis/Log.h"

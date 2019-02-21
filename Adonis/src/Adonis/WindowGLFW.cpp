@@ -129,6 +129,7 @@ namespace Adonis {
 		ON_EVENT_BIND(PreRenderEvent,	WindowGLFW);
 		ON_EVENT_BIND(RenderEvent,		WindowGLFW);
 		ON_EVENT_BIND(PostRenderEvent,	WindowGLFW);
+		ON_EVENT_BIND(WindowResizeEvent, WindowGLFW);
 
 		//TEMPORARY
 		int width, height, n;
@@ -179,6 +180,11 @@ namespace Adonis {
 	}
 
 	void WindowGLFW::on_WindowCloseEvent(const event_ptr_t<WindowCloseEvent>& event) {
+	}
+
+	void WindowGLFW::on_WindowResizeEvent(const event_ptr_t<WindowResizeEvent>& event) {
+		m_width = event->width();
+		m_height = event->height();
 	}
 
 	void WindowGLFW::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& event) {

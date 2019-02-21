@@ -116,6 +116,8 @@ namespace Adonis {
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::Checkbox("VSYNC", &app->consume_window()->vsync());
 			ImGui::SliderFloat("Font-scale", &ImGui::GetIO().FontGlobalScale, 1.0f, 3.0f);
+			ImGui::SliderFloat("Translate", &app->consume_renderer()->test, 0.0f, -3.0f);
+			ImGui::Text("Current resolution: %dx%d", app->consume_window()->width(), app->consume_window()->height());
 			ImGui::End();
 		}
 

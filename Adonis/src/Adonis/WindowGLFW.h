@@ -24,6 +24,7 @@ namespace Adonis {
 		ON_EVENT_DECL_V_OVERRIDE(RenderEvent);
 		ON_EVENT_DECL_V_OVERRIDE(PostRenderEvent);
 		ON_EVENT_DECL_V_OVERRIDE(WindowCloseEvent);
+		ON_EVENT_DECL_V_OVERRIDE(WindowResizeEvent);
 
 		auto init()->void override;																				
 		auto toggle_fullscreen()->void override;																

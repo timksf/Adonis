@@ -55,11 +55,13 @@ namespace Adonis {
 			*/
 			inline auto vendor()->std::string override { return m_vendor; };
 
+
 		private:
 			std::string m_renderer;
 			std::string m_version;
 			std::string m_glslversion;
 			std::string m_vendor;
+			glm::vec2 m_viewport;
 			//TEMP
 			std::unique_ptr<VertexBuffer> m_vbo;
 			std::unique_ptr<VertexArray> m_vao;

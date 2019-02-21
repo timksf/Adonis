@@ -3,7 +3,7 @@
 #include "Adonis/Core.h"
 #include "GLRenderer.h"
 #include "glm/gtc/type_ptr.hpp"
-
+#include "Adonis/Math/Math.h"
 
 namespace Adonis {
 
@@ -21,10 +21,10 @@ namespace Adonis {
 			m_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
 
 			//TEMP
-			float vertices[] = 
+			float vertices[] =
 			{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-						0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-						0.0f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,
+						0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+						0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
 			};
 
 			auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
@@ -36,9 +36,13 @@ namespace Adonis {
 			auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
 			m_vao = VertexArray::create();
 			m_vao->add_buffer(m_vbo->id(), std::move(desc));
-			m_pipe = RenderPipeline::test_pipeline_2D();
+			m_pipe = RenderPipeline::test_pipeline_3D();
+			m_pipe->get_param("model")->set_mat4f(glm::mat4(1.0f));
+			m_pipe->get_param("view")->set_mat4f(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -1.0f)));
+			auto projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
+			m_pipe->get_param("projection")->set_mat4f(glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f));
 			//TEMP
-		}
+		}	
 
 		GLRenderer::~GLRenderer() {
 
@@ -58,7 +62,10 @@ namespace Adonis {
 		}
 
 		void GLRenderer::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& ev) {
+			using namespace math::literals;
 			this->clear();
+			m_pipe->get_param("view")->set_mat4f(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, test)));
+			m_pipe->get_param("projection")->set_mat4f(glm::perspective(45.0_degf, m_viewport.y / m_viewport.x, 0.1f, 100.0f));
 		}
 
 		void GLRenderer::on_RenderEvent(const event_ptr_t<RenderEvent>& e) {
@@ -74,6 +81,7 @@ namespace Adonis {
 		}
 
 		void GLRenderer::on_WindowResizeEvent(const event_ptr_t<WindowResizeEvent>& e) {
+			m_viewport = { e->width(), e->height() };
 			glViewport(0, 0, e->width(), e->height());
 		}
 
@@ -211,6 +219,17 @@ namespace Adonis {
 				);
 		}
 
+		std::unique_ptr<RenderPipeline> RenderPipeline::test_pipeline_3D() {
+			return std::make_unique<GLRenderPipeline>(
+				std::make_unique<GLVertexShader>(
+#include "Adonis/OpenGL/Shaders/3DTest.vert"
+					),
+				std::make_unique<GLFragmentShader>(
+#include "Adonis/OpenGL/Shaders/3DTest.frag"
+					)
+				);
+		}
+
 		/*
 			Pipeline param
 		*/
@@ -285,11 +304,11 @@ namespace Adonis {
 		}
 		void GLPipelineParam::set_mat3f(glm::fmat3 v) {
 			glUseProgram(m_program_id);
-			glUniformMatrix3fv(m_location, 3 * 3, false, glm::value_ptr(v[0]));
+			glUniformMatrix4fv(m_location, 1, false, glm::value_ptr(v[0]));
 		}
 		void GLPipelineParam::set_mat4f(glm::fmat4 v) {
 			glUseProgram(m_program_id);
-			glUniformMatrix3fv(m_location, 4 * 4, false, glm::value_ptr(v[0]));
+			glUniformMatrix4fv(m_location, 1, false, glm::value_ptr(v[0]));
 		}
 
 		/*

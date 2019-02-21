@@ -75,6 +75,8 @@ namespace Adonis {
 			*/
 			virtual auto vendor()->std::string = 0;
 
+			float test = -0.1f;
+
 			Color clear_color;
 		};
 
@@ -262,6 +264,8 @@ namespace Adonis {
 			*	@return A pointer to a pre-defined pipeline
 			*/
 			static auto test_pipeline_2D()->std::unique_ptr<RenderPipeline>;
+
+			static auto test_pipeline_3D()->std::unique_ptr<RenderPipeline>;
 
 			virtual ~RenderPipeline() {};
 

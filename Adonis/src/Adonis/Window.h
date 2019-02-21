@@ -40,6 +40,7 @@ namespace Adonis {
 		ON_EVENT_DECL_P_V(RenderEvent);
 		ON_EVENT_DECL_P_V(PostRenderEvent);
 		ON_EVENT_DECL_P_V(WindowCloseEvent);
+		ON_EVENT_DECL_P_V(WindowResizeEvent);
 
 		/**
 		*	@brief	Initializes underlying api/platform specific window

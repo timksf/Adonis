@@ -100,7 +100,7 @@ void CustomDebugGUI::on_RenderEvent(const Adonis::event_ptr_t<Adonis::RenderEven
 	}
 }
 
-Adonis::Application* Adonis::create_application() {
-	return new Sandbox();
+std::unique_ptr<Adonis::Application> Adonis::create_application() {
+	return std::make_unique<Sandbox>();
 }
 	

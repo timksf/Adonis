@@ -41,6 +41,6 @@ namespace Adonis {
 		bool m_running{ true };
 	};
 
-	Application* create_application();
+	std::unique_ptr<Application> create_application();
 
 }

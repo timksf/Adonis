@@ -63,8 +63,6 @@ namespace Adonis {
 			std::string m_glslversion;
 			std::string m_vendor;
 			glm::vec2 m_viewport;
-			//TEMP
-			//TEMP
 		};
 
 		class ADONIS_API GLUtil {

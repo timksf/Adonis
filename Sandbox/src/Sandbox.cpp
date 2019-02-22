@@ -84,11 +84,16 @@ float Sandbox::z_translation = -1.0f;
 
 
 void CustomDebugGUI::on_RenderEvent(const Adonis::event_ptr_t<Adonis::RenderEvent>& e) {
+	auto app = Adonis::Application::get();
 	ImGui::SetCurrentContext(this->ctx());
 	//ImGui::ShowDemoWindow();
 	{
 
 		ImGui::Begin("Debug window");
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Current resolution: %dx%d", app->consume_window()->width(), app->consume_window()->height());
+		ImGui::Checkbox("VSYNC", &app->consume_window()->vsync());
+		ImGui::ColorEdit3("Clear color", reinterpret_cast<float*>(&app->consume_renderer()->clear_color.data));
 		ImGui::DragFloat("Z_translation", &Sandbox::z_translation, 0.1f);
 		ImGui::End();
 

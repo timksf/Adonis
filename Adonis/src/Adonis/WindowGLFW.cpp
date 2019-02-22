@@ -114,6 +114,7 @@ namespace Adonis {
 		});
 
 		glfwSetWindowSizeCallback(m_window.get(), [](GLFWwindow*, int width, int height) {
+			if (width == 0 || height == 0) return;
 			EventManager::queueEvent<WindowResizeEvent>(width, height);
 		});
 

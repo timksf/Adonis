@@ -16,15 +16,7 @@ public:
 
 	CustomDebugGUI(Adonis::DebugGUI::Style s) : Adonis::DebugGUI(s) {};
 
-	inline void on_RenderEvent(const Adonis::event_ptr_t<Adonis::RenderEvent>& e) override {
-		ImGui::SetCurrentContext(this->ctx());
-		{
-
-			ImGui::Begin("Debug window");
-			ImGui::End();
-
-		}
-	}
+	void on_RenderEvent(const Adonis::event_ptr_t<Adonis::RenderEvent>& e) override;
 
 };
 
@@ -37,7 +29,7 @@ public:
 	inline void on_PreRenderEvent(const Adonis::event_ptr_t<Adonis::PreRenderEvent>& event) override{
 		using namespace Adonis::math::literals;
 		this->consume_renderer()->clear();
-		m_pipe->get_param("view")->set_mat4f(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.5f)));
+		m_pipe->get_param("view")->set_mat4f(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, z_translation)));
 		m_pipe->get_param("projection")->set_mat4f(glm::perspective(45.0_degf, this->consume_renderer()->aspect_ratio(), 0.1f, 100.0f));
 	};
 
@@ -71,12 +63,14 @@ public:
 		m_vao->add_buffer(m_vbo->id(), std::move(desc));
 		m_pipe = RenderPipeline::test_pipeline_3D();
 		m_pipe->get_param("model")->set_mat4f(glm::mat4(1.0f));
-		m_pipe->get_param("view")->set_mat4f(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -1.0f)));
+		m_pipe->get_param("view")->set_mat4f(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, z_translation)));
 		auto projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
 		m_pipe->get_param("projection")->set_mat4f(glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f));
 	};
 
 	~Sandbox() {};
+
+	static float z_translation;
 private:
 	std::unique_ptr<Adonis::render::RenderPipeline> m_pipe;
 	std::unique_ptr<Adonis::render::VertexArray> m_vao;
@@ -86,6 +80,20 @@ private:
 
 };
 
+float Sandbox::z_translation = -1.0f;
+
+
+void CustomDebugGUI::on_RenderEvent(const Adonis::event_ptr_t<Adonis::RenderEvent>& e) {
+	ImGui::SetCurrentContext(this->ctx());
+	//ImGui::ShowDemoWindow();
+	{
+
+		ImGui::Begin("Debug window");
+		ImGui::DragFloat("Z_translation", &Sandbox::z_translation, 0.1f);
+		ImGui::End();
+
+	}
+}
 
 Adonis::Application* Adonis::create_application() {
 	return new Sandbox();

@@ -16,10 +16,6 @@ namespace Adonis {
 			m_glslversion = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 			m_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 			m_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
-
-			//TEMP
-
-			//TEMP
 		}	
 
 		GLRenderer::~GLRenderer() {

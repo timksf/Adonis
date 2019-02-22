@@ -3,6 +3,8 @@
 #include "Eventsystem/EventManager.h"
 #include "Eventsystem/EventListener.h"
 #include "Adonis/OpenGL/GLRenderer.h"
+#include "Adonis/Math/Math.h"
+#include "glm/glm.hpp"
 #include <glad/glad.h>
 
 
@@ -16,10 +18,12 @@ namespace Adonis {
 		m_window = IWindow::create(1280, 720);
 		EventManager::queueEvent<WindowResizeEvent>(1280, 720);
 		m_renderer = render::RenderDevice::create();
-		AD_CORE_INFO("Renderer version: {0}", m_renderer->version());
-		AD_CORE_INFO("Render device: {0}", m_renderer->renderer());
-		AD_CORE_INFO("Shading language version: {0}", m_renderer->sl_language_version());;
-		AD_CORE_INFO("Vendor: {0}", m_renderer->vendor());
+		#ifdef ADONIS_DEBUG
+				AD_CORE_INFO("Renderer version: {0}", m_renderer->version());
+				AD_CORE_INFO("Render device: {0}", m_renderer->renderer());
+				AD_CORE_INFO("Shading language version: {0}", m_renderer->sl_language_version());
+				AD_CORE_INFO("Vendor: {0}", m_renderer->vendor());
+		#endif
 	}
 
 	Application::~Application(){
@@ -30,9 +34,14 @@ namespace Adonis {
 		ON_EVENT_BIND(KeyPressed,		Application);
 		ON_EVENT_BIND(WindowCloseEvent, Application);
 		ON_EVENT_BIND(UpdateEvent,		Application);
+		ON_EVENT_BIND(AppStartEvent,	Application);
+		ON_EVENT_BIND(PreRenderEvent,	Application);
+		ON_EVENT_BIND(RenderEvent,		Application);
+		ON_EVENT_BIND(PostRenderEvent,	Application);
 
 		double time = glfwGetTime();
 
+		EventManager::queueEvent<AppStartEvent>();
 
 		//Main action loop
 		while (m_running) {
@@ -42,6 +51,7 @@ namespace Adonis {
 
 			EventManager::queueEvent<PreRenderEvent>();
 			EventManager::queueEvent<RenderEvent>(deltatime);
+			EventManager::queueEvent<GuiRenderEvent>();
 			EventManager::queueEvent<PostRenderEvent>();
 			EventManager::queueEvent<UpdateEvent>();
 
@@ -63,14 +73,6 @@ namespace Adonis {
 		if (ev->code() == ADONIS_KEY_F11) {
 			m_window->toggle_fullscreen();
 		}
-	}
-
-	void Application::on_AppStartEvent(const event_ptr_t<AppStartEvent>& ev) {
-		#ifdef ADONIS_DEBUG
-				AD_CORE_INFO(m_renderer->sl_language_version());
-				AD_CORE_INFO(m_renderer->renderer());
-				AD_CORE_INFO(m_renderer->version());
-		#endif
 	}
 
 }

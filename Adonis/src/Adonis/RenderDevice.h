@@ -42,12 +42,13 @@ namespace Adonis {
 
 			virtual ~RenderDevice() {};
 
-			ON_EVENT_DECL_P_V(PreRenderEvent);
-			ON_EVENT_DECL_P_V(RenderEvent);
-			ON_EVENT_DECL_P_V(UpdateEvent);
 			ON_EVENT_DECL_P_V(WindowResizeEvent);
 
 			virtual auto clear()->void = 0;
+
+			virtual auto drawTriangles(int offset, int count)->void = 0;
+
+			virtual auto aspect_ratio()->float = 0;
 
 			/**
 			*	@brief			Change the currently active rendering pipeline

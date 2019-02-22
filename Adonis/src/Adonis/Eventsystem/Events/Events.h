@@ -5,3 +5,4 @@
 #include "MouseEvent.h"
 #include "WindowEvent.h"
 #include "RenderEvent.h"
+#include "GuiRenderEvent.h"

@@ -112,18 +112,20 @@ project "Sandbox"
 		"%{prj.name}/src/**.cpp",
 		"Adonis/resources/WindowIcon.png"
 	}
-
+	
 	includedirs{
 		"Adonis/src",
 		"Adonis/vendor/spdlog/include",
 		"Adonis/vendor/glm",
 		"Adonis/vendor/stb/include",
 		"Adonis/vendor/glad/include",
+		"Adonis/vendor/imgui",
 		"Adonis/vendor/GLFW/include"
 	}
 
 	links{
-		"Adonis"
+		"Adonis",
+		"IMGUI"
 	}
 
 	filter "system:windows"

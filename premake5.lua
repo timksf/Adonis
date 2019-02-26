@@ -50,7 +50,8 @@ project "Adonis"
 		"%{prj.name}/vendor/glad/include",
 		"%{prj.name}/vendor/GLFW/include",
 		"%{prj.name}/vendor/glm",
-		"%{prj.name}/vendor/imgui"
+		"%{prj.name}/vendor/imgui",
+		"%{prj.name}/vendor/imguidock"
 	}
 
 	links{
@@ -119,7 +120,8 @@ project "Sandbox"
 		"Adonis/vendor/glm",
 		"Adonis/vendor/stb/include",
 		"Adonis/vendor/glad/include",
-		"Adonis/vendor/GLFW/include"
+		"Adonis/vendor/GLFW/include",
+		"Adonis/vendor/imguidock"
 	}
 
 	links{

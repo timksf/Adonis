@@ -19,6 +19,9 @@
     <Filter Include="src\Adonis\Layers">
       <UniqueIdentifier>{B932157D-2549-1313-6EC0-9E34DA15E49A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Adonis\Math">
+      <UniqueIdentifier>{53BA8F1C-BF45-FDE0-C856-80D5346159E1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Adonis\OpenGL">
       <UniqueIdentifier>{2E451985-9A5B-171B-E3D2-A23C4F28E8A2}</UniqueIdentifier>
     </Filter>
@@ -78,6 +81,9 @@
     <ClInclude Include="src\Adonis\Log.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\Math\Math.h">
+      <Filter>src\Adonis\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClInclude>
@@ -99,7 +105,6 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\Math\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
@@ -123,6 +128,9 @@
     <ClCompile Include="src\Adonis\Log.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\Math\Math.cpp">
+      <Filter>src\Adonis\Math</Filter>
+    </ClCompile>
     <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClCompile>
@@ -138,7 +146,6 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Adonis\Math\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag">
@@ -147,8 +154,12 @@
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.vert">
       <Filter>src\Adonis\OpenGL\Shaders</Filter>
     </None>
-    <None Include="src\Adonis\OpenGL\Shaders\3DTest.vert" />
-    <None Include="src\Adonis\OpenGL\Shaders\3DTest.frag" />
+    <None Include="src\Adonis\OpenGL\Shaders\3DTest.frag">
+      <Filter>src\Adonis\OpenGL\Shaders</Filter>
+    </None>
+    <None Include="src\Adonis\OpenGL\Shaders\3DTest.vert">
+      <Filter>src\Adonis\OpenGL\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\WindowIcon.png">

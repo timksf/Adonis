@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Adonis\src;..\Adonis\vendor\spdlog\include;..\Adonis\vendor\glm;..\Adonis\vendor\stb\include;..\Adonis\vendor\glad\include;..\Adonis\vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Adonis\src;..\Adonis\vendor\spdlog\include;..\Adonis\vendor\glm;..\Adonis\vendor\stb\include;..\Adonis\vendor\glad\include;..\Adonis\vendor\GLFW\include;..\Adonis\vendor\imguidock;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -95,7 +95,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Adonis\src;..\Adonis\vendor\spdlog\include;..\Adonis\vendor\glm;..\Adonis\vendor\stb\include;..\Adonis\vendor\glad\include;..\Adonis\vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Adonis\src;..\Adonis\vendor\spdlog\include;..\Adonis\vendor\glm;..\Adonis\vendor\stb\include;..\Adonis\vendor\glad\include;..\Adonis\vendor\GLFW\include;..\Adonis\vendor\imguidock;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,7 +115,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ADONIS_PLATFORM_WINDOWS;ADONIS_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Adonis\src;..\Adonis\vendor\spdlog\include;..\Adonis\vendor\glm;..\Adonis\vendor\stb\include;..\Adonis\vendor\glad\include;..\Adonis\vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Adonis\src;..\Adonis\vendor\spdlog\include;..\Adonis\vendor\glm;..\Adonis\vendor\stb\include;..\Adonis\vendor\glad\include;..\Adonis\vendor\GLFW\include;..\Adonis\vendor\imguidock;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;vendor\imguidock;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -103,7 +103,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;vendor\imguidock;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -130,7 +130,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ADONIS_USE_GLFW;ADONIS_PLATFORM_WINDOWS;ADONIS_BUILD_DLL;ADONIS_GLLOADER_GLAD;_CRT_SECURE_NO_WARNINGS;STB_IMAGE_IMPLEMENTATION;ADONIS_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;src;vendor\spdlog\include;vendor\stb\include;vendor\glad\include;vendor\GLFW\include;vendor\glm;vendor\imgui;vendor\imguidock;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -153,7 +153,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Adonis\Math\Math.h" />
     <ClInclude Include="src\Adonis.h" />
     <ClInclude Include="src\Adonis\Application.h" />
     <ClInclude Include="src\Adonis\Core.h" />
@@ -171,6 +170,7 @@
     <ClInclude Include="src\Adonis\Layers\Layer.h" />
     <ClInclude Include="src\Adonis\Layers\LayerStack.h" />
     <ClInclude Include="src\Adonis\Log.h" />
+    <ClInclude Include="src\Adonis\Math\Math.h" />
     <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h" />
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImpl.h" />
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImplGLFW.h" />
@@ -180,7 +180,6 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Adonis\Math\Math.cpp" />
     <ClCompile Include="src\Adonis\Application.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp" />
@@ -188,6 +187,7 @@
     <ClCompile Include="src\Adonis\Layers\ImGuiLayer.cpp" />
     <ClCompile Include="src\Adonis\Layers\Layer.cpp" />
     <ClCompile Include="src\Adonis\Log.cpp" />
+    <ClCompile Include="src\Adonis\Math\Math.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImpl.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImplGLFW.cpp" />

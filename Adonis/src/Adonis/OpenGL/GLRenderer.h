@@ -15,9 +15,6 @@ namespace Adonis {
 
 			DECLARE_LISTENER(GLRenderer);
 
-			ON_EVENT_DECL_OVERRIDE(PreRenderEvent);
-			ON_EVENT_DECL_OVERRIDE(RenderEvent);
-			ON_EVENT_DECL_OVERRIDE(UpdateEvent);
 			ON_EVENT_DECL_OVERRIDE(WindowResizeEvent);
 
 			GLRenderer(const GLRenderer& other) = delete;
@@ -28,6 +25,10 @@ namespace Adonis {
 			*	@brief	Clear the current active framebuffer with the renderer's clear color
 			*/
 			auto clear()->void override;
+
+			auto drawTriangles(int offset, int count)->void override;
+
+			auto aspect_ratio()->float override;
 
 			/**
 			*	@brief			Change the currently acitve rendering pipeline
@@ -62,11 +63,6 @@ namespace Adonis {
 			std::string m_glslversion;
 			std::string m_vendor;
 			glm::vec2 m_viewport;
-			//TEMP
-			std::unique_ptr<VertexBuffer> m_vbo;
-			std::unique_ptr<VertexArray> m_vao;
-			std::unique_ptr<RenderPipeline> m_pipe;
-			//TEMP
 		};
 
 		class ADONIS_API GLUtil {

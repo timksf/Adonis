@@ -16,8 +16,8 @@
     <Filter Include="src\Adonis\Eventsystem\Events">
       <UniqueIdentifier>{F43B4BB2-6054-32DC-2901-C27595D8C675}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Adonis\Layers">
-      <UniqueIdentifier>{B932157D-2549-1313-6EC0-9E34DA15E49A}</UniqueIdentifier>
+    <Filter Include="src\Adonis\Math">
+      <UniqueIdentifier>{53BA8F1C-BF45-FDE0-C856-80D5346159E1}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Adonis\Math">
       <UniqueIdentifier>{53BA8F1C-BF45-FDE0-C856-80D5346159E1}</UniqueIdentifier>
@@ -39,6 +39,9 @@
     <ClInclude Include="src\Adonis\Core.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\DebugGui.h">
+      <Filter>src\Adonis</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\EntryPoint.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
@@ -57,6 +60,9 @@
     <ClInclude Include="src\Adonis\Eventsystem\Events\Events.h">
       <Filter>src\Adonis\Eventsystem\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\Eventsystem\Events\GuiRenderEvent.h">
+      <Filter>src\Adonis\Eventsystem\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\Events\KeyboardEvent.h">
       <Filter>src\Adonis\Eventsystem\Events</Filter>
     </ClInclude>
@@ -68,15 +74,6 @@
     </ClInclude>
     <ClInclude Include="src\Adonis\Eventsystem\Events\WindowEvent.h">
       <Filter>src\Adonis\Eventsystem\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Adonis\Layers\ImGuiLayer.h">
-      <Filter>src\Adonis\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Adonis\Layers\Layer.h">
-      <Filter>src\Adonis\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Adonis\Layers\LayerStack.h">
-      <Filter>src\Adonis\Layers</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Log.h">
       <Filter>src\Adonis</Filter>
@@ -110,6 +107,9 @@
     <ClCompile Include="src\Adonis\Application.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\DebugGui.cpp">
+      <Filter>src\Adonis</Filter>
+    </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp">
       <Filter>src\Adonis\Eventsystem</Filter>
     </ClCompile>
@@ -118,12 +118,6 @@
     </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp">
       <Filter>src\Adonis\Eventsystem\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Adonis\Layers\ImGuiLayer.cpp">
-      <Filter>src\Adonis\Layers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Adonis\Layers\Layer.cpp">
-      <Filter>src\Adonis\Layers</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Log.cpp">
       <Filter>src\Adonis</Filter>

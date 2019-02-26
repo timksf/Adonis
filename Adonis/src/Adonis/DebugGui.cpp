@@ -1,30 +1,35 @@
 #include "pch.h"
 #include "pch.h"
-#include "ImGuiLayer.h"
+#include "DebugGui.h"
 #include "Adonis/OpenGL/ImGuiImpl.h"
 #include "Adonis/Application.h"
 
 namespace Adonis {
 
-	ImGuiLayer::ImGuiLayer(Style style) : Layer(AD_NAME_FROM_TYPE(ImGuiLayer)), m_style(style) {
-		ON_EVENT_BIND(PreRenderEvent,		ImGuiLayer);
-		ON_EVENT_BIND(RenderEvent,			ImGuiLayer);
-		ON_EVENT_BIND(PostRenderEvent,		ImGuiLayer);
-		ON_EVENT_BIND(KeyPressed,			ImGuiLayer);
-		ON_EVENT_BIND(KeyReleased,			ImGuiLayer);
-		ON_EVENT_BIND(MouseButtonPressed,	ImGuiLayer);
-		ON_EVENT_BIND(MouseScrolledEvent,	ImGuiLayer);
-		ON_EVENT_BIND(CharTyped,			ImGuiLayer);
-		attach();
+	DebugGUI::DebugGUI(Style style) : m_style(style) {
+		ON_EVENT_BIND(KeyPressed,			DebugGUI);
+		ON_EVENT_BIND(KeyReleased,			DebugGUI);
+		ON_EVENT_BIND(MouseButtonPressed,	DebugGUI);
+		ON_EVENT_BIND(MouseScrolledEvent,	DebugGUI);
+		ON_EVENT_BIND(CharTyped,			DebugGUI);
+		ON_EVENT_BIND(GuiRenderEvent,		DebugGUI);
+		ON_EVENT_BIND(PreRenderEvent,		DebugGUI);
+		ON_EVENT_BIND(RenderEvent,			DebugGUI);
+		init();
 	}
 
-	void ImGuiLayer::on_UpdateEvent(const event_ptr_t<UpdateEvent>& event){
-
+	DebugGUI::~DebugGUI() {
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::attach()const{
+	ImGuiContext* DebugGUI::ctx() {
+		return m_ctx;
+	}
+
+	void DebugGUI::init(){
 		
-		ImGui::CreateContext();
+		m_ctx = ImGui::CreateContext();
 		
 		switch (m_style) {
 		case Style::Dark:
@@ -79,18 +84,8 @@ namespace Adonis {
 		ImGui_ImplOpenGL3_Init("#version 410");
 
 	}
-
-	void ImGuiLayer::detach()const {
-
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui::DestroyContext();
-
-	}
-
-	void ImGuiLayer::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& ev) {
-	}
-
-	void ImGuiLayer::on_RenderEvent(const event_ptr_t<RenderEvent>& ev) {
+	
+	void DebugGUI::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& e) {
 		ImGui_ImplOpenGL3_NewFrame();
 		update_mouse();
 
@@ -107,7 +102,10 @@ namespace Adonis {
 		m_time = static_cast<float>(current_time);
 
 		ImGui::NewFrame();
+	}
 
+	void DebugGUI::on_RenderEvent(const event_ptr_t<RenderEvent>& e) {
+		Application* app = Application::get();
 		{
 			ImGui::Begin("Debug window");
 
@@ -120,28 +118,27 @@ namespace Adonis {
 			ImGui::Text("Current resolution: %dx%d", app->consume_window()->width(), app->consume_window()->height());
 			ImGui::End();
 		}
+	}
 
+	void DebugGUI::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	void ImGuiLayer::on_PostRenderEvent(const event_ptr_t<PostRenderEvent>& ev) {
-	}
-
-	void ImGuiLayer::on_MouseButtonPressed(const event_ptr_t<MouseButtonPressed>& event) {
+	void DebugGUI::on_MouseButtonPressed(const event_ptr_t<MouseButtonPressed>& event) {
 		if (event->button() >= 0 && event->button() < AD_ARRAYSIZE(m_mousejustpressed)) {
 			m_mousejustpressed[event->button()] = true;
 		}
 	}
 
-	void ImGuiLayer::on_MouseScrolledEvent(const event_ptr_t<MouseScrolledEvent>& event) {
+	void DebugGUI::on_MouseScrolledEvent(const event_ptr_t<MouseScrolledEvent>& event) {
 		//AD_CORE_INFO("Mouse scrolled event captured by imgui layer: {0}, {1}", event->xoffset(), event->yoffset());
 		ImGuiIO& io = ImGui::GetIO();
 		io.MouseWheelH += static_cast<float>(event->xoffset());
 		io.MouseWheel += static_cast<float>(event->yoffset());
 	}
 
-	void ImGuiLayer::on_KeyPressed(const event_ptr_t<KeyPressed>& event) {
+	void DebugGUI::on_KeyPressed(const event_ptr_t<KeyPressed>& event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[event->code()] = true;
 		io.KeyCtrl	= io.KeysDown[ADONIS_KEY_LEFT_CONTROL]	|| io.KeysDown[ADONIS_KEY_RIGHT_CONTROL];
@@ -150,7 +147,7 @@ namespace Adonis {
 		io.KeySuper = io.KeysDown[ADONIS_KEY_LEFT_SUPER]	|| io.KeysDown[ADONIS_KEY_RIGHT_SUPER];
 	}
 
-	void ImGuiLayer::on_KeyReleased(const event_ptr_t<KeyReleased>& event) {
+	void DebugGUI::on_KeyReleased(const event_ptr_t<KeyReleased>& event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[event->code()] = false;
 		// Modifiers are not reliable across systems
@@ -160,7 +157,7 @@ namespace Adonis {
 		io.KeySuper = io.KeysDown[ADONIS_KEY_LEFT_SUPER]	|| io.KeysDown[ADONIS_KEY_RIGHT_SUPER];
 	}
 
-	void ImGuiLayer::update_mouse() {
+	void DebugGUI::update_mouse() {
 		ImGuiIO& io = ImGui::GetIO();
 		Application* app = Application::get();
 
@@ -188,13 +185,13 @@ namespace Adonis {
 		}
 	}
 
-	void ImGuiLayer::on_CharTyped(const event_ptr_t<CharTyped>& event) {
+	void DebugGUI::on_CharTyped(const event_ptr_t<CharTyped>& event) {
 		ImGuiIO& io = ImGui::GetIO();
 		if (event->character() > 0 && event->character() < 0x10000)
 			io.AddInputCharacter(event->character());
 	}
 
-	void ImGuiLayer::setup_extasy_style()const {
+	void DebugGUI::setup_extasy_style()const {
 		/* https://www.unknowncheats.me/forum/direct3d/189635-imgui-style-settings.html */
 		ImGuiStyle * style = &ImGui::GetStyle();
 
@@ -251,7 +248,7 @@ namespace Adonis {
 		style->Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 	}
 
-	void ImGuiLayer::setup_grey_style() const{
+	void DebugGUI::setup_grey_style() const{
 		ImVec4* colors = ImGui::GetStyle().Colors;
 		colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 		colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
@@ -297,7 +294,7 @@ namespace Adonis {
 		colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
 	}
 
-	void ImGuiLayer::setup_cherry_style()const{
+	void DebugGUI::setup_cherry_style()const{
 		/* https://github.com/ocornut/imgui/issues/707 */
 
 		// cherry colors, 3 intensities

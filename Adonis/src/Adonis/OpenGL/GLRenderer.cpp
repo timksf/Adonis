@@ -11,37 +11,11 @@ namespace Adonis {
 
 
 		GLRenderer::GLRenderer(const Color& clear_color) : RenderDevice(clear_color) {
-			ON_EVENT_BIND(PreRenderEvent, GLRenderer);
-			ON_EVENT_BIND(RenderEvent, GLRenderer);
-			ON_EVENT_BIND(UpdateEvent, GLRenderer);
 			ON_EVENT_BIND(WindowResizeEvent, GLRenderer);
 			m_renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 			m_glslversion = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 			m_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 			m_vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
-
-			//TEMP
-			float vertices[] =
-			{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-						0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-						0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-			};
-
-			auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
-			auto col_attr = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
-			m_vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
-			auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
-			attribs.push_back(std::move(pos_attr));
-			attribs.push_back(std::move(col_attr));
-			auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
-			m_vao = VertexArray::create();
-			m_vao->add_buffer(m_vbo->id(), std::move(desc));
-			m_pipe = RenderPipeline::test_pipeline_3D();
-			m_pipe->get_param("model")->set_mat4f(glm::mat4(1.0f));
-			m_pipe->get_param("view")->set_mat4f(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -1.0f)));
-			auto projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
-			m_pipe->get_param("projection")->set_mat4f(glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f));
-			//TEMP
 		}	
 
 		GLRenderer::~GLRenderer() {
@@ -57,27 +31,16 @@ namespace Adonis {
 			glClear(GL_COLOR_BUFFER_BIT);
 		}
 
+		void GLRenderer::drawTriangles(int offset, int count) {
+			glDrawArrays(GL_TRIANGLES, offset, count);
+		}
+
 		void GLRenderer::set_pipeline(std::shared_ptr<RenderPipeline> pipe) {
 			pipe->activate();
 		}
 
-		void GLRenderer::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& ev) {
-			using namespace math::literals;
-			this->clear();
-			m_pipe->get_param("view")->set_mat4f(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, test)));
-			m_pipe->get_param("projection")->set_mat4f(glm::perspective(45.0_degf, m_viewport.y / m_viewport.x, 0.1f, 100.0f));
-		}
-
-		void GLRenderer::on_RenderEvent(const event_ptr_t<RenderEvent>& e) {
-			//TEMP
-			m_pipe->activate();
-			m_vao->bind();
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-			//TEMP
-		}
-
-		void GLRenderer::on_UpdateEvent(const event_ptr_t<UpdateEvent>& e) {
-
+		float GLRenderer::aspect_ratio() {
+			return static_cast<float>(m_viewport.x / m_viewport.y);
 		}
 
 		void GLRenderer::on_WindowResizeEvent(const event_ptr_t<WindowResizeEvent>& e) {
@@ -325,7 +288,6 @@ namespace Adonis {
 			glCreateBuffers(1, &m_id);
 			std::stringstream ss;
 			ss << std::hex << std::showbase << static_cast<uint32_t>(flags);
-			AD_CORE_INFO("VertexBuffer flags before: {0}", ss.str());
 			ss.str(std::string());
 			GLbitfield glflags = 0;
 			for (uint32_t i = 0; i < Buffer::NUMBER_OF_BUFFER_BITS; i++) {
@@ -334,7 +296,6 @@ namespace Adonis {
 				}
 			}
 			ss << std::hex << static_cast<uint32_t>(glflags);
-			AD_CORE_INFO("VertexBuffer flags after: {0}", ss.str());
 			glNamedBufferStorage(m_id, size, data, glflags);
 		}
 
@@ -362,7 +323,6 @@ namespace Adonis {
 			glCreateBuffers(1, &m_id);
 			std::stringstream ss;
 			ss << std::hex << std::showbase << static_cast<uint32_t>(flags);
-			AD_CORE_INFO("IndexBuffer flags before: {0}", ss.str());
 			ss.str(std::string());
 			GLbitfield glflags = 0;
 			for (uint32_t i = 0; i < Buffer::NUMBER_OF_BUFFER_BITS; i++) {
@@ -371,7 +331,6 @@ namespace Adonis {
 				}
 			}
 			ss << std::hex << static_cast<uint32_t>(glflags);
-			AD_CORE_INFO("IndexBuffer flags after: {0}", ss.str());
 			glNamedBufferStorage(m_id, size, data, glflags);
 		}
 

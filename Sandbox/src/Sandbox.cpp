@@ -1,5 +1,4 @@
 #include "Adonis.h"
-#include "Adonis/Math/Math.h"
 #include "glm/ext.hpp"
 #include "imgui.h"
 #include <iostream>
@@ -14,7 +13,8 @@ extern "C" {
 class CustomDebugGUI : public Adonis::DebugGUI {
 public:
 
-	CustomDebugGUI(Adonis::DebugGUI::Style s) : Adonis::DebugGUI(s) {};
+	CustomDebugGUI(Adonis::DebugGUI::Style s) : Adonis::DebugGUI(s) {
+	};
 
 	void on_RenderEvent(const Adonis::event_ptr_t<Adonis::RenderEvent>& e) override;
 
@@ -94,8 +94,15 @@ void CustomDebugGUI::on_RenderEvent(const Adonis::event_ptr_t<Adonis::RenderEven
 		ImGui::Text("Current resolution: %dx%d", app->consume_window()->width(), app->consume_window()->height());
 		ImGui::Checkbox("VSYNC", &app->consume_window()->vsync());
 		ImGui::ColorEdit3("Clear color", reinterpret_cast<float*>(&app->consume_renderer()->clear_color.data));
+		ImGui::End();
+
+		ImGui::Begin("Camera");
 		ImGui::DragFloat("Z_translation", &Sandbox::z_translation, 0.1f);
 		ImGui::End();
+
+		static bool d = true;
+		ImGui::ShowDemoWindow();
+
 
 	}
 }

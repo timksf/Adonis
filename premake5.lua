@@ -51,11 +51,10 @@ project "Adonis"
 		"%{prj.name}/vendor/GLFW/include",
 		"%{prj.name}/vendor/glm",
 		"%{prj.name}/vendor/imgui",
-		"%{prj.name}/vendor/imguidock"
 	}
 
 	links{
-		"GLFW",
+		"GLFW",	
 		"GLAD",
 		"IMGUI",
 		"opengl32.lib"
@@ -121,11 +120,12 @@ project "Sandbox"
 		"Adonis/vendor/stb/include",
 		"Adonis/vendor/glad/include",
 		"Adonis/vendor/GLFW/include",
-		"Adonis/vendor/imguidock"
+		"Adonis/vendor/imgui/",
 	}
 
 	links{
-		"Adonis"
+		"Adonis",
+		"IMGUI",
 	}
 
 	filter "system:windows"
@@ -148,5 +148,5 @@ project "Sandbox"
 
 	filter "configurations:Dist"
 		defines "ADONIS_DIST"
-		buildoptions "/MD"
+		buildoptions "Release"
 		optimize "On"

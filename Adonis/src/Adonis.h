@@ -4,3 +4,4 @@
 #include "Adonis/Log.h"
 #include "Adonis/EntryPoint.h"
 #include "Adonis/DebugGui.h"
+#include "Adonis/Math/Math.h"

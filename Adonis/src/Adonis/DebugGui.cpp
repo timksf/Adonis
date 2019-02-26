@@ -53,9 +53,11 @@ namespace Adonis {
 		}
 
 		// Setup back-end capabilities flags
-		ImGuiIO& io = ImGui::GetIO();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
 		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;          // We can honor io.WantSetMousePos requests (optional, rarely used)
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.BackendPlatformName = ADONIS_WINDOW_CONTEXT_LIB_NAME;
 
 		// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.

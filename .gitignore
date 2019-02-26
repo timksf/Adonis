@@ -1,0 +1,11 @@
+.vs/
+bin/
+bin-int/
+*.user
+*.exe
+Adonis/resources/
+*.png
+*.ini
+html/
+latex/
+imgui.ini

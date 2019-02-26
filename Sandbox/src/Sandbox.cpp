@@ -92,6 +92,7 @@ void CustomDebugGUI::on_RenderEvent(const Adonis::event_ptr_t<Adonis::RenderEven
 		ImGui::Begin("Debug window");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text("Current resolution: %dx%d", app->consume_window()->width(), app->consume_window()->height());
+		ImGui::SliderFloat("Global font scale", &ImGui::GetIO().FontGlobalScale, 1.0f, 3.0f);
 		ImGui::Checkbox("VSYNC", &app->consume_window()->vsync());
 		ImGui::ColorEdit3("Clear color", reinterpret_cast<float*>(&app->consume_renderer()->clear_color.data));
 		ImGui::End();

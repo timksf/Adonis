@@ -1,36 +1,36 @@
 #include "pch.h"
 #include "pch.h"
-#include "DebugGui.h"
+#include "Gui.h"
 #include "Adonis/OpenGL/ImGuiImpl.h"
 #include "Adonis/Application.h"
+#include "imgui_internal.h"
 
 namespace Adonis {
 
-	DebugGUI::DebugGUI(Style style) : m_style(style) {
-		ON_EVENT_BIND(KeyPressed,			DebugGUI);
-		ON_EVENT_BIND(KeyReleased,			DebugGUI);
-		ON_EVENT_BIND(MouseButtonPressed,	DebugGUI);
-		ON_EVENT_BIND(MouseScrolledEvent,	DebugGUI);
-		ON_EVENT_BIND(CharTyped,			DebugGUI);
-		ON_EVENT_BIND(GuiRenderEvent,		DebugGUI);
-		ON_EVENT_BIND(PreRenderEvent,		DebugGUI);
-		ON_EVENT_BIND(RenderEvent,			DebugGUI);
+	Gui::Gui(Style style) : m_style(style) {
+		ON_EVENT_BIND(KeyPressed, Gui);
+		ON_EVENT_BIND(KeyReleased, Gui);
+		ON_EVENT_BIND(MouseButtonPressed, Gui);
+		ON_EVENT_BIND(MouseScrolledEvent, Gui);
+		ON_EVENT_BIND(CharTyped, Gui);
+		ON_EVENT_BIND(GuiRenderEvent, Gui);
+		ON_EVENT_BIND(PreRenderEvent, Gui);
 		init();
 	}
 
-	DebugGUI::~DebugGUI() {
+	Gui::~Gui() {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui::DestroyContext();
 	}
 
-	ImGuiContext* DebugGUI::ctx() {
+	ImGuiContext* Gui::ctx() {
 		return m_ctx;
 	}
 
-	void DebugGUI::init(){
-		
+	void Gui::init() {
+
 		m_ctx = ImGui::CreateContext();
-		
+
 		switch (m_style) {
 		case Style::Dark:
 			ImGui::StyleColorsDark();
@@ -60,34 +60,38 @@ namespace Adonis {
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.BackendPlatformName = ADONIS_WINDOW_CONTEXT_LIB_NAME;
 
+		ImFont* font1 = io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 20);
+		io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 30);
+
+
 		// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
-		io.KeyMap[ImGuiKey_Tab] =			ADONIS_KEY_TAB;
-		io.KeyMap[ImGuiKey_LeftArrow] =		ADONIS_KEY_LEFT;
-		io.KeyMap[ImGuiKey_RightArrow] =	ADONIS_KEY_RIGHT;
-		io.KeyMap[ImGuiKey_UpArrow] =		ADONIS_KEY_UP;
-		io.KeyMap[ImGuiKey_DownArrow] =		ADONIS_KEY_DOWN;
-		io.KeyMap[ImGuiKey_PageUp] =		ADONIS_KEY_PAGE_UP;
-		io.KeyMap[ImGuiKey_PageDown] =		ADONIS_KEY_PAGE_DOWN;
-		io.KeyMap[ImGuiKey_Home] =			ADONIS_KEY_HOME;
-		io.KeyMap[ImGuiKey_End] =			ADONIS_KEY_END;
-		io.KeyMap[ImGuiKey_Insert] =		ADONIS_KEY_INSERT;
-		io.KeyMap[ImGuiKey_Delete] =		ADONIS_KEY_DELETE;
-		io.KeyMap[ImGuiKey_Backspace] =		ADONIS_KEY_BACKSPACE;
-		io.KeyMap[ImGuiKey_Space] =			ADONIS_KEY_SPACE;
-		io.KeyMap[ImGuiKey_Enter] =			ADONIS_KEY_ENTER;
-		io.KeyMap[ImGuiKey_Escape] =		ADONIS_KEY_ESCAPE;
-		io.KeyMap[ImGuiKey_A] =				ADONIS_KEY_A;
-		io.KeyMap[ImGuiKey_C] =				ADONIS_KEY_C;
-		io.KeyMap[ImGuiKey_V] =				ADONIS_KEY_V;
-		io.KeyMap[ImGuiKey_X] =				ADONIS_KEY_X;
-		io.KeyMap[ImGuiKey_Y] =				ADONIS_KEY_Y;
-		io.KeyMap[ImGuiKey_Z] =				ADONIS_KEY_Z;
+		io.KeyMap[ImGuiKey_Tab] = ADONIS_KEY_TAB;
+		io.KeyMap[ImGuiKey_LeftArrow] = ADONIS_KEY_LEFT;
+		io.KeyMap[ImGuiKey_RightArrow] = ADONIS_KEY_RIGHT;
+		io.KeyMap[ImGuiKey_UpArrow] = ADONIS_KEY_UP;
+		io.KeyMap[ImGuiKey_DownArrow] = ADONIS_KEY_DOWN;
+		io.KeyMap[ImGuiKey_PageUp] = ADONIS_KEY_PAGE_UP;
+		io.KeyMap[ImGuiKey_PageDown] = ADONIS_KEY_PAGE_DOWN;
+		io.KeyMap[ImGuiKey_Home] = ADONIS_KEY_HOME;
+		io.KeyMap[ImGuiKey_End] = ADONIS_KEY_END;
+		io.KeyMap[ImGuiKey_Insert] = ADONIS_KEY_INSERT;
+		io.KeyMap[ImGuiKey_Delete] = ADONIS_KEY_DELETE;
+		io.KeyMap[ImGuiKey_Backspace] = ADONIS_KEY_BACKSPACE;
+		io.KeyMap[ImGuiKey_Space] = ADONIS_KEY_SPACE;
+		io.KeyMap[ImGuiKey_Enter] = ADONIS_KEY_ENTER;
+		io.KeyMap[ImGuiKey_Escape] = ADONIS_KEY_ESCAPE;
+		io.KeyMap[ImGuiKey_A] = ADONIS_KEY_A;
+		io.KeyMap[ImGuiKey_C] = ADONIS_KEY_C;
+		io.KeyMap[ImGuiKey_V] = ADONIS_KEY_V;
+		io.KeyMap[ImGuiKey_X] = ADONIS_KEY_X;
+		io.KeyMap[ImGuiKey_Y] = ADONIS_KEY_Y;
+		io.KeyMap[ImGuiKey_Z] = ADONIS_KEY_Z;
 
 		ImGui_ImplOpenGL3_Init("#version 410");
 
 	}
-	
-	void DebugGUI::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& e) {
+
+	void Gui::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& e) {
 		ImGui_ImplOpenGL3_NewFrame();
 		update_mouse();
 
@@ -104,62 +108,188 @@ namespace Adonis {
 		m_time = static_cast<float>(current_time);
 
 		ImGui::NewFrame();
+		{
+
+			static bool show_debug_window = true;
+			static bool show_imgui_demo = false;
+			static bool show_style_chooser = false;
+			static bool show_render_window = true;
+			auto app = Application::get();
+
+			//Setup main docking space
+			ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+			ImGuiViewport* viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(viewport->Pos);
+			ImGui::SetNextWindowSize(viewport->Size);
+			ImGui::SetNextWindowViewport(viewport->ID);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+
+			if (!ImGui::Begin("Adonis", &app->running(), window_flags)) {
+				ImGui::End();
+				AD_CORE_ERROR("Failed to set up gui");
+			}
+			else {
+				
+				ImGui::PopStyleVar();
+				ImGui::PopStyleVar(2);
+
+				ImGuiID dockspace_id = ImGui::GetID("Adonis");
+				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f));
+
+				setup_menu(&show_debug_window, &show_imgui_demo, &show_style_chooser);
+
+				if (show_debug_window) show_debug(&show_debug_window);
+				if (show_imgui_demo) ImGui::ShowDemoWindow(&show_imgui_demo);
+				if (show_style_chooser) show_style_editor(&show_style_chooser);
+				//if (show_render_window) show_viewport(nullptr);
+
+				static std::shared_ptr<render::Texture2D> colortex = render::Texture2D::create(640, 400);
+				static std::shared_ptr<render::Texture2D> depthtex = render::Texture2D::create(640, 400, nullptr, render::TexturePixelFormatSized::DEPTH16);
+				static std::shared_ptr<render::Framebuffer> fb = render::Framebuffer::create();
+				fb->attach(colortex, render::FramebufferTextureAttachment::COLOR);
+				fb->attach(depthtex, render::FramebufferTextureAttachment::DEPTH);
+
+				//AD_CORE_INFO(fb->complete());
+
+				app->consume_renderer()->set_framebuffer(fb->id());
+				app->consume_renderer()->clear_color_buffer();
+				app->consume_renderer()->clear_color.b() = 1.0f;
+
+
+				if (!ImGui::Begin("Viewport")) {
+					ImGui::End();
+					AD_CORE_ERROR("Failed to create render window");
+				}
+				else {
+					float x0 = ImGui::GetCursorScreenPos().x;
+					float y0 = ImGui::GetCursorScreenPos().y;
+					float ww = ImGui::GetWindowSize().x;
+					float wh = ImGui::GetWindowSize().y;
+					auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
+					auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
+					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
+					ImGui::End();
+				}
+
+				ImGui::End();
+			}
+
+
+		}
 	}
 
-	void DebugGUI::on_RenderEvent(const event_ptr_t<RenderEvent>& e) {
-		Application* app = Application::get();
-		{
-			ImGui::Begin("Debug window");
+	void Gui::setup_menu(bool* show_debug, bool* show_demo, bool* show_style_chooser) {
+		if (ImGui::BeginMenuBar()) {
 
-			static float col2[4] = { 0.4f,0.7f,0.0f,0.5f };
-			ImGui::ColorEdit4("Clear color", reinterpret_cast<float*>(&app->consume_renderer()->clear_color.data));
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::Checkbox("VSYNC", &app->consume_window()->vsync());
-			ImGui::SliderFloat("Font-scale", &ImGui::GetIO().FontGlobalScale, 1.0f, 3.0f);
-			ImGui::SliderFloat("Translate", &app->consume_renderer()->test, 0.0f, -3.0f);
-			ImGui::Text("Current resolution: %dx%d", app->consume_window()->width(), app->consume_window()->height());
+			if (ImGui::BeginMenu("Menu")) {
+
+				ImGui::MenuItem("Debug", NULL, show_debug);
+				ImGui::MenuItem("Demo window", NULL, show_demo);
+				ImGui::MenuItem("Style chooser", NULL, show_style_chooser);
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMenuBar();
+		}
+	}
+
+	void Gui::show_viewport(bool* show) {
+		if (!ImGui::Begin("Viewport", show, ImGuiWindowFlags_NoTitleBar)) {
+			ImGui::End();
+			AD_CORE_ERROR("Failed to create render window");
+		}
+		else {
+			ImGui::End();
+		}	
+	}
+
+	void Gui::show_debug(bool* show) {
+		ImGuiIO& io = ImGui::GetIO();
+		if (!ImGui::Begin("App info", show)) {
+			ImGui::End();
+			AD_CORE_ERROR("Failed to build app info window");
+		}
+		else {
+			ImGui::Text("Dear ImGui %s", ImGui::GetVersion());
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			ImGui::Text("%d vertices, %d indices (%d triangles)", io.MetricsRenderVertices, io.MetricsRenderIndices, io.MetricsRenderIndices / 3);
+			ImGui::Text("%d active windows (%d visible)", io.MetricsActiveWindows, io.MetricsRenderWindows);
+			ImGui::Checkbox("VSYNC", &Application::get()->consume_window()->vsync()),
 			ImGui::End();
 		}
 	}
 
-	void DebugGUI::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
+	void Gui::show_style_editor(bool* show) {
+		if (!ImGui::Begin("Style chooser", show)) {
+			ImGui::End();
+			AD_CORE_ERROR("Failed to create style chooser");
+		}
+		else {
+			static int style_idx = 0;
+
+			if (ImGui::Combo("Themes", &style_idx, "Light\0Dark\0Classic\0Cherry\0Extasy\0Grey")) {
+
+				switch (style_idx) {
+				case 0: ImGui::StyleColorsLight(); break;
+				case 1: ImGui::StyleColorsDark(); break;
+				case 2: ImGui::StyleColorsClassic(); break;
+				case 3: setup_cherry_style(); break;
+				case 4: setup_extasy_style(); break;
+				case 5: setup_grey_style(); break;
+				}
+
+			}
+
+			ImGui::End();
+		}
+	}
+
+
+
+	void Gui::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	void DebugGUI::on_MouseButtonPressed(const event_ptr_t<MouseButtonPressed>& event) {
+	void Gui::on_MouseButtonPressed(const event_ptr_t<MouseButtonPressed>& event) {
 		if (event->button() >= 0 && event->button() < AD_ARRAYSIZE(m_mousejustpressed)) {
 			m_mousejustpressed[event->button()] = true;
 		}
 	}
 
-	void DebugGUI::on_MouseScrolledEvent(const event_ptr_t<MouseScrolledEvent>& event) {
+	void Gui::on_MouseScrolledEvent(const event_ptr_t<MouseScrolledEvent>& event) {
 		//AD_CORE_INFO("Mouse scrolled event captured by imgui layer: {0}, {1}", event->xoffset(), event->yoffset());
 		ImGuiIO& io = ImGui::GetIO();
 		io.MouseWheelH += static_cast<float>(event->xoffset());
 		io.MouseWheel += static_cast<float>(event->yoffset());
 	}
 
-	void DebugGUI::on_KeyPressed(const event_ptr_t<KeyPressed>& event) {
+	void Gui::on_KeyPressed(const event_ptr_t<KeyPressed>& event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[event->code()] = true;
-		io.KeyCtrl	= io.KeysDown[ADONIS_KEY_LEFT_CONTROL]	|| io.KeysDown[ADONIS_KEY_RIGHT_CONTROL];
-		io.KeyShift = io.KeysDown[ADONIS_KEY_LEFT_SHIFT]	|| io.KeysDown[ADONIS_KEY_RIGHT_SHIFT];
-		io.KeyAlt	= io.KeysDown[ADONIS_KEY_LEFT_ALT]		|| io.KeysDown[ADONIS_KEY_RIGHT_ALT];
-		io.KeySuper = io.KeysDown[ADONIS_KEY_LEFT_SUPER]	|| io.KeysDown[ADONIS_KEY_RIGHT_SUPER];
+		io.KeyCtrl = io.KeysDown[ADONIS_KEY_LEFT_CONTROL] || io.KeysDown[ADONIS_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[ADONIS_KEY_LEFT_SHIFT] || io.KeysDown[ADONIS_KEY_RIGHT_SHIFT];
+		io.KeyAlt = io.KeysDown[ADONIS_KEY_LEFT_ALT] || io.KeysDown[ADONIS_KEY_RIGHT_ALT];
+		io.KeySuper = io.KeysDown[ADONIS_KEY_LEFT_SUPER] || io.KeysDown[ADONIS_KEY_RIGHT_SUPER];
 	}
 
-	void DebugGUI::on_KeyReleased(const event_ptr_t<KeyReleased>& event) {
+	void Gui::on_KeyReleased(const event_ptr_t<KeyReleased>& event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[event->code()] = false;
 		// Modifiers are not reliable across systems
-		io.KeyCtrl = io.KeysDown[ADONIS_KEY_LEFT_CONTROL]	|| io.KeysDown[ADONIS_KEY_RIGHT_CONTROL];
-		io.KeyShift = io.KeysDown[ADONIS_KEY_LEFT_SHIFT]	|| io.KeysDown[ADONIS_KEY_RIGHT_SHIFT];
-		io.KeyAlt = io.KeysDown[ADONIS_KEY_LEFT_ALT]		|| io.KeysDown[ADONIS_KEY_RIGHT_ALT];
-		io.KeySuper = io.KeysDown[ADONIS_KEY_LEFT_SUPER]	|| io.KeysDown[ADONIS_KEY_RIGHT_SUPER];
+		io.KeyCtrl = io.KeysDown[ADONIS_KEY_LEFT_CONTROL] || io.KeysDown[ADONIS_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[ADONIS_KEY_LEFT_SHIFT] || io.KeysDown[ADONIS_KEY_RIGHT_SHIFT];
+		io.KeyAlt = io.KeysDown[ADONIS_KEY_LEFT_ALT] || io.KeysDown[ADONIS_KEY_RIGHT_ALT];
+		io.KeySuper = io.KeysDown[ADONIS_KEY_LEFT_SUPER] || io.KeysDown[ADONIS_KEY_RIGHT_SUPER];
 	}
 
-	void DebugGUI::update_mouse() {
+	void Gui::update_mouse() {
 		ImGuiIO& io = ImGui::GetIO();
 		Application* app = Application::get();
 
@@ -187,13 +317,13 @@ namespace Adonis {
 		}
 	}
 
-	void DebugGUI::on_CharTyped(const event_ptr_t<CharTyped>& event) {
+	void Gui::on_CharTyped(const event_ptr_t<CharTyped>& event) {
 		ImGuiIO& io = ImGui::GetIO();
 		if (event->character() > 0 && event->character() < 0x10000)
 			io.AddInputCharacter(event->character());
 	}
 
-	void DebugGUI::setup_extasy_style()const {
+	void Gui::setup_extasy_style()const {
 		/* https://www.unknowncheats.me/forum/direct3d/189635-imgui-style-settings.html */
 		ImGuiStyle * style = &ImGui::GetStyle();
 
@@ -250,7 +380,7 @@ namespace Adonis {
 		style->Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 	}
 
-	void DebugGUI::setup_grey_style() const{
+	void Gui::setup_grey_style() const {
 		ImVec4* colors = ImGui::GetStyle().Colors;
 		colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 		colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
@@ -296,17 +426,17 @@ namespace Adonis {
 		colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
 	}
 
-	void DebugGUI::setup_cherry_style()const{
+	void Gui::setup_cherry_style()const {
 		/* https://github.com/ocornut/imgui/issues/707 */
 
 		// cherry colors, 3 intensities
-		#define HI(v)   ImVec4(0.502f, 0.075f, 0.256f, v)
-		#define MED(v)  ImVec4(0.455f, 0.198f, 0.301f, v)
-		#define LOW(v)  ImVec4(0.232f, 0.201f, 0.271f, v)
-		// backgrounds (@todo: complete with BG_MED, BG_LOW)
-		#define BG(v)   ImVec4(0.200f, 0.220f, 0.270f, v)
-		// text
-		#define TXT(v) ImVec4(0.860f, 0.930f, 0.890f, v)
+#define HI(v)   ImVec4(0.502f, 0.075f, 0.256f, v)
+#define MED(v)  ImVec4(0.455f, 0.198f, 0.301f, v)
+#define LOW(v)  ImVec4(0.232f, 0.201f, 0.271f, v)
+// backgrounds (@todo: complete with BG_MED, BG_LOW)
+#define BG(v)   ImVec4(0.200f, 0.220f, 0.270f, v)
+// text
+#define TXT(v) ImVec4(0.860f, 0.930f, 0.890f, v)
 
 		auto &style = ImGui::GetStyle();
 		style.Colors[ImGuiCol_Text] = TXT(0.78f);

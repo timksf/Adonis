@@ -39,9 +39,6 @@
     <ClInclude Include="src\Adonis\Core.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\DebugGui.h">
-      <Filter>src\Adonis</Filter>
-    </ClInclude>
     <ClInclude Include="src\Adonis\EntryPoint.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
@@ -102,12 +99,10 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\Gui.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
-      <Filter>src\Adonis</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Adonis\DebugGui.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp">
@@ -140,6 +135,7 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\Gui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag">

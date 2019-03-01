@@ -156,7 +156,6 @@
     <ClInclude Include="src\Adonis.h" />
     <ClInclude Include="src\Adonis\Application.h" />
     <ClInclude Include="src\Adonis\Core.h" />
-    <ClInclude Include="src\Adonis\DebugGui.h" />
     <ClInclude Include="src\Adonis\EntryPoint.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Event.h" />
     <ClInclude Include="src\Adonis\Eventsystem\EventListener.h" />
@@ -170,6 +169,7 @@
     <ClInclude Include="src\Adonis\Eventsystem\Events\WindowEvent.h" />
     <ClInclude Include="src\Adonis\GLFW\ImGuiImplGLFW.h" />
     <ClInclude Include="src\Adonis\GLFW\WindowGLFW.h" />
+    <ClInclude Include="src\Adonis\Gui.h" />
     <ClInclude Include="src\Adonis\Log.h" />
     <ClInclude Include="src\Adonis\Math\Math.h" />
     <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h" />
@@ -180,12 +180,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp" />
-    <ClCompile Include="src\Adonis\DebugGui.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp" />
     <ClCompile Include="src\Adonis\GLFW\ImGuiImplGLFW.cpp" />
     <ClCompile Include="src\Adonis\GLFW\WindowGLFW.cpp" />
+    <ClCompile Include="src\Adonis\Gui.cpp" />
     <ClCompile Include="src\Adonis\Log.cpp" />
     <ClCompile Include="src\Adonis\Math\Math.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp" />

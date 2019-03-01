@@ -1,16 +1,17 @@
 #pragma once
 
 #include "Adonis/Core.h"
-#include "Adonis/Eventsystem/Event.h"
+#include "Adonis/Eventsystem/EventListener.h"
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "imgui.h"
 
+
 namespace Adonis {
 
-	class ADONIS_API DebugGUI : public EventListener {
+	class ADONIS_API Gui : public EventListener {
 	public:
 
-		DECLARE_LISTENER(DebugGUI);
+		DECLARE_LISTENER(Gui);
 
 		enum class Style {
 			Classic,
@@ -21,11 +22,10 @@ namespace Adonis {
 			Extasy
 		};
 
-		DebugGUI(Style style = Style::Dark);
+		Gui(Style style = Style::Dark);
 
-		virtual ~DebugGUI();
+		virtual ~Gui();
 
-		ON_EVENT_DECL_V(RenderEvent);
 		ON_EVENT_DECL(GuiRenderEvent);
 		ON_EVENT_DECL(PreRenderEvent);
 		ON_EVENT_DECL(MouseButtonPressed);
@@ -34,8 +34,13 @@ namespace Adonis {
 		ON_EVENT_DECL(KeyReleased);
 		ON_EVENT_DECL(CharTyped);
 
-	protected:
 		auto ctx()->typename ImGuiContext*;
+
+		auto setup_menu(bool*, bool*, bool*)->void;
+
+		auto show_viewport(bool*)->void;
+		auto show_debug(bool*)->void;
+		auto show_style_editor(bool*)->void;
 
 	private:
 		auto init()->void;
@@ -48,6 +53,9 @@ namespace Adonis {
 		float m_time = 0.0;																				//Time used for ImGui updates
 		bool m_mousejustpressed[5] = { false, false, false, false, false };
 		ImGuiContext* m_ctx = nullptr;
+
+
+
 	};
 
 }

@@ -23,7 +23,8 @@ namespace Adonis {
 				AD_CORE_INFO("Render device: {0}", m_renderer->renderer());
 				AD_CORE_INFO("Shading language version: {0}", m_renderer->sl_language_version());
 				AD_CORE_INFO("Vendor: {0}", m_renderer->vendor());
-		#endif
+		#endif;
+		m_gui = std::make_unique<Gui>(Gui::Style::Cherry);
 	}
 
 	Application::~Application(){
@@ -74,5 +75,6 @@ namespace Adonis {
 			m_window->toggle_fullscreen();
 		}
 	}
+
 
 }

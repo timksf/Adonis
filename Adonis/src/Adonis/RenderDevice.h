@@ -44,11 +44,15 @@ namespace Adonis {
 
 			ON_EVENT_DECL_P_V(WindowResizeEvent);
 
-			virtual auto clear()->void = 0;
+			virtual auto clear_color_buffer(uint32_t buffer_index = 0)->void = 0;
+
+			virtual auto clear_depth_buffer(float depth)->void = 0;
 
 			virtual auto drawTriangles(int offset, int count)->void = 0;
 
 			virtual auto aspect_ratio()->float = 0;
+
+			virtual auto set_framebuffer(uint32_t id)->void = 0;
 
 			/**
 			*	@brief			Change the currently active rendering pipeline
@@ -79,6 +83,105 @@ namespace Adonis {
 			float test = -0.1f;
 
 			Color clear_color;
+		};
+
+		enum class TexturePixelFormatSized : uint32_t {
+			R3_G3_B2 = 0,
+			RGB8,
+			RGBA4,
+			RGBA8,
+			DEPTH16
+		};
+
+		enum class TextureParameter : uint32_t {
+			WRAP_X = 0,
+			WRAP_Y,
+			WRAP_Z,
+			MIN_FILTER,
+			MAG_FILTER
+		};
+
+		enum class TextureParamValue {
+			FILTER_NEAREST = 0,
+			FILTER_LINEAR,
+			WRAP_CLAMP_TO_EDGE,
+			WRAP_CLAMP_TO_BORDER,
+			WRAP_MIRRORED_REPEAT,
+			WRAP_REPEAT,
+			WRAP_MIRROR_CLAMP_TO_EDGE
+		};
+
+		enum class PixelFormat : uint32_t {
+			RGB = 0,
+			RGBA,
+			BGR,
+			BGRA,
+		};
+
+		enum class PixelDataType : uint32_t {
+			SHORT = 0,
+			USHORT,
+			BYTE,
+			UBYTE,
+			INT,
+			UINT
+		};
+	
+
+		class ADONIS_API Texture {
+		public:
+			static constexpr uint32_t NUMBER_OF_SIZED_PIXEL_FORMATS = 5;
+			static uint32_t sized_pixel_format_lookup[NUMBER_OF_SIZED_PIXEL_FORMATS];
+
+			static constexpr uint32_t NUMBER_OF_TEX_PARAMS = 5;
+			static uint32_t tex_param_lookup[NUMBER_OF_TEX_PARAMS];
+
+			static constexpr uint32_t NUMBER_OF_TEX_PARAM_VALUES = 7;
+			static uint32_t tex_param_value_lookup[NUMBER_OF_TEX_PARAM_VALUES];
+
+			static constexpr uint32_t NUMBER_OF_PIXEL_FORMATS = 4;
+			static uint32_t pixel_format_lookup[NUMBER_OF_PIXEL_FORMATS];
+
+			static constexpr uint32_t NUMBER_OF_PIXEL_DATATYPES = 6;
+			static uint32_t pixel_datatype_lookup[NUMBER_OF_PIXEL_DATATYPES];
+
+			virtual auto id()->uint32_t = 0;
+			virtual auto set_param(TextureParameter param, TextureParamValue value)->void = 0;
+		};
+
+		class ADONIS_API Texture2D : public Texture{
+		public:
+
+			static auto create(int width, int height, const void* data = nullptr, TexturePixelFormatSized fmt = TexturePixelFormatSized::RGB8)->std::shared_ptr<Texture2D>;
+
+			virtual ~Texture2D() = default;
+
+			virtual auto id()->uint32_t = 0;
+			virtual auto set_param(TextureParameter param, TextureParamValue value)->void = 0;
+		};
+
+		enum class FramebufferTextureAttachment : uint32_t {
+			COLOR = 0,
+			DEPTH,
+			STENCIL
+		};
+
+		class ADONIS_API Framebuffer {
+		public:
+
+			static constexpr uint32_t NUMBER_OF_ATTACHMENT_TYPES = 3;
+			static uint32_t texture_attachment_types[NUMBER_OF_ATTACHMENT_TYPES];
+
+			static auto create()->std::shared_ptr<Framebuffer>;
+
+			virtual ~Framebuffer() {};
+
+			virtual auto attach(std::shared_ptr<Texture2D>, FramebufferTextureAttachment)->void = 0;
+			
+			virtual auto complete()->bool = 0;
+
+			virtual auto id()->uint32_t = 0;
+
 		};
 
 		class ADONIS_API Shader {

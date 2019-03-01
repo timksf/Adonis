@@ -26,13 +26,20 @@ namespace Adonis {
 			return std::make_unique<GLRenderer>(clear_color);
 		}
 
-		void GLRenderer::clear() {
-			glClearColor(clear_color.r(), clear_color.g(), clear_color.b(), clear_color.a());
-			glClear(GL_COLOR_BUFFER_BIT);
+		void GLRenderer::clear_color_buffer(uint32_t buffer_index) {
+			glClearNamedFramebufferfv(m_framebuffer, GL_COLOR, buffer_index, &clear_color.r());
+		}
+
+		void GLRenderer::clear_depth_buffer(float depth) {
+			glClearNamedFramebufferfv(m_framebuffer, GL_DEPTH, 0, &depth);
 		}
 
 		void GLRenderer::drawTriangles(int offset, int count) {
 			glDrawArrays(GL_TRIANGLES, offset, count);
+		}
+
+		void GLRenderer::set_framebuffer(uint32_t id) {
+			m_framebuffer = id;
 		}
 
 		void GLRenderer::set_pipeline(std::shared_ptr<RenderPipeline> pipe) {
@@ -421,6 +428,66 @@ namespace Adonis {
 			glBindVertexArray(m_id);
 		}
 
+		/**
+		* Texture
+		*/
+
+		uint32_t Texture::sized_pixel_format_lookup[Texture::NUMBER_OF_SIZED_PIXEL_FORMATS] = { GL_R3_G3_B2, GL_RGB8, GL_RGBA4, GL_RGBA8, GL_DEPTH_COMPONENT16};
+		uint32_t Texture::tex_param_lookup[Texture::NUMBER_OF_TEX_PARAMS] = { GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T, GL_TEXTURE_WRAP_R, GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MAG_FILTER };
+		uint32_t Texture::tex_param_value_lookup[Texture::NUMBER_OF_TEX_PARAM_VALUES] = {GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRROR_CLAMP_TO_EDGE};
+		uint32_t Texture::pixel_format_lookup[Texture::NUMBER_OF_PIXEL_FORMATS] = { GL_RGB, GL_RGBA, GL_BGR, GL_BGRA };
+		uint32_t Texture::pixel_datatype_lookup[Texture::NUMBER_OF_PIXEL_DATATYPES] = { GL_SHORT, GL_UNSIGNED_SHORT, GL_BYTE, GL_UNSIGNED_BYTE, GL_INT, GL_UNSIGNED_INT };	
+
+		GLTexture2D::GLTexture2D(int width, int height, const void* data, TexturePixelFormatSized fmt) {
+			glCreateTextures(GL_TEXTURE_2D, 1, &m_id);
+			glTextureStorage2D(m_id, 1, Texture::sized_pixel_format_lookup[static_cast<uint32_t>(fmt)], width, height);
+		}
+
+		GLTexture2D::~GLTexture2D() {
+			glDeleteTextures(1, &m_id);
+		}
+
+		void GLTexture2D::set_param(TextureParameter param, TextureParamValue value) {
+			glTextureParameteri(m_id, Texture::tex_param_lookup[static_cast<uint32_t>(param)], Texture::tex_param_value_lookup[static_cast<uint32_t>(value)]);
+		}
+
+		uint32_t GLTexture2D::id() {
+			return m_id;
+		}
+
+		std::shared_ptr<Texture2D> Texture2D::create(int width, int height, const void* data, TexturePixelFormatSized fmt) {
+			return std::make_shared<GLTexture2D>(width, height, data, fmt);
+		}
+
+		/**
+		* Framebuffer
+		*/
+
+		uint32_t Framebuffer::texture_attachment_types[Framebuffer::NUMBER_OF_ATTACHMENT_TYPES] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT };
+
+		GLFramebuffer::GLFramebuffer() {
+			glCreateFramebuffers(1, &m_id);
+		}
+
+		GLFramebuffer::~GLFramebuffer() {
+			glDeleteFramebuffers(1, &m_id);
+		}
+
+		void GLFramebuffer::attach(std::shared_ptr<Texture2D> tex, FramebufferTextureAttachment attachment_type) {
+			glNamedFramebufferTexture(m_id, Framebuffer::texture_attachment_types[static_cast<uint32_t>(attachment_type)], tex->id(), 0);
+		}
+
+		bool GLFramebuffer::complete() {
+			return glCheckNamedFramebufferStatus(m_id, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+		}
+
+		uint32_t GLFramebuffer::id() {
+			return m_id;
+		}
+
+		std::shared_ptr<Framebuffer> Framebuffer::create() {
+			return std::make_shared<GLFramebuffer>();
+		}
 	}
 
 }

@@ -24,11 +24,15 @@ namespace Adonis {
 			/**
 			*	@brief	Clear the current active framebuffer with the renderer's clear color
 			*/
-			auto clear()->void override;
+			auto clear_color_buffer(uint32_t buffer_index)->void override;
+
+			auto clear_depth_buffer(float depth)->void override;
 
 			auto drawTriangles(int offset, int count)->void override;
 
 			auto aspect_ratio()->float override;
+
+			auto set_framebuffer(uint32_t id)->void override;
 
 			/**
 			*	@brief			Change the currently acitve rendering pipeline
@@ -63,6 +67,34 @@ namespace Adonis {
 			std::string m_glslversion;
 			std::string m_vendor;
 			glm::vec2 m_viewport;
+			GLuint m_framebuffer{ 0 };
+		};
+
+		class ADONIS_API GLTexture2D : public Texture2D {
+		public:
+			GLTexture2D(int width, int height, const void* data, TexturePixelFormatSized fmt);
+			~GLTexture2D() override;
+
+			auto id()->GLuint override;
+			auto set_param(TextureParameter param, TextureParamValue value)->void override;
+
+		private:
+			GLuint m_id;
+		};
+
+
+		class ADONIS_API GLFramebuffer : public Framebuffer {
+		public:
+			GLFramebuffer();
+			~GLFramebuffer() override;
+
+			auto attach(std::shared_ptr<Texture2D> tex, FramebufferTextureAttachment attachment_type)->void override;
+
+			auto complete()->bool override;
+			auto id()->uint32_t override;
+
+		private:
+			GLuint m_id;
 		};
 
 		class ADONIS_API GLUtil {

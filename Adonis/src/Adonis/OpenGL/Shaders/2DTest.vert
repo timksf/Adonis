@@ -12,6 +12,7 @@ void main(){
 	vert_pos = pos;
 	vert_color = color;
 	gl_Position = vec4(pos, 1.0);
+
 }
 
 )""

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Adonis/Core.h"
-#include "Adonis/RenderDevice.h"
+#include "Adonis/Rendering/RenderDevice.h"
 
 namespace Adonis {
 
@@ -33,6 +33,8 @@ namespace Adonis {
 			auto aspect_ratio()->float override;
 
 			auto set_framebuffer(uint32_t id)->void override;
+
+			auto set_viewport(int x0, int y0, uint32_t width, uint32_t height)->void override;
 
 			/**
 			*	@brief			Change the currently acitve rendering pipeline

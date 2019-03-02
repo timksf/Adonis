@@ -54,6 +54,8 @@ namespace Adonis {
 
 			virtual auto set_framebuffer(uint32_t id)->void = 0;
 
+			virtual auto set_viewport(int x0, int y0, uint32_t width, uint32_t height)->void = 0;
+
 			/**
 			*	@brief			Change the currently active rendering pipeline
 			*	@param pipe		A pointer to the rendering pipeline which should be acitvated

@@ -40,10 +40,16 @@ namespace Adonis {
 
 		void GLRenderer::set_framebuffer(uint32_t id) {
 			m_framebuffer = id;
+			glBindFramebuffer(GL_FRAMEBUFFER, id);
 		}
 
 		void GLRenderer::set_pipeline(std::shared_ptr<RenderPipeline> pipe) {
 			pipe->activate();
+		}
+
+		void GLRenderer::set_viewport(int x0, int y0, uint32_t width, uint32_t height) {
+			m_viewport = { width, height };
+			glViewport(x0, y0, width, height);
 		}
 
 		float GLRenderer::aspect_ratio() {

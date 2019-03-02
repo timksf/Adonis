@@ -4,6 +4,8 @@
 #include "Adonis/OpenGL/ImGuiImpl.h"
 #include "Adonis/Application.h"
 #include "imgui_internal.h"
+#include "glm/ext.hpp"
+#include "Math/Math.h"
 
 namespace Adonis {
 
@@ -60,8 +62,8 @@ namespace Adonis {
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.BackendPlatformName = ADONIS_WINDOW_CONTEXT_LIB_NAME;
 
-		ImFont* font1 = io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 20);
-		io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 30);
+		/*ImFont* font1 = io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 20);
+		io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 30);*/
 
 
 		// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
@@ -148,18 +150,40 @@ namespace Adonis {
 				if (show_style_chooser) show_style_editor(&show_style_chooser);
 				//if (show_render_window) show_viewport(nullptr);
 
-				static std::shared_ptr<render::Texture2D> colortex = render::Texture2D::create(640, 400);
-				static std::shared_ptr<render::Texture2D> depthtex = render::Texture2D::create(640, 400, nullptr, render::TexturePixelFormatSized::DEPTH16);
-				static std::shared_ptr<render::Framebuffer> fb = render::Framebuffer::create();
-				fb->attach(colortex, render::FramebufferTextureAttachment::COLOR);
-				fb->attach(depthtex, render::FramebufferTextureAttachment::DEPTH);
+				//TEST RENDERING
+				using namespace math::literals;
+				using namespace render;
 
-				//AD_CORE_INFO(fb->complete());
+				static std::shared_ptr<Texture2D> colortex = Texture2D::create(640, 400);
+				static std::shared_ptr<Texture2D> depthtex = Texture2D::create(640, 400, nullptr, TexturePixelFormatSized::DEPTH16);
+				static std::shared_ptr<Framebuffer> fb = Framebuffer::create();
 
-				app->consume_renderer()->set_framebuffer(fb->id());
-				app->consume_renderer()->clear_color_buffer();
-				app->consume_renderer()->clear_color.b() = 1.0f;
+				colortex->set_param(TextureParameter::MIN_FILTER, TextureParamValue::FILTER_LINEAR);
+				colortex->set_param(TextureParameter::MAG_FILTER, TextureParamValue::FILTER_LINEAR);
 
+				fb->attach(colortex, FramebufferTextureAttachment::COLOR);
+				//fb->attach(depthtex, FramebufferTextureAttachment::DEPTH);
+
+				static std::unique_ptr<RenderPipeline> pipe = RenderPipeline::test_pipeline_2D();
+
+				static float vertices[] =
+					{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+								0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+								0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+					};
+
+				static float z_translation = -10.0f;
+				static auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
+				static auto col_attr = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
+				static auto vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
+				static auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
+				attribs.push_back(std::move(pos_attr));
+				attribs.push_back(std::move(col_attr));
+				static auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
+				static auto vao = VertexArray::create();
+				vao->add_buffer(vbo->id(), std::move(desc));
+
+				//AD_CORE_INFO(glGetError());
 
 				if (!ImGui::Begin("Viewport")) {
 					ImGui::End();
@@ -172,9 +196,19 @@ namespace Adonis {
 					float wh = ImGui::GetWindowSize().y;
 					auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
 					auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
+					app->consume_renderer()->set_viewport(0, 0, 640, 400);
+					app->consume_renderer()->set_framebuffer(fb->id());
+					app->consume_renderer()->clear_color = { {1.0f, 1.0f, 1.0f, 1.0f} };
+					app->consume_renderer()->clear_color_buffer();
+					pipe->activate();
+					vao->bind();
+					app->consume_renderer()->drawTriangles(0, 3);
+					app->consume_renderer()->set_framebuffer(0);
 					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
 					ImGui::End();
 				}
+
+				//TEST RENDERING END
 
 				ImGui::End();
 			}

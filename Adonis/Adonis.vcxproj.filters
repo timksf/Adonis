@@ -19,6 +19,9 @@
     <Filter Include="src\Adonis\GLFW">
       <UniqueIdentifier>{B9108C1C-259C-F9E0-2EAD-7CD59AB755E1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Adonis\ImGui">
+      <UniqueIdentifier>{E47944AE-D072-6300-F9A4-4885E5FC420C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Adonis\Math">
       <UniqueIdentifier>{53BA8F1C-BF45-FDE0-C856-80D5346159E1}</UniqueIdentifier>
     </Filter>
@@ -27,6 +30,9 @@
     </Filter>
     <Filter Include="src\Adonis\OpenGL\Shaders">
       <UniqueIdentifier>{07B8CE55-737A-02E0-BC2A-916C282CDBBD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Adonis\Rendering">
+      <UniqueIdentifier>{079BB716-F329-41E0-9C48-55DB88B65186}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +87,12 @@
     <ClInclude Include="src\Adonis\Gui.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\ImGui\ImGuiImplRenderer.h">
+      <Filter>src\Adonis\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\ImGui\ImGuiImplWindow.h">
+      <Filter>src\Adonis\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\Log.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
@@ -90,17 +102,17 @@
     <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\OpenGL\ImGuiImpl.h">
+    <ClInclude Include="src\Adonis\OpenGL\ImGuiImplOpenGL.h">
       <Filter>src\Adonis\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Rendering\RenderDevice.h">
+      <Filter>src\Adonis\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Window.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Adonis\Rendering\RenderDevice.h">
-      <Filter>src\Adonis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +137,9 @@
     <ClCompile Include="src\Adonis\Gui.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\ImGui\ImGuiBuild.cpp">
+      <Filter>src\Adonis\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="src\Adonis\Log.cpp">
       <Filter>src\Adonis</Filter>
     </ClCompile>
@@ -134,7 +149,7 @@
     <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\Adonis\OpenGL\ImGuiImpl.cpp">
+    <ClCompile Include="src\Adonis\OpenGL\ImGuiImplOpenGL.cpp">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp">

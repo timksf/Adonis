@@ -170,10 +170,12 @@
     <ClInclude Include="src\Adonis\GLFW\ImGuiImplGLFW.h" />
     <ClInclude Include="src\Adonis\GLFW\WindowGLFW.h" />
     <ClInclude Include="src\Adonis\Gui.h" />
+    <ClInclude Include="src\Adonis\ImGui\ImGuiImplRenderer.h" />
+    <ClInclude Include="src\Adonis\ImGui\ImGuiImplWindow.h" />
     <ClInclude Include="src\Adonis\Log.h" />
     <ClInclude Include="src\Adonis\Math\Math.h" />
     <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h" />
-    <ClInclude Include="src\Adonis\OpenGL\ImGuiImpl.h" />
+    <ClInclude Include="src\Adonis\OpenGL\ImGuiImplOpenGL.h" />
     <ClInclude Include="src\Adonis\Rendering\RenderDevice.h" />
     <ClInclude Include="src\Adonis\Window.h" />
     <ClInclude Include="src\pch.h" />
@@ -186,10 +188,11 @@
     <ClCompile Include="src\Adonis\GLFW\ImGuiImplGLFW.cpp" />
     <ClCompile Include="src\Adonis\GLFW\WindowGLFW.cpp" />
     <ClCompile Include="src\Adonis\Gui.cpp" />
+    <ClCompile Include="src\Adonis\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Adonis\Log.cpp" />
     <ClCompile Include="src\Adonis\Math\Math.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp" />
-    <ClCompile Include="src\Adonis\OpenGL\ImGuiImpl.cpp" />
+    <ClCompile Include="src\Adonis\OpenGL\ImGuiImplOpenGL.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

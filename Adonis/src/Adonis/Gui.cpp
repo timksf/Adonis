@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "pch.h"
 #include "Gui.h"
-#include "Adonis/OpenGL/ImGuiImpl.h"
+#include "Adonis/ImGui/ImGuiImplRenderer.h"
 #include "Adonis/Application.h"
 #include "imgui_internal.h"
 #include "glm/ext.hpp"
@@ -21,7 +20,7 @@ namespace Adonis {
 	}
 
 	Gui::~Gui() {
-		ImGui_ImplOpenGL3_Shutdown();
+		imgui_renderer_shutdown();
 		ImGui::DestroyContext();
 	}
 
@@ -89,12 +88,12 @@ namespace Adonis {
 		io.KeyMap[ImGuiKey_Y] = ADONIS_KEY_Y;
 		io.KeyMap[ImGuiKey_Z] = ADONIS_KEY_Z;
 
-		ImGui_ImplOpenGL3_Init("#version 410");
+		imgui_renderer_init("#version 450 core");
 
 	}
 
 	void Gui::on_PreRenderEvent(const event_ptr_t<PreRenderEvent>& e) {
-		ImGui_ImplOpenGL3_NewFrame();
+		imgui_renderer_newframe();
 		update_mouse();
 
 		ImGuiIO& io = ImGui::GetIO();
@@ -288,7 +287,7 @@ namespace Adonis {
 
 	void Gui::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
 		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		imgui_renderer_renderdata(ImGui::GetDrawData());
 	}
 
 	void Gui::on_MouseButtonPressed(const event_ptr_t<MouseButtonPressed>& event) {

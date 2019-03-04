@@ -115,6 +115,8 @@ namespace Adonis {
 			static bool show_imgui_demo = false;
 			static bool show_style_chooser = false;
 			static bool show_render_window = true;
+			static bool show_tools = true;
+			static glm::vec2 view_port_res{ 0, 0 }, texture_res{ 0, 0 };
 			auto app = Application::get();
 
 			//Setup main docking space
@@ -142,11 +144,12 @@ namespace Adonis {
 				ImGuiID dockspace_id = ImGui::GetID("Adonis");
 				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f));
 
-				setup_menu(&show_debug_window, &show_imgui_demo, &show_style_chooser);
+				setup_menu(&show_debug_window, &show_imgui_demo, &show_style_chooser, &show_tools);
 
-				if (show_debug_window) show_debug(&show_debug_window);
-				if (show_imgui_demo) ImGui::ShowDemoWindow(&show_imgui_demo);
-				if (show_style_chooser) show_style_editor(&show_style_chooser);
+				if(show_debug_window) show_debug(&show_debug_window);
+				if(show_imgui_demo) ImGui::ShowDemoWindow(&show_imgui_demo);
+				if(show_style_chooser) show_style_editor(&show_style_chooser);
+				if(show_tools) show_tools_window(&show_tools, &view_port_res, &texture_res);
 				//if (show_render_window) show_viewport(nullptr);
 
 				//TEST RENDERING
@@ -193,6 +196,8 @@ namespace Adonis {
 					float y0 = ImGui::GetCursorScreenPos().y;
 					float ww = ImGui::GetWindowSize().x;
 					float wh = ImGui::GetWindowSize().y;
+					view_port_res.x = ww;
+					view_port_res.y = wh;
 					auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
 					auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
 					app->consume_renderer()->set_viewport(0, 0, 640, 400);
@@ -216,14 +221,36 @@ namespace Adonis {
 		}
 	}
 
-	void Gui::setup_menu(bool* show_debug, bool* show_demo, bool* show_style_chooser) {
+	void Gui::show_tools_window(bool* show, glm::vec2* vp_res, glm::vec2* tex_res) {
+		if (!ImGui::Begin("Tools", show)) {
+			AD_CORE_ERROR("Failed to build Tools window");
+			ImGui::End();
+		}
+		else {
+			//ImGui::SameLine();
+			//ImGui::Text("%.0fx%.0f", vp_res->x, vp_res->y);
+
+			static bool selected;
+
+			ImGui::Button("Update resolution");
+			if (ImGui::IsItemHovered()) {
+				ImGui::BeginTooltip();
+				ImGui::EndTooltip();
+			}
+
+			ImGui::End();
+		}
+	}
+
+	void Gui::setup_menu(bool* show_debug, bool* show_demo, bool* show_style_edit, bool* show_tools) {
 		if (ImGui::BeginMenuBar()) {
 
 			if (ImGui::BeginMenu("Menu")) {
 
 				ImGui::MenuItem("Debug", NULL, show_debug);
 				ImGui::MenuItem("Demo window", NULL, show_demo);
-				ImGui::MenuItem("Style chooser", NULL, show_style_chooser);
+				ImGui::MenuItem("Style chooser", NULL, show_style_edit);
+				ImGui::MenuItem("Tools", NULL, show_tools);
 
 				ImGui::EndMenu();
 			}
@@ -232,8 +259,8 @@ namespace Adonis {
 		}
 	}
 
-	void Gui::show_viewport(bool* show) {
-		if (!ImGui::Begin("Viewport", show, ImGuiWindowFlags_NoTitleBar)) {
+	void Gui::show_viewport(bool* show_render_window) {
+		if (!ImGui::Begin("Viewport", show_render_window, ImGuiWindowFlags_NoTitleBar)) {
 			ImGui::End();
 			AD_CORE_ERROR("Failed to create render window");
 		}
@@ -242,9 +269,9 @@ namespace Adonis {
 		}	
 	}
 
-	void Gui::show_debug(bool* show) {
+	void Gui::show_debug(bool* show_debug_window) {
 		ImGuiIO& io = ImGui::GetIO();
-		if (!ImGui::Begin("App info", show)) {
+		if (!ImGui::Begin("App info", show_debug_window)) {
 			ImGui::End();
 			AD_CORE_ERROR("Failed to build app info window");
 		}
@@ -258,8 +285,8 @@ namespace Adonis {
 		}
 	}
 
-	void Gui::show_style_editor(bool* show) {
-		if (!ImGui::Begin("Style chooser", show)) {
+	void Gui::show_style_editor(bool* show_style_chooser) {
+		if (!ImGui::Begin("Style chooser", show_style_chooser)) {
 			ImGui::End();
 			AD_CORE_ERROR("Failed to create style chooser");
 		}

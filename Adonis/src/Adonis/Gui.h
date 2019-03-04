@@ -4,7 +4,7 @@
 #include "Adonis/Eventsystem/EventListener.h"
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "imgui.h"
-
+#include "glm/glm.hpp"
 
 namespace Adonis {
 
@@ -36,11 +36,12 @@ namespace Adonis {
 
 		auto ctx()->typename ImGuiContext*;
 
-		auto setup_menu(bool*, bool*, bool*)->void;
+		auto setup_menu(bool*, bool*, bool*, bool*)->void;
 
 		auto show_viewport(bool*)->void;
 		auto show_debug(bool*)->void;
 		auto show_style_editor(bool*)->void;
+		auto show_tools_window(bool*, glm::vec2*, glm::vec2*)->void;
 
 	private:
 		auto init()->void;

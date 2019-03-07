@@ -5,7 +5,7 @@
 #include "Eventsystem/EventListener.h"
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "Adonis/Window.h"
-#include "Adonis/Rendering/RenderDevice.h"
+#include "Adonis/Rendering/Renderer.h"
 #include "Gui.h"
 
 namespace Adonis {

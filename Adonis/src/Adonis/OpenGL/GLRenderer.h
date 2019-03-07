@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Adonis/Core.h"
-#include "Adonis/Rendering/RenderDevice.h"
+#include "Adonis/Rendering/Renderer.h"
 
 namespace Adonis {
 
@@ -90,7 +90,7 @@ namespace Adonis {
 			GLFramebuffer();
 			~GLFramebuffer() override;
 
-			auto attach(std::shared_ptr<Texture2D> tex, FramebufferTextureAttachment attachment_type)->void override;
+			auto attach(uint32_t tex_id, FramebufferTextureAttachment attachment_type)->void override;
 
 			auto complete()->bool override;
 			auto id()->uint32_t override;

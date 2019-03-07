@@ -58,7 +58,6 @@ namespace Adonis {
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
 		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;          // We can honor io.WantSetMousePos requests (optional, rarely used)
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.BackendPlatformName = ADONIS_WINDOW_CONTEXT_LIB_NAME;
 
 		/*ImFont* font1 = io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 20);
@@ -116,7 +115,7 @@ namespace Adonis {
 			static bool show_style_chooser = false;
 			static bool show_render_window = true;
 			static bool show_tools = true;
-			static glm::vec2 view_port_res{ 0, 0 }, texture_res{ 0, 0 };
+			static glm::vec2 view_port_res{ 0, 0 }, texture_res{ 640, 400 };
 			auto app = Application::get();
 
 			//Setup main docking space
@@ -149,21 +148,29 @@ namespace Adonis {
 				if(show_debug_window) show_debug(&show_debug_window);
 				if(show_imgui_demo) ImGui::ShowDemoWindow(&show_imgui_demo);
 				if(show_style_chooser) show_style_editor(&show_style_chooser);
-				if(show_tools) show_tools_window(&show_tools, &view_port_res, &texture_res);
 				//if (show_render_window) show_viewport(nullptr);
 
 				//TEST RENDERING
 				using namespace math::literals;
 				using namespace render;
 
-				static std::shared_ptr<Texture2D> colortex = Texture2D::create(640, 400);
-				static std::shared_ptr<Texture2D> depthtex = Texture2D::create(640, 400, nullptr, TexturePixelFormatSized::DEPTH16);
-				static std::shared_ptr<Framebuffer> fb = Framebuffer::create();
+				static bool tex_size_changed = false;
+				if(show_tools) show_tools_window(&show_tools, &view_port_res, &texture_res, &tex_size_changed);
+
+				static std::unique_ptr<Texture2D> colortex = Texture2D::create(640, 400);
+				static std::unique_ptr<Texture2D> depthtex = Texture2D::create(640, 400, nullptr, TexturePixelFormatSized::DEPTH16);
+				static std::unique_ptr<Framebuffer> fb = Framebuffer::create();
+
+				if (tex_size_changed) {
+					colortex.reset();
+					colortex = Texture2D::create(texture_res.x, texture_res.y);
+					tex_size_changed = false;
+				}
 
 				colortex->set_param(TextureParameter::MIN_FILTER, TextureParamValue::FILTER_LINEAR);
 				colortex->set_param(TextureParameter::MAG_FILTER, TextureParamValue::FILTER_LINEAR);
 
-				fb->attach(colortex, FramebufferTextureAttachment::COLOR);
+				fb->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
 				//fb->attach(depthtex, FramebufferTextureAttachment::DEPTH);
 
 				static std::unique_ptr<RenderPipeline> pipe = RenderPipeline::test_pipeline_2D();
@@ -200,7 +207,7 @@ namespace Adonis {
 					view_port_res.y = wh;
 					auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
 					auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
-					app->consume_renderer()->set_viewport(0, 0, 640, 400);
+					app->consume_renderer()->set_viewport(0, 0, texture_res.x, texture_res.y);
 					app->consume_renderer()->set_framebuffer(fb->id());
 					app->consume_renderer()->clear_color = { {1.0f, 1.0f, 1.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
@@ -221,7 +228,7 @@ namespace Adonis {
 		}
 	}
 
-	void Gui::show_tools_window(bool* show, glm::vec2* vp_res, glm::vec2* tex_res) {
+	void Gui::show_tools_window(bool* show, glm::vec2* vp_res, glm::vec2* tex_res, bool* tex_size_changed) {
 		if (!ImGui::Begin("Tools", show)) {
 			AD_CORE_ERROR("Failed to build Tools window");
 			ImGui::End();
@@ -232,9 +239,14 @@ namespace Adonis {
 
 			static bool selected;
 
-			ImGui::Button("Update resolution");
+			if (ImGui::Button("Update resolution")) {
+				*tex_size_changed = true;
+				tex_res->x = vp_res->x;
+				tex_res->y = vp_res->y;
+			}
 			if (ImGui::IsItemHovered()) {
 				ImGui::BeginTooltip();
+				ImGui::Text("Current: %.fx%.f", vp_res->x, vp_res->y);
 				ImGui::EndTooltip();
 			}
 
@@ -315,6 +327,16 @@ namespace Adonis {
 	void Gui::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
 		ImGui::Render();
 		imgui_renderer_renderdata(ImGui::GetDrawData());
+
+		auto& io = ImGui::GetIO();
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+			
+			AD_CORE_INFO("HELLO");
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
+
 	}
 
 	void Gui::on_MouseButtonPressed(const event_ptr_t<MouseButtonPressed>& event) {

@@ -176,7 +176,7 @@
     <ClInclude Include="src\Adonis\Math\Math.h" />
     <ClInclude Include="src\Adonis\OpenGL\GLRenderer.h" />
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImplOpenGL.h" />
-    <ClInclude Include="src\Adonis\Rendering\RenderDevice.h" />
+    <ClInclude Include="src\Adonis\Rendering\Renderer.h" />
     <ClInclude Include="src\Adonis\Window.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>

@@ -41,7 +41,7 @@ namespace Adonis {
 		auto show_viewport(bool*)->void;
 		auto show_debug(bool*)->void;
 		auto show_style_editor(bool*)->void;
-		auto show_tools_window(bool*, glm::vec2*, glm::vec2*)->void;
+		auto show_tools_window(bool*, glm::vec2*, glm::vec2*, bool*)->void;
 
 	private:
 		auto init()->void;

@@ -105,14 +105,14 @@
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImplOpenGL.h">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\Rendering\RenderDevice.h">
-      <Filter>src\Adonis\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="src\Adonis\Window.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Rendering\Renderer.h">
+      <Filter>src\Adonis\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

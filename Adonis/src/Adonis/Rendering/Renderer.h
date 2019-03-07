@@ -154,7 +154,7 @@ namespace Adonis {
 		class ADONIS_API Texture2D : public Texture{
 		public:
 
-			static auto create(int width, int height, const void* data = nullptr, TexturePixelFormatSized fmt = TexturePixelFormatSized::RGB8)->std::shared_ptr<Texture2D>;
+			static auto create(int width, int height, const void* data = nullptr, TexturePixelFormatSized fmt = TexturePixelFormatSized::RGB8)->std::unique_ptr<Texture2D>;
 
 			virtual ~Texture2D() = default;
 
@@ -174,11 +174,11 @@ namespace Adonis {
 			static constexpr uint32_t NUMBER_OF_ATTACHMENT_TYPES = 3;
 			static uint32_t texture_attachment_types[NUMBER_OF_ATTACHMENT_TYPES];
 
-			static auto create()->std::shared_ptr<Framebuffer>;
+			static auto create()->std::unique_ptr<Framebuffer>;
 
 			virtual ~Framebuffer() {};
 
-			virtual auto attach(std::shared_ptr<Texture2D>, FramebufferTextureAttachment)->void = 0;
+			virtual auto attach(uint32_t, FramebufferTextureAttachment)->void = 0;
 			
 			virtual auto complete()->bool = 0;
 

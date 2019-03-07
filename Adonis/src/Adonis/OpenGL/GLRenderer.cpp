@@ -461,8 +461,8 @@ namespace Adonis {
 			return m_id;
 		}
 
-		std::shared_ptr<Texture2D> Texture2D::create(int width, int height, const void* data, TexturePixelFormatSized fmt) {
-			return std::make_shared<GLTexture2D>(width, height, data, fmt);
+		std::unique_ptr<Texture2D> Texture2D::create(int width, int height, const void* data, TexturePixelFormatSized fmt) {
+			return std::make_unique<GLTexture2D>(width, height, data, fmt);
 		}
 
 		/**
@@ -479,8 +479,8 @@ namespace Adonis {
 			glDeleteFramebuffers(1, &m_id);
 		}
 
-		void GLFramebuffer::attach(std::shared_ptr<Texture2D> tex, FramebufferTextureAttachment attachment_type) {
-			glNamedFramebufferTexture(m_id, Framebuffer::texture_attachment_types[static_cast<uint32_t>(attachment_type)], tex->id(), 0);
+		void GLFramebuffer::attach(uint32_t tex_id, FramebufferTextureAttachment attachment_type) {
+			glNamedFramebufferTexture(m_id, Framebuffer::texture_attachment_types[static_cast<uint32_t>(attachment_type)], tex_id, 0);
 		}
 
 		bool GLFramebuffer::complete() {
@@ -491,8 +491,8 @@ namespace Adonis {
 			return m_id;
 		}
 
-		std::shared_ptr<Framebuffer> Framebuffer::create() {
-			return std::make_shared<GLFramebuffer>();
+		std::unique_ptr<Framebuffer> Framebuffer::create() {
+			return std::make_unique<GLFramebuffer>();
 		}
 	}
 

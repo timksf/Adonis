@@ -216,6 +216,7 @@ namespace Adonis {
 					app->consume_renderer()->drawTriangles(0, 3);
 					app->consume_renderer()->set_framebuffer(0);
 					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
+					ImGui::ImageButton(reinterpret_cast<uint32_t*>(colortex->id()), { 100, 100 }, { 0, 1 }, { 1, 0 });
 					ImGui::End();
 				}
 

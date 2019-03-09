@@ -10,3 +10,6 @@
 [submodule "Adonis/vendor/imgui"]
 	path = Adonis/vendor/imgui
 	url = https://github.com/tiefseeudo/imgui.git
+[submodule "Adonis/vendor/jsonparser"]
+	path = Adonis/vendor/jsonparser
+	url = https://github.com/nlohmann/json.git

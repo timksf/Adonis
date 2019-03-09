@@ -14,7 +14,7 @@ namespace Adonis {
 		DECLARE_LISTENER(Gui);
 
 		enum class Style {
-			Classic,
+			Classic = 0,
 			Dark,
 			Light,
 			Grey,

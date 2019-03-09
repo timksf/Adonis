@@ -1,0 +1,31 @@
+{
+    "gui": {
+        "demo_window": {
+            "show": false
+        },
+        "font": 0,
+        "render_window": {
+            "res": {
+                "h": 703.0,
+                "w": 949.0
+            }
+        },
+        "style_chooser": {
+            "selected_font": 0,
+            "selected_theme": 0,
+            "show": true
+        },
+        "theme": 1,
+        "tool_window": {
+            "show": true
+        }
+    },
+    "window": {
+        "res": {
+            "h": 720,
+            "w": 1280
+        },
+        "title": "Title edited from config file",
+        "vsync": true
+    }
+}

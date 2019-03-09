@@ -15,7 +15,7 @@ namespace Adonis {
 	public:
 		DECLARE_LISTENER(WindowGLFW);
 
-		WindowGLFW(const uint16_t& width, const uint16_t& height, const std::string& title, WindowMode mode, const bool& vsync);
+		WindowGLFW(const uint16_t& width, const uint16_t& height, const std::string& title, const bool& vsync, WindowMode mode);
 
 		virtual ~WindowGLFW();
 

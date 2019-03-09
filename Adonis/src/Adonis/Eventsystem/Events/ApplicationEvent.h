@@ -16,4 +16,9 @@ namespace Adonis {
 			DECLARE_EVENT(AppStartEvent);
 		};
 
+		class AppStopEvent : public Event {
+		public:
+			DECLARE_EVENT(AppStopEvent);
+		};
+
 }

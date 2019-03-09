@@ -31,7 +31,7 @@ namespace Adonis {
 		*	@param mode			Mode used to init window, of type WindowMode
 		*	@param vsync		Initial vsync status (enabled/disabled)
 		*/
-		static std::unique_ptr<IWindow> create(const uint16_t& width = 640, const uint16_t& height = 480, const std::string& title = "Window", WindowMode mode = WindowMode::Windowed, const bool& vsnyc = true);
+		static std::unique_ptr<IWindow> create(const uint16_t& width = 640, const uint16_t& height = 480, const std::string& title = "Window", const bool& vsnyc = true, WindowMode mode = WindowMode::Windowed);
 
 		virtual ~IWindow() {};
 

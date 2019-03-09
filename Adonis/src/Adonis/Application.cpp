@@ -2,8 +2,8 @@
 #include "Application.h"
 #include "Eventsystem/EventManager.h"
 #include "Eventsystem/EventListener.h"
-#include "Adonis/OpenGL/GLRenderer.h"
 #include "Adonis/Math/Math.h"
+#include "Config.h"
 #include "glm/glm.hpp"
 #include <glad/glad.h>
 
@@ -13,10 +13,11 @@ namespace Adonis {
 	Application* Application::s_instance = nullptr;
 
 	Application::Application(): EventListener(){
+		m_config = std::make_shared<Config>("config.json");
+
 		AD_CORE_ASSERT((s_instance == nullptr), "Only one application object can exist");
 		s_instance = this;
-		m_window = IWindow::create(1280, 720);
-		EventManager::queueEvent<WindowResizeEvent>(1280, 720);
+		m_window = IWindow::create((*m_config)["window"]["res"]["w"], (*m_config)["window"]["res"]["h"], (*m_config)["window"]["title"], (*m_config)["window"]["vsync"]);
 		m_renderer = render::RenderDevice::create();
 		#ifdef ADONIS_DEBUG
 				AD_CORE_INFO("Renderer version: {0}", m_renderer->version());
@@ -24,7 +25,7 @@ namespace Adonis {
 				AD_CORE_INFO("Shading language version: {0}", m_renderer->sl_language_version());
 				AD_CORE_INFO("Vendor: {0}", m_renderer->vendor());
 		#endif;
-		m_gui = std::make_unique<Gui>(Gui::Style::Cherry);
+		m_gui = std::make_unique<Gui>((Gui::Style)(*m_config)["gui"]["theme"]);
 	}
 
 	Application::~Application(){
@@ -66,6 +67,9 @@ namespace Adonis {
 	}
 
 	void Application::on_WindowCloseEvent(const event_ptr_t<WindowCloseEvent>& ev) {
+		(*m_config)["window"]["res"]["w"] = m_window->width();
+		(*m_config)["window"]["res"]["h"] = m_window->height();
+		(*m_config)["window"]["vsync"] = m_window->vsync();
 		m_window.reset();
 		m_running = false;
 	}

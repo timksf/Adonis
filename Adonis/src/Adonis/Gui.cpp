@@ -111,11 +111,16 @@ namespace Adonis {
 		{
 
 			static bool show_debug_window = true;
-			static bool show_imgui_demo = false;
-			static bool show_style_chooser = false;
+			static bool show_imgui_demo = (*app->config())["gui"]["demo_window"]["show"];
+			(*Application::get()->config())["gui"]["demo_window"]["show"] = show_imgui_demo;
+			static bool show_style_chooser = (*app->config())["gui"]["style_chooser"]["show"];
+			(*Application::get()->config())["gui"]["style_chooser"]["show"] = show_style_chooser;
 			static bool show_render_window = true;
-			static bool show_tools = true;
-			static glm::vec2 view_port_res{ 0, 0 }, texture_res{ 640, 400 };
+			static bool show_tools = (*app->config())["gui"]["tool_window"]["show"];
+			(*Application::get()->config())["gui"]["tool_window"]["show"] = show_tools;
+			static glm::vec2 view_port_res{ 0, 0 }, texture_res{ (*Application::get()->config())["gui"]["render_window"]["res"]["w"], (*Application::get()->config())["gui"]["render_window"]["res"]["h"] };
+			(*Application::get()->config())["gui"]["render_window"]["res"]["w"] = texture_res.x;
+			(*Application::get()->config())["gui"]["render_window"]["res"]["h"] = texture_res.y;
 			auto app = Application::get();
 
 			//Setup main docking space
@@ -157,8 +162,8 @@ namespace Adonis {
 				static bool tex_size_changed = false;
 				if(show_tools) show_tools_window(&show_tools, &view_port_res, &texture_res, &tex_size_changed);
 
-				static std::unique_ptr<Texture2D> colortex = Texture2D::create(640, 400);
-				static std::unique_ptr<Texture2D> depthtex = Texture2D::create(640, 400, nullptr, TexturePixelFormatSized::DEPTH16);
+				static std::unique_ptr<Texture2D> colortex = Texture2D::create(texture_res.x, texture_res.y);
+				static std::unique_ptr<Texture2D> depthtex = Texture2D::create(texture_res.x, texture_res.y, nullptr, TexturePixelFormatSized::DEPTH16);
 				static std::unique_ptr<Framebuffer> fb = Framebuffer::create();
 
 				if (tex_size_changed) {
@@ -299,24 +304,26 @@ namespace Adonis {
 	}
 
 	void Gui::show_style_editor(bool* show_style_chooser) {
+		auto app = Application::get();
 		if (!ImGui::Begin("Style chooser", show_style_chooser)) {
 			ImGui::End();
 			AD_CORE_ERROR("Failed to create style chooser");
 		}
 		else {
-			static int style_idx = 0;
+			static int style_idx = (*app->config())["gui"]["theme"];
 
-			if (ImGui::Combo("Themes", &style_idx, "Light\0Dark\0Classic\0Cherry\0Extasy\0Grey")) {
+			if (ImGui::Combo("Themes", &style_idx, "Classic\0Dark\0Light\0Grey\0Cherry\0Extasy")) {
 
 				switch (style_idx) {
-				case 0: ImGui::StyleColorsLight(); break;
+				case 2: ImGui::StyleColorsLight(); break;
 				case 1: ImGui::StyleColorsDark(); break;
-				case 2: ImGui::StyleColorsClassic(); break;
-				case 3: setup_cherry_style(); break;
-				case 4: setup_extasy_style(); break;
-				case 5: setup_grey_style(); break;
+				case 0: ImGui::StyleColorsClassic(); break;
+				case 4: setup_cherry_style(); break;
+				case 5: setup_extasy_style(); break;
+				case 3: setup_grey_style(); break;
 				}
 
+				(*app->config())["gui"]["theme"] = style_idx;
 			}
 
 			ImGui::End();

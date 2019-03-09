@@ -105,15 +105,16 @@
     <ClInclude Include="src\Adonis\OpenGL\ImGuiImplOpenGL.h">
       <Filter>src\Adonis\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Adonis\Rendering\Renderer.h">
+      <Filter>src\Adonis\Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="src\Adonis\Window.h">
       <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\Rendering\Renderer.h">
-      <Filter>src\Adonis\Rendering</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Adonis\Config.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
@@ -155,6 +156,7 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Adonis\Config.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag">

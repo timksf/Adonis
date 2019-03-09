@@ -51,6 +51,7 @@ project "Adonis"
 		"%{prj.name}/vendor/GLFW/include",
 		"%{prj.name}/vendor/glm",
 		"%{prj.name}/vendor/imgui",
+		"%{prj.name}/vendor/jsonparser/single_include",
 	}
 
 	links{
@@ -121,6 +122,7 @@ project "Sandbox"
 		"Adonis/vendor/glad/include",
 		"Adonis/vendor/GLFW/include",
 		"Adonis/vendor/imgui/",
+		"Adonis/vendor/jsonparser/single_include",
 	}
 
 	links{

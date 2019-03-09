@@ -15,6 +15,8 @@
 #include <functional>
 #include <type_traits>
 #include <cmath>
+#include "nlohmann/json.hpp"
+
 
 //
 #include "Adonis/Log.h"

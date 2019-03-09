@@ -15,11 +15,11 @@ namespace Adonis {
 		AD_CORE_ERROR("GLFW reported error: {0} with description: {1}", error, desc);
 	}
 
-	std::unique_ptr<IWindow> IWindow::create(const uint16_t& width, const uint16_t& height, const std::string& title, WindowMode mode, const bool& vsync) {
-		return std::make_unique<WindowGLFW>(width, height, title, mode, vsync);
+	std::unique_ptr<IWindow> IWindow::create(const uint16_t& width, const uint16_t& height, const std::string& title, const bool& vsync, WindowMode mode) {
+		return std::make_unique<WindowGLFW>(width, height, title, vsync, mode);
 	}
 
-	WindowGLFW::WindowGLFW(const uint16_t& width, const uint16_t& height, const std::string& title, WindowMode mode, const bool& vsync) :
+	WindowGLFW::WindowGLFW(const uint16_t& width, const uint16_t& height, const std::string& title, const bool& vsync, WindowMode mode) :
 		m_width(width),
 		m_height(height),
 		m_title(title),

@@ -93,8 +93,8 @@
       <ImportLibrary>..\bin\Debug\windows-x86_64\Adonis\Adonis.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST "..\bin\Debug\windows-x86_64\Adonis\Adonis.dll"\ (xcopy /Q /E /Y /I "..\bin\Debug\windows-x86_64\Adonis\Adonis.dll" "..\bin\Debug\windows-x86_64\Sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Debug\windows-x86_64\Adonis\Adonis.dll" "..\bin\Debug\windows-x86_64\Sandbox" &gt; nul)</Command>
-      <Message>$(ProjectName)/src</Message>
+      <Command>IF EXIST ..\bin\Debug\windows-x86_64\Adonis\Adonis.dll\ (xcopy /Q /E /Y /I ..\bin\Debug\windows-x86_64\Adonis\Adonis.dll ..\bin\Debug\windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug\windows-x86_64\Adonis\Adonis.dll ..\bin\Debug\windows-x86_64\Sandbox &gt; nul)</Command>
+      <Message>FUCKOFF</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -120,8 +120,8 @@
       <ImportLibrary>..\bin\Release\windows-x86_64\Adonis\Adonis.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST "..\bin\Release\windows-x86_64\Adonis\Adonis.dll"\ (xcopy /Q /E /Y /I "..\bin\Release\windows-x86_64\Adonis\Adonis.dll" "..\bin\Release\windows-x86_64\Sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Release\windows-x86_64\Adonis\Adonis.dll" "..\bin\Release\windows-x86_64\Sandbox" &gt; nul)</Command>
-      <Message>$(ProjectName)/src</Message>
+      <Command>IF EXIST ..\bin\Release\windows-x86_64\Adonis\Adonis.dll\ (xcopy /Q /E /Y /I ..\bin\Release\windows-x86_64\Adonis\Adonis.dll ..\bin\Release\windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release\windows-x86_64\Adonis\Adonis.dll ..\bin\Release\windows-x86_64\Sandbox &gt; nul)</Command>
+      <Message>FUCKOFF</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -148,8 +148,8 @@
       <ImportLibrary>..\bin\Dist\windows-x86_64\Adonis\Adonis.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST "..\bin\Dist\windows-x86_64\Adonis\Adonis.dll"\ (xcopy /Q /E /Y /I "..\bin\Dist\windows-x86_64\Adonis\Adonis.dll" "..\bin\Dist\windows-x86_64\Sandbox" &gt; nul) ELSE (xcopy /Q /Y /I "..\bin\Dist\windows-x86_64\Adonis\Adonis.dll" "..\bin\Dist\windows-x86_64\Sandbox" &gt; nul)</Command>
-      <Message>$(ProjectName)/src</Message>
+      <Command>IF EXIST ..\bin\Dist\windows-x86_64\Adonis\Adonis.dll\ (xcopy /Q /E /Y /I ..\bin\Dist\windows-x86_64\Adonis\Adonis.dll ..\bin\Dist\windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist\windows-x86_64\Adonis\Adonis.dll ..\bin\Dist\windows-x86_64\Sandbox &gt; nul)</Command>
+      <Message>FUCKOFF</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

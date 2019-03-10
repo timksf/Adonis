@@ -78,10 +78,9 @@ project "Adonis"
 		}
 
 		postbuildcommands{
-			("{COPY} \"%{cfg.buildtarget.relpath}\" \"../bin/" .. outputdir .. "/Sandbox\"")
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
 		}
 
-		postbuildmessage ("%{prj.name}/src")
 		
 	filter "configurations:Debug"
 		defines "ADONIS_DEBUG"

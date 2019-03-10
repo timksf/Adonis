@@ -9,3 +9,5 @@ Adonis/resources/
 html/
 latex/
 imgui.ini
+*.json
+*.ttf

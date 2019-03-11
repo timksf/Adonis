@@ -275,7 +275,7 @@ namespace Adonis {
 
 				ImGui::MenuItem("Debug", NULL, show_debug);
 				ImGui::MenuItem("Demo window", NULL, show_demo);
-				ImGui::MenuItem("Style chooser", NULL, show_style_edit);
+				ImGui::MenuItem("Style editor", NULL, show_style_edit);
 				ImGui::MenuItem("Tools", NULL, show_tools);
 
 				ImGui::EndMenu();
@@ -313,56 +313,74 @@ namespace Adonis {
 
 	void Gui::show_style_editor(bool* show_style_chooser) {
 		auto app = Application::get();
-		if (!ImGui::Begin("Style chooser", show_style_chooser)) {
+		if (!ImGui::Begin("Style editor", show_style_chooser)) {
 			ImGui::End();
 			AD_CORE_ERROR("Failed to create style chooser");
 		}
 		else {
-			static int style_idx = (*app->config())["gui"]["theme"];
 
-			if (ImGui::Combo("Themes", &style_idx, "Classic\0Dark\0Light\0Grey\0Cherry\0Extasy\0LightGreen")) {
+			{ //Theme Selector
+				static int style_idx = (*app->config())["gui"]["theme"];
 
-				switch (style_idx) {
-				case 2: ImGui::StyleColorsLight(); break;
-				case 1: ImGui::StyleColorsDark(); break;
-				case 0: ImGui::StyleColorsClassic(); break;
-				case 4: ImGui::StyleColorsDark(); setup_cherry_style(); break;
-				case 5: ImGui::StyleColorsDark(); setup_extasy_style(); break;
-				case 3: ImGui::StyleColorsDark(); setup_grey_style(); break;
-				case 6: ImGui::StyleColorsLight(); setup_lightgreen_style(); break;
+				if (ImGui::Combo("Themes", &style_idx, "Classic\0Dark\0Light\0Grey\0Cherry\0Extasy\0LightGreen")) {
+
+					switch (style_idx) {
+					case 2: ImGui::StyleColorsLight(); break;
+					case 1: ImGui::StyleColorsDark(); break;
+					case 0: ImGui::StyleColorsClassic(); break;
+					case 4: ImGui::StyleColorsDark(); setup_cherry_style(); break;
+					case 5: ImGui::StyleColorsDark(); setup_extasy_style(); break;
+					case 3: ImGui::StyleColorsDark(); setup_grey_style(); break;
+					case 6: ImGui::StyleColorsLight(); setup_lightgreen_style(); break;
+					}
+
+					(*app->config())["gui"]["theme"] = style_idx;
 				}
+			}
 
-				(*app->config())["gui"]["theme"] = style_idx;
+			{ //Font Selector
+				ImGuiIO& io = ImGui::GetIO();
+				ImFont* font_current = ImGui::GetFont();
+				if (ImGui::BeginCombo("Fonts", font_current->GetDebugName()))
+				{
+					for (int n = 0; n < io.Fonts->Fonts.Size; n++)
+					{
+						ImFont* font = io.Fonts->Fonts[n];
+						ImGui::PushID((void*)font);
+						if (ImGui::Selectable(font->GetDebugName(), font == font_current))
+							io.FontDefault = font;
+						ImGui::PopID();
+					}
+					ImGui::EndCombo();
+				}
 			}
 
 			{ //Font related stuff
 				static float fontsize = (*app->config())["assets"]["fonts"]["font_size"];
 				static float fontscale = (*app->config())["assets"]["fonts"]["font_scale"];
 
+				ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
 				ImGui::DragFloat("Font size", &fontsize, 1.0f, 0.0f, 40.0f, "%.fpx");
-				ImGui::DragFloat("Font scale", &fontscale, 0.01f, 0.1f, 4.0f);
+				ImGui::SameLine();
 
-				ImGui::GetIO().FontGlobalScale = fontscale;
-
-				{ //Font Selector
-					ImGuiIO& io = ImGui::GetIO();
-					ImFont* font_current = ImGui::GetFont();
-					if (ImGui::BeginCombo("Fonts", font_current->GetDebugName()))
+				{ //Helpmarker
+					ImGui::TextDisabled("(?)");
+					if (ImGui::IsItemHovered())
 					{
-						for (int n = 0; n < io.Fonts->Fonts.Size; n++)
-						{
-							ImFont* font = io.Fonts->Fonts[n];
-							ImGui::PushID((void*)font);
-							if (ImGui::Selectable(font->GetDebugName(), font == font_current))
-								io.FontDefault = font;
-							ImGui::PopID();
-						}
-						ImGui::EndCombo();
+						ImGui::BeginTooltip();
+						ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+						ImGui::TextUnformatted("Changes to font size take effect after application restart");
+						ImGui::PopTextWrapPos();
+						ImGui::EndTooltip();
 					}
 				}
 
+				ImGui::DragFloat("Font scale", &fontscale, 0.01f, 0.1f, 4.0f);
+				ImGui::GetIO().FontGlobalScale = fontscale;
+
 				(*app->config())["assets"]["fonts"]["font_size"] = fontsize;
 				(*app->config())["assets"]["fonts"]["font_scale"] = fontscale;
+				ImGui::PopItemWidth();
 			}
 
 			ImGui::End();

@@ -43,13 +43,20 @@ namespace Adonis {
 			ImGui::StyleColorsClassic();
 			break;
 		case Style::Grey:
+			ImGui::StyleColorsDark();
 			setup_grey_style();
 			break;
 		case Style::Cherry:
+			ImGui::StyleColorsDark();
 			setup_cherry_style();
 			break;
 		case Style::Extasy:
+			ImGui::StyleColorsDark();
 			setup_extasy_style();
+			break;
+		case Style::LightGreen:
+			ImGui::StyleColorsLight();
+			setup_lightgreen_style();
 			break;
 		}
 
@@ -60,9 +67,11 @@ namespace Adonis {
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 		io.BackendPlatformName = ADONIS_WINDOW_CONTEXT_LIB_NAME;
 
-		/*ImFont* font1 = io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 20);
-		io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 30);*/
+		for (auto& font : (*Application::get()->config())["assets"]["fonts"]["font-list"]) {
+			io.Fonts->AddFontFromFileTTF(font["path"].get<std::string>().c_str(), (*Application::get()->config())["assets"]["fonts"]["font_size"]);
+		}
 
+		ImGui::GetIO().FontGlobalScale = (*Application::get()->config())["assets"]["fonts"]["font_scale"];
 
 		// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
 		io.KeyMap[ImGuiKey_Tab] = ADONIS_KEY_TAB;
@@ -240,11 +249,10 @@ namespace Adonis {
 			ImGui::End();
 		}
 		else {
-			//ImGui::SameLine();
-			//ImGui::Text("%.0fx%.0f", vp_res->x, vp_res->y);
 
 			static bool selected;
 
+			ImGui::Text("Current framebuffer size: %.fx%.f", tex_res->x, tex_res->y);
 			if (ImGui::Button("Update resolution")) {
 				*tex_size_changed = true;
 				tex_res->x = vp_res->x;
@@ -252,7 +260,7 @@ namespace Adonis {
 			}
 			if (ImGui::IsItemHovered()) {
 				ImGui::BeginTooltip();
-				ImGui::Text("Current: %.fx%.f", vp_res->x, vp_res->y);
+				ImGui::Text("Current display size: %.fx%.f", vp_res->x, vp_res->y);
 				ImGui::EndTooltip();
 			}
 
@@ -312,18 +320,49 @@ namespace Adonis {
 		else {
 			static int style_idx = (*app->config())["gui"]["theme"];
 
-			if (ImGui::Combo("Themes", &style_idx, "Classic\0Dark\0Light\0Grey\0Cherry\0Extasy")) {
+			if (ImGui::Combo("Themes", &style_idx, "Classic\0Dark\0Light\0Grey\0Cherry\0Extasy\0LightGreen")) {
 
 				switch (style_idx) {
 				case 2: ImGui::StyleColorsLight(); break;
 				case 1: ImGui::StyleColorsDark(); break;
 				case 0: ImGui::StyleColorsClassic(); break;
-				case 4: setup_cherry_style(); break;
-				case 5: setup_extasy_style(); break;
-				case 3: setup_grey_style(); break;
+				case 4: ImGui::StyleColorsDark(); setup_cherry_style(); break;
+				case 5: ImGui::StyleColorsDark(); setup_extasy_style(); break;
+				case 3: ImGui::StyleColorsDark(); setup_grey_style(); break;
+				case 6: ImGui::StyleColorsLight(); setup_lightgreen_style(); break;
 				}
 
 				(*app->config())["gui"]["theme"] = style_idx;
+			}
+
+			{ //Font related stuff
+				static float fontsize = (*app->config())["assets"]["fonts"]["font_size"];
+				static float fontscale = (*app->config())["assets"]["fonts"]["font_scale"];
+
+				ImGui::DragFloat("Font size", &fontsize, 1.0f, 0.0f, 40.0f, "%.fpx");
+				ImGui::DragFloat("Font scale", &fontscale, 0.01f, 0.1f, 4.0f);
+
+				ImGui::GetIO().FontGlobalScale = fontscale;
+
+				{ //Font Selector
+					ImGuiIO& io = ImGui::GetIO();
+					ImFont* font_current = ImGui::GetFont();
+					if (ImGui::BeginCombo("Fonts", font_current->GetDebugName()))
+					{
+						for (int n = 0; n < io.Fonts->Fonts.Size; n++)
+						{
+							ImFont* font = io.Fonts->Fonts[n];
+							ImGui::PushID((void*)font);
+							if (ImGui::Selectable(font->GetDebugName(), font == font_current))
+								io.FontDefault = font;
+							ImGui::PopID();
+						}
+						ImGui::EndCombo();
+					}
+				}
+
+				(*app->config())["assets"]["fonts"]["font_size"] = fontsize;
+				(*app->config())["assets"]["fonts"]["font_scale"] = fontscale;
 			}
 
 			ImGui::End();
@@ -588,5 +627,76 @@ namespace Adonis {
 		style.Colors[ImGuiCol_Border] = ImVec4(0.539f, 0.479f, 0.255f, 0.162f);
 		style.FrameBorderSize = 0.0f;
 		style.WindowBorderSize = 1.0f;
+	}
+
+
+	void Gui::setup_lightgreen_style()const {
+		ImGuiStyle* style = &ImGui::GetStyle();
+		ImVec4* colors = style->Colors;
+
+		style->WindowRounding = 2.0f;             // Radius of window corners rounding. Set to 0.0f to have rectangular windows
+		style->ScrollbarRounding = 3.0f;             // Radius of grab corners rounding for scrollbar
+		style->GrabRounding = 2.0f;             // Radius of grabs corners rounding. Set to 0.0f to have rectangular slider grabs.
+		style->AntiAliasedLines = true;
+		style->AntiAliasedFill = true;
+		style->WindowRounding = 2;
+		style->ChildRounding = 2;
+		style->ScrollbarSize = 16;
+		style->ScrollbarRounding = 3;
+		style->GrabRounding = 2;
+		style->ItemSpacing.x = 10;
+		style->ItemSpacing.y = 4;
+		style->IndentSpacing = 22;
+		style->FramePadding.x = 6;
+		style->FramePadding.y = 4;
+		style->Alpha = 1.0f;
+		style->FrameRounding = 3.0f;
+
+		colors[ImGuiCol_Text] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+		colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
+		colors[ImGuiCol_WindowBg] = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
+		//colors[ImGuiCol_ChildWindowBg]         = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+		colors[ImGuiCol_ChildBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+		colors[ImGuiCol_PopupBg] = ImVec4(0.93f, 0.93f, 0.93f, 0.98f);
+		colors[ImGuiCol_Border] = ImVec4(0.71f, 0.71f, 0.71f, 0.08f);
+		colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.04f);
+		colors[ImGuiCol_FrameBg] = ImVec4(0.71f, 0.71f, 0.71f, 0.55f);
+		colors[ImGuiCol_FrameBgHovered] = ImVec4(0.94f, 0.94f, 0.94f, 0.55f);
+		colors[ImGuiCol_FrameBgActive] = ImVec4(0.71f, 0.78f, 0.69f, 0.98f);
+		colors[ImGuiCol_TitleBg] = ImVec4(0.85f, 0.85f, 0.85f, 1.00f);
+		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.82f, 0.78f, 0.78f, 0.51f);
+		colors[ImGuiCol_TitleBgActive] = ImVec4(0.78f, 0.78f, 0.78f, 1.00f);
+		colors[ImGuiCol_MenuBarBg] = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
+		colors[ImGuiCol_ScrollbarBg] = ImVec4(0.20f, 0.25f, 0.30f, 0.61f);
+		colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.90f, 0.90f, 0.90f, 0.30f);
+		colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.92f, 0.92f, 0.92f, 0.78f);
+		colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+		colors[ImGuiCol_CheckMark] = ImVec4(0.184f, 0.407f, 0.193f, 1.00f);
+		colors[ImGuiCol_SliderGrab] = ImVec4(0.26f, 0.59f, 0.98f, 0.78f);
+		colors[ImGuiCol_SliderGrabActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+		colors[ImGuiCol_Button] = ImVec4(0.71f, 0.78f, 0.69f, 0.40f);
+		colors[ImGuiCol_ButtonHovered] = ImVec4(0.725f, 0.805f, 0.702f, 1.00f);
+		colors[ImGuiCol_ButtonActive] = ImVec4(0.793f, 0.900f, 0.836f, 1.00f);
+		colors[ImGuiCol_Header] = ImVec4(0.71f, 0.78f, 0.69f, 0.31f);
+		colors[ImGuiCol_HeaderHovered] = ImVec4(0.71f, 0.78f, 0.69f, 0.80f);
+		colors[ImGuiCol_HeaderActive] = ImVec4(0.71f, 0.78f, 0.69f, 1.00f);
+		colors[ImGuiCol_Column] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+		colors[ImGuiCol_ColumnHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.78f);
+		colors[ImGuiCol_ColumnActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+		colors[ImGuiCol_Separator] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+		colors[ImGuiCol_SeparatorHovered] = ImVec4(0.14f, 0.44f, 0.80f, 0.78f);
+		colors[ImGuiCol_SeparatorActive] = ImVec4(0.14f, 0.44f, 0.80f, 1.00f);
+		colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 1.00f, 1.00f, 0.00f);
+		colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.45f);
+		colors[ImGuiCol_ResizeGripActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.78f);
+		colors[ImGuiCol_PlotLines] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+		colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+		colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+		colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+		colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
+		colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
+		colors[ImGuiCol_DragDropTarget] = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
+		colors[ImGuiCol_NavHighlight] = colors[ImGuiCol_HeaderHovered];
+		colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.70f, 0.70f, 0.70f, 0.70f);
 	}
 }

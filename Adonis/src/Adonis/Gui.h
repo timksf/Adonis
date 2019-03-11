@@ -19,7 +19,8 @@ namespace Adonis {
 			Light,
 			Grey,
 			Cherry,
-			Extasy
+			Extasy,
+			LightGreen
 		};
 
 		Gui(Style style = Style::Dark);
@@ -48,6 +49,7 @@ namespace Adonis {
 		auto setup_grey_style()const->void;
 		auto setup_cherry_style()const->void;
 		auto setup_extasy_style()const->void;
+		auto setup_lightgreen_style()const->void;
 
 		auto update_mouse()->void;
 		Style m_style;																					//ImGui Style; Classic, Light or Dark

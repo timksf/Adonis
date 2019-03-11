@@ -1,0 +1,43 @@
+FONTLOG for the RoboSans fonts
+
+This file provides detailed information on the RoboSans Font Software.
+This information should be distributed along with the RoboSans fonts
+and any derivative works.
+
+Basic Font Information
+
+RoboSans is derived from NotoSans and Noto Sans CJK. NotoSans CJK
+supports Chinese, Japanese, and Korean characters. We needed to switch
+fonts in order to display certain characters correctly depending on
+the currently selected language. Using NotoSans CJK doesn’t have
+english characters that have a similar style to our existing font,
+but Noto Sans does. Making a single font for all languages to reference
+will be consistent and maintainable. Combining NotoSans and NotoSans CJK
+gives us a similar look to our current one while being consistent
+when supporting other languages. Both NotoSans and NotoSans CJK are
+licensed under Open Font License.
+
+RoboSans has two different fonts: RoboSans-Regular and RoboSans-Bold.
+
+RoboSans-Regular uses NotoSans - Semi Condensed, for english and
+latin characters, and NotoSans SC - Regular, for simplified chinese
+characters.
+
+RoboSans-Bold uses NotoSans - Semi Condensed Bold, for english
+and latin characters, and NotoSans SC for simplified chinese characters.
+RoboSans will be updated with languages that we will support.
+
+ChangeLog
+
+12 Apr 2018 (Robo3d) RoboSans Version 1.0
+- Initial release
+- Support for Simplified Chinese
+
+Acknowledgements
+
+If you make modifications be sure to add your name (N), email (E), web-address
+(if you have one) (W) and description (D). This list is in alphabetical order.
+
+N: The Noto Project Authors
+W: github.com/googlei18n/noto-fonts
+D: Author of Noto Sans, the Original Version that RoboSans is derived from

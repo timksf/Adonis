@@ -18,6 +18,7 @@ namespace Adonis {
 		AD_CORE_ASSERT((s_instance == nullptr), "Only one application object can exist");
 		s_instance = this;
 		m_window = IWindow::create((*m_config)["window"]["res"]["w"], (*m_config)["window"]["res"]["h"], (*m_config)["window"]["title"], (*m_config)["window"]["vsync"]);
+		m_window->set_pos((*m_config)["window"]["pos"]["x"], (*m_config)["window"]["pos"]["y"]);
 		m_renderer = render::RenderDevice::create();
 		#ifdef ADONIS_DEBUG
 				AD_CORE_INFO("Renderer version: {0}", m_renderer->version());
@@ -70,6 +71,8 @@ namespace Adonis {
 		(*m_config)["window"]["res"]["w"] = m_window->width();
 		(*m_config)["window"]["res"]["h"] = m_window->height();
 		(*m_config)["window"]["vsync"] = m_window->vsync();
+		(*m_config)["window"]["pos"]["x"] = m_window->pos().x;
+		(*m_config)["window"]["pos"]["y"] = m_window->pos().y;
 		m_window.reset();
 		m_running = false;
 	}

@@ -215,4 +215,10 @@ namespace Adonis {
 	void WindowGLFW::update_vsync() {
 		glfwSwapInterval(m_vsync);
 	}
+
+	glm::ivec2 WindowGLFW::pos() {
+		int x, y;
+		glfwGetWindowPos(m_window.get(), &x, &y);
+		return { x, y };
+	}
 }

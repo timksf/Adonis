@@ -44,6 +44,8 @@ namespace Adonis{
 		auto& window_cfg = (*this)["window"];
 		window_cfg["title"] = "Adonis";
 		window_cfg["vsync"] = true;
+		window_cfg["pos"]["x"] = 100;
+		window_cfg["pos"]["y"] = 100;
 		window_cfg["res"]["w"] = 1280;
 		window_cfg["res"]["h"] = 720;
 

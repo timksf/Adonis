@@ -36,6 +36,8 @@ namespace Adonis {
 		auto is_vsync()const->bool override { return m_vsync; };
 		auto vsync()->bool& override;
 
+		inline auto pos()->glm::ivec2 override;
+		inline auto set_pos(int x, int y)->void override{ glfwSetWindowPos(m_window.get(), x, y); };
 		inline auto button_state(int button)->int override { return glfwGetMouseButton(m_window.get(), button); };
 		inline auto mouse_pos()->glm::dvec2 override{ return m_mouse_pos; };
 		inline auto width()->uint16_t override { return static_cast<uint16_t>(m_width); };

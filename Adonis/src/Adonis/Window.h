@@ -67,6 +67,10 @@ namespace Adonis {
 		*/
 		virtual auto has_focus()const->bool = 0;
 
+		virtual auto set_pos(int x, int y)->void = 0;
+
+		virtual auto pos()->glm::ivec2 = 0;
+
 		virtual auto is_vsync()const->bool = 0;
 		virtual auto vsync()->bool& = 0;
 									

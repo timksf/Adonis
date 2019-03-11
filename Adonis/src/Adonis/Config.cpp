@@ -63,7 +63,7 @@ namespace Adonis{
 		fonts_cfg["RoboSans"]["path"] = font_cfg["path"].get<std::string>() + "RoboSans/RoboSans-Regular.ttf";
 		
 		fonts_cfg["Consolas"]["name"] = "Consolas";
-		fonts_cfg["Consolas"]["path"] = font_cfg["path"].get<std::string>() + "Consolas/consolai.ttf";
+		fonts_cfg["Consolas"]["path"] = font_cfg["path"].get<std::string>() + "Consolas/CONSOLA.ttf";
 
 
 		std::ofstream file(m_filename);

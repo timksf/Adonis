@@ -223,7 +223,7 @@ namespace Adonis {
 					auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
 					app->consume_renderer()->set_viewport(0, 0, texture_res.x, texture_res.y);
 					app->consume_renderer()->set_framebuffer(fb->id());
-					app->consume_renderer()->clear_color = { {1.0f, 1.0f, 1.0f, 1.0f} };
+					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
 					pipe->activate();
 					vao->bind();

@@ -172,6 +172,7 @@ namespace Adonis {
 				if(show_tools) show_tools_window(&show_tools, &view_port_res, &texture_res, &tex_size_changed);
 
 				static std::unique_ptr<Texture2D> colortex = Texture2D::create(texture_res.x, texture_res.y);
+				static std::unique_ptr<Texture2D> colortex2 = Texture2D::create(texture_res.x, texture_res.y);
 				static std::unique_ptr<Texture2D> depthtex = Texture2D::create(texture_res.x, texture_res.y, nullptr, TexturePixelFormatSized::DEPTH16);
 				static std::unique_ptr<Framebuffer> fb = Framebuffer::create();
 
@@ -185,7 +186,7 @@ namespace Adonis {
 				colortex->set_param(TextureParameter::MAG_FILTER, TextureParamValue::FILTER_LINEAR);
 
 				fb->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
-				//fb->attach(depthtex, FramebufferTextureAttachment::DEPTH);
+				fb->attach(colortex2->id(), FramebufferTextureAttachment::COLOR, 1);
 
 				static std::unique_ptr<RenderPipeline> pipe = RenderPipeline::test_pipeline_2D();
 
@@ -195,10 +196,18 @@ namespace Adonis {
 								0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
 					};
 
+				static float quad[] = {
+					.5f,	.5f,	.0f,	1.f, 1.f, 1.f,
+					-.5f,	.5f,	.0f,	1.f, 1.f, 1.f,
+					-.5f,	-.5f,	.0f,	1.f, 1.f, 1.f,
+					.5f,	-.5f,	.0f,	1.f, 1.f, 1.f
+				};
+
 				static float z_translation = -10.0f;
 				static auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
 				static auto col_attr = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
 				static auto vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
+//				static auto vbo = VertexBuffer::create(sizeof(quad), quad, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 				static auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
 				attribs.push_back(std::move(pos_attr));
 				attribs.push_back(std::move(col_attr));
@@ -222,15 +231,20 @@ namespace Adonis {
 					auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
 					auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
 					app->consume_renderer()->set_viewport(0, 0, texture_res.x, texture_res.y);
+					fb->activate_color_attachment(0);
 					app->consume_renderer()->set_framebuffer(fb->id());
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
 					pipe->activate();
 					vao->bind();
 					app->consume_renderer()->drawTriangles(0, 3);
+					fb->activate_color_attachment(1);
+					app->consume_renderer()->clear_color = { {0.0f, 1.0f, 0.0f, 1.0f} };
+					app->consume_renderer()->clear_color_buffer();
+					app->consume_renderer()->drawTriangles(0, 3);
 					app->consume_renderer()->set_framebuffer(0);
 					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
-					ImGui::ImageButton(reinterpret_cast<uint32_t*>(colortex->id()), { 100, 100 }, { 0, 1 }, { 1, 0 });
+					ImGui::ImageButton(reinterpret_cast<uint32_t*>(colortex2->id()), { 100, 100 }, { 0, 1 }, { 1, 0 });
 					ImGui::End();
 				}
 

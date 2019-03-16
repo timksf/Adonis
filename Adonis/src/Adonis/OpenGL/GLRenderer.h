@@ -90,10 +90,13 @@ namespace Adonis {
 			GLFramebuffer();
 			~GLFramebuffer() override;
 
-			auto attach(uint32_t tex_id, FramebufferTextureAttachment attachment_type)->void override;
+			auto attach(uint32_t tex_id, FramebufferTextureAttachment attachment_type, int attachment_index)->void override;
+
+			auto activate_color_attachment(int index)->void override;
 
 			auto complete()->bool override;
 			auto id()->uint32_t override;
+			auto max_color_attachments()->int override;
 
 		private:
 			GLuint m_id;

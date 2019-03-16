@@ -471,7 +471,7 @@ namespace Adonis {
 
 		uint32_t Framebuffer::texture_attachment_types[Framebuffer::NUMBER_OF_ATTACHMENT_TYPES] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT };
 
-		GLFramebuffer::GLFramebuffer() {
+		GLFramebuffer::GLFramebuffer() : Framebuffer(max_color_attachments()) {
 			glCreateFramebuffers(1, &m_id);
 		}
 
@@ -479,8 +479,15 @@ namespace Adonis {
 			glDeleteFramebuffers(1, &m_id);
 		}
 
-		void GLFramebuffer::attach(uint32_t tex_id, FramebufferTextureAttachment attachment_type) {
-			glNamedFramebufferTexture(m_id, Framebuffer::texture_attachment_types[static_cast<uint32_t>(attachment_type)], tex_id, 0);
+		void GLFramebuffer::attach(uint32_t tex_id, FramebufferTextureAttachment attachment_type, int attachment_index) {
+			if (attachment_type != FramebufferTextureAttachment::COLOR) {
+				attachment_index = 0;
+			}
+			glNamedFramebufferTexture(m_id, Framebuffer::texture_attachment_types[static_cast<uint32_t>(attachment_type)] + attachment_index, tex_id, 0);
+		}
+
+		void GLFramebuffer::activate_color_attachment(int index) {
+			glNamedFramebufferDrawBuffer(m_id, Framebuffer::texture_attachment_types[static_cast<uint32_t>(FramebufferTextureAttachment::COLOR)] + index);
 		}
 
 		bool GLFramebuffer::complete() {
@@ -489,6 +496,12 @@ namespace Adonis {
 
 		uint32_t GLFramebuffer::id() {
 			return m_id;
+		}
+
+		int GLFramebuffer::max_color_attachments() {
+			static int lel;
+			glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &lel);
+			return lel;
 		}
 
 		std::unique_ptr<Framebuffer> Framebuffer::create() {

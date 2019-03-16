@@ -192,6 +192,7 @@
     <ClCompile Include="src\Adonis\Math\Math.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\GLRenderer.cpp" />
     <ClCompile Include="src\Adonis\OpenGL\ImGuiImplOpenGL.cpp" />
+    <ClCompile Include="src\Adonis\Rendering\Renderer.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

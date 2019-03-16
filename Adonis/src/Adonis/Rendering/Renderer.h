@@ -174,15 +174,25 @@ namespace Adonis {
 			static constexpr uint32_t NUMBER_OF_ATTACHMENT_TYPES = 3;
 			static uint32_t texture_attachment_types[NUMBER_OF_ATTACHMENT_TYPES];
 
+			const int MAX_COLOR_ATTACHMENTS;
+
 			static auto create()->std::unique_ptr<Framebuffer>;
+
+			Framebuffer() = delete;
+
+			Framebuffer(int x) : MAX_COLOR_ATTACHMENTS(x) {};
 
 			virtual ~Framebuffer() {};
 
-			virtual auto attach(uint32_t, FramebufferTextureAttachment)->void = 0;
-			
+			virtual auto attach(uint32_t, FramebufferTextureAttachment, int = 0)->void = 0;
+
+			virtual auto activate_color_attachment(int = 0)->void = 0;
+
 			virtual auto complete()->bool = 0;
 
 			virtual auto id()->uint32_t = 0;
+
+			virtual auto max_color_attachments()->int = 0;
 
 		};
 

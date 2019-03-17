@@ -178,7 +178,9 @@ namespace Adonis {
 
 				if (tex_size_changed) {
 					colortex.reset();
+					colortex2.reset();
 					colortex = Texture2D::create(texture_res.x, texture_res.y);
+					colortex2 = Texture2D::create(texture_res.x, texture_res.y);
 					tex_size_changed = false;
 				}
 
@@ -215,8 +217,7 @@ namespace Adonis {
 				static auto vao = VertexArray::create();
 				vao->add_buffer(vbo->id(), std::move(desc));
 
-				//AD_CORE_INFO(glGetError());
-
+				
 				if (!ImGui::Begin("Viewport")) {
 					ImGui::End();
 					AD_CORE_ERROR("Failed to create render window");
@@ -230,9 +231,9 @@ namespace Adonis {
 					view_port_res.y = wh;
 					auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
 					auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
+					app->consume_renderer()->set_framebuffer(fb->id());
 					app->consume_renderer()->set_viewport(0, 0, texture_res.x, texture_res.y);
 					fb->activate_color_attachment(0);
-					app->consume_renderer()->set_framebuffer(fb->id());
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
 					pipe->activate();
@@ -287,7 +288,7 @@ namespace Adonis {
 
 			if (ImGui::BeginMenu("Menu")) {
 
-				ImGui::MenuItem("Debug", NULL, show_debug);
+				ImGui::MenuItem("Debug Info", NULL, show_debug);
 				ImGui::MenuItem("Demo window", NULL, show_demo);
 				ImGui::MenuItem("Style editor", NULL, show_style_edit);
 				ImGui::MenuItem("Tools", NULL, show_tools);

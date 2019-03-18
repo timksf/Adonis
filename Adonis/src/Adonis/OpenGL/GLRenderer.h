@@ -475,7 +475,11 @@ namespace Adonis {
 			/**
 			*	@brief	Enable underlying OpenGL vertex array object
 			*/
-			auto bind()->void;
+			auto bind()->void override;
+
+			auto clear_buffers()->void override;
+
+			auto id()->uint32_t override;
 
 		private:
 			std::unordered_map<GLuint, std::unique_ptr<VertexArrayDesc>> m_vbuffers;

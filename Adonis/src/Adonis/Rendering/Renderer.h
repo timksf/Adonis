@@ -526,6 +526,8 @@ namespace Adonis {
 			*/
 			virtual auto bind()->void = 0;
 
+			virtual auto id()->uint32_t = 0;
+
 			/**
 			*	@brief					Add a buffer to the vertex array object with a corresponding description of the buffer's structure
 			*
@@ -533,6 +535,8 @@ namespace Adonis {
 			*	@param	attrib_desc		the description of the buffer's structure, basically a list of attribute formats
 			*/
 			virtual auto add_buffer(uint32_t id, std::unique_ptr<VertexArrayDesc> attrib_desc)->bool = 0;
+
+			virtual auto clear_buffers()->void = 0;
 
 		};
 

@@ -423,6 +423,7 @@ namespace Adonis {
 			glVertexArrayVertexBuffer(m_id, bindingindex, vbo, m_vbuffers[vbo]->baseoffset(), m_vbuffers[vbo]->stride());
 			for (auto& attrib : m_vbuffers[vbo]->attribs()) {
 				auto glattrib = dynamic_cast<GLVertexAttrib*>(attrib.get());
+				//AD_CORE_INFO("Buffer: {0}, binding point: {1}, attrib: {2}", vbo, bindingindex, glattrib->_index);
 				glEnableVertexArrayAttrib(m_id, glattrib->_index);
 				glVertexArrayAttribFormat(m_id, glattrib->_index, glattrib->_size, glattrib->_type, glattrib->_normalized, glattrib->_offset);
 				glVertexArrayAttribBinding(m_id, glattrib->_index, bindingindex);
@@ -432,6 +433,14 @@ namespace Adonis {
 
 		void GLVertexArray::bind() {
 			glBindVertexArray(m_id);
+		}
+
+		void GLVertexArray::clear_buffers() {
+			m_vbuffers.clear();
+		}
+
+		uint32_t GLVertexArray::id() {
+			return m_id;
 		}
 
 		/**

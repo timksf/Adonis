@@ -198,10 +198,16 @@ namespace Adonis {
 								0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
 					};
 
-				static float vertices2[] =
-				{ /*pos:*/ -0.5f, -1.f, 0.0f, 0.0f, 1.0f, 0.0f,
-							-0.5f, 1.f, 0.0f, 0.0f, 1.0f, 0.0f,
-							-0.0f, 1.f, 0.0f, 0.0f, 0.0f, 1.0f,
+				static float quad[] =
+				{ /*pos:*/ -0.5f, -.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+							-0.5f, .5f, 0.0f, 0.0f, 1.0f, 0.0f,
+							0.5f, -.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+							0.5f, .5f, 0.0f, 0.0f, 0.0f, 1.0f,
+				};
+
+				static uint32_t indices[] = {
+					0, 1, 2,
+					1, 2, 3
 				};
 
 				static float z_translation = -10.0f;
@@ -213,13 +219,9 @@ namespace Adonis {
 				attribs.push_back(std::move(col_attr));
 				static auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
 
-				static auto pos_attr2 = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
-				static auto col_attr2 = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
-				static auto attribs2 = std::vector<std::unique_ptr<VertexAttrib>>();
-				attribs2.push_back(std::move(pos_attr2));
-				attribs2.push_back(std::move(col_attr2));
-				static auto vbo2 = VertexBuffer::create(sizeof(vertices2), vertices2, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
-				static auto desc2 = VertexArrayDesc::create(std::move(attribs2), 0, sizeof(float) * 6);
+				static auto vbo2 = VertexBuffer::create(sizeof(quad), quad, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
+				static auto ibo1 = IndexBuffer::create(sizeof(indices), indices, BufferBit::DYNAMIC_STORAGE);
+
 
 				static auto vao = VertexArray::create();
 				static auto vao2 = VertexArray::create();
@@ -228,7 +230,6 @@ namespace Adonis {
 
 				if (!added) {
 					vao->add_buffer(vbo->id(), std::move(desc));
-					vao2->add_buffer(vbo2->id(), std::move(desc2));
 					added = true;
 				}
 
@@ -236,6 +237,8 @@ namespace Adonis {
 				//glDisableVertexArrayAttrib(vao->id(), 0);
 				//glEnableVertexArrayAttrib(vao->id(), 2);
 				//AD_CORE_INFO(glGetError());
+
+				glVertexArrayElementBuffer(vao->id(), ibo1->id());
 
 				if (!ImGui::Begin("Viewport")) {
 					ImGui::End();
@@ -257,11 +260,17 @@ namespace Adonis {
 					app->consume_renderer()->clear_color_buffer();
 					pipe->activate();
 					vao->bind();
+					glVertexArrayVertexBuffer(vao->id(), 0, vbo->id(), 0, sizeof(float)*6);
 					app->consume_renderer()->drawTriangles(0, 3);
 					fb->activate_color_attachment(1);
 					app->consume_renderer()->clear_color = { {1.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
-					vao2->bind();
+					//vao2->bind();
+					//ibo1->bind();
+					glVertexArrayVertexBuffer(vao->id(), 0, vbo2->id(), 0, sizeof(float)*6);
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+					//AD_CORE_INFO("{0}  {1}  {2}", vbo2->id(), 0, sizeof(float)*6);
+					//vao->bind();
 					app->consume_renderer()->drawTriangles(0, 3);
 					app->consume_renderer()->set_framebuffer(0);
 					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });

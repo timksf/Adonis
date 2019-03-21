@@ -25,6 +25,17 @@ namespace Adonis {
 			}
 		};
 
+		enum class DrawMode {
+			Triangles = 0,
+			Lines,
+			Points,
+		};
+
+		enum class DrawMethod {
+			Classic = 0,
+			Indexed
+		};
+
 		class RenderPipeline;
 
 		class ADONIS_API RenderDevice : public EventListener {

@@ -44,12 +44,22 @@ namespace Adonis::rendersystem {
 	class Mesh {
 	public:
 
+		Mesh();
+
+		Mesh(void* vertices, uint32_t nvertices, void* indices = nullptr, uint32_t nindices = 0, render::DrawMode mode = render::DrawMode::Triangles);
+
+		auto specs()const->MeshSpecification;
+		auto prim_count()const->uint32_t;
+
 	private:
 		uint32_t m_ibo;
 		uint32_t m_vbo;
 		uint32_t m_vao;
 		uint32_t m_n_vertices;
 		uint32_t m_n_indices;
+		uint32_t m_prim_count;
+
+		MeshSpecification m_specs;
 		
 	};
 

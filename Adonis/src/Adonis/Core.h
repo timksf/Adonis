@@ -41,6 +41,8 @@
 
 #define ON_EVENT_BIND_CLIENT(event_type, type)	ON_EVENT(Adonis::event_type, BIND_FN(type, on_##event_type))
 
+#define AD_EMPTY_BODY {}
+
 
 #define AD_FALSE 0
 #define AD_TRUE 1

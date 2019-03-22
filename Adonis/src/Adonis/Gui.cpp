@@ -224,7 +224,6 @@ namespace Adonis {
 
 
 				static auto vao = VertexArray::create();
-				static auto vao2 = VertexArray::create();
 
 				static bool added = false;
 
@@ -233,12 +232,15 @@ namespace Adonis {
 					added = true;
 				}
 
+				static auto vao2 = VertexArray::create();
+
 				//vao->clear_buffers();
 				//glDisableVertexArrayAttrib(vao->id(), 0);
 				//glEnableVertexArrayAttrib(vao->id(), 2);
 				//AD_CORE_INFO(glGetError());
 
 				glVertexArrayElementBuffer(vao->id(), ibo1->id());
+				vao->bind();
 
 				if (!ImGui::Begin("Viewport")) {
 					ImGui::End();
@@ -259,19 +261,16 @@ namespace Adonis {
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
 					pipe->activate();
-					vao->bind();
 					glVertexArrayVertexBuffer(vao->id(), 0, vbo->id(), 0, sizeof(float)*6);
 					app->consume_renderer()->drawTriangles(0, 3);
 					fb->activate_color_attachment(1);
 					app->consume_renderer()->clear_color = { {1.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
-					//vao2->bind();
-					//ibo1->bind();
 					glVertexArrayVertexBuffer(vao->id(), 0, vbo2->id(), 0, sizeof(float)*6);
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-					//AD_CORE_INFO("{0}  {1}  {2}", vbo2->id(), 0, sizeof(float)*6);
+					////AD_CORE_INFO("{0}  {1}  {2}", vbo2->id(), 0, sizeof(float)*6);
 					//vao->bind();
-					app->consume_renderer()->drawTriangles(0, 3);
+					//app->consume_renderer()->drawTriangles(0, 3);
 					app->consume_renderer()->set_framebuffer(0);
 					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
 					ImGui::ImageButton(reinterpret_cast<uint32_t*>(colortex2->id()), { 100, 100 }, { 0, 1 }, { 1, 0 });

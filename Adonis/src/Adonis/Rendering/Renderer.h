@@ -499,6 +499,12 @@ namespace Adonis {
 			static auto create(uint32_t index, uint32_t offset, VertexType type, uint32_t size)->std::unique_ptr<VertexAttrib>;
 
 			virtual ~VertexAttrib() {};
+
+			virtual auto index()->uint32_t = 0;
+			virtual auto offset()->uint32_t = 0;
+			virtual auto type()->VertexType = 0;
+			virtual auto size()->uint32_t = 0;
+			virtual auto normalized()->bool { return false; };
 		};
 
 		
@@ -528,7 +534,7 @@ namespace Adonis {
 		class ADONIS_API VertexArray {
 		public:
 
-			static auto create()->std::unique_ptr<VertexArray>;
+			static auto create(std::unique_ptr<VertexArrayDesc>&&)->std::unique_ptr<VertexArray>;
 
 			virtual ~VertexArray() {};
 
@@ -545,9 +551,11 @@ namespace Adonis {
 			*	@param	vbo				the name/id of the vertex buffer object
 			*	@param	attrib_desc		the description of the buffer's structure, basically a list of attribute formats
 			*/
-			virtual auto add_buffer(uint32_t id, std::unique_ptr<VertexArrayDesc> attrib_desc)->bool = 0;
+			//virtual auto add_buffer(uint32_t id, std::unique_ptr<VertexArrayDesc> attrib_desc)->bool = 0;
 
-			virtual auto clear_buffers()->void = 0;
+			virtual auto set_buffer(uint32_t id, uint32_t bindingindex, int32_t custom_baseoffset = -1, int32_t custom_stride = -1)->void = 0;
+
+			virtual auto add_desc(std::unique_ptr<VertexArrayDesc>&& desc, bool increase_bindingindex = false, bool overwrite_existing_attribs = false)->uint32_t = 0;
 
 		};
 

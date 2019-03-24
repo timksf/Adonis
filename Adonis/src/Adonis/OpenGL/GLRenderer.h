@@ -392,11 +392,19 @@ namespace Adonis {
 			*/
 			GLVertexAttrib(GLuint index, GLuint offset, GLenum type, GLuint size, GLboolean normalized);
 
-			GLuint _index;
-			GLuint _offset;
-			GLenum _type;
-			GLuint _size;
-			GLboolean _normalized;
+			inline auto index()->uint32_t override { return m_index; };
+			inline auto offset()->uint32_t override { return m_offset; };
+			inline auto type()->VertexType override { return static_cast<VertexType>(m_type); };
+			inline auto size()->uint32_t override { return m_size; };
+
+			inline auto normalized()->bool override { return m_normalized; };
+
+		private:
+			GLuint m_index;
+			GLuint m_offset;
+			GLenum m_type;
+			GLuint m_size;
+			GLboolean m_normalized;
 		};
 
 		class ADONIS_API GLVertexArrayDesc : public VertexArrayDesc {
@@ -444,10 +452,12 @@ namespace Adonis {
 		class ADONIS_API GLVertexArray : public VertexArray {
 		public:
 
+			GLVertexArray() = delete;
+
 			/**
 			*	@brief Create the underlying OpenGL vertex array object and store the id
 			*/
-			GLVertexArray();
+			GLVertexArray(std::unique_ptr<VertexArrayDesc>&&);
 
 			/**
 			*	@brief Properly release the underlying OpenGL vertex array object
@@ -470,19 +480,22 @@ namespace Adonis {
 			*	@param	vbo				the name/id of the vertex buffer object
 			*	@param	attrib_desc		the description of the buffer's structure, basically a list of attribute formats
 			*/
-			auto add_buffer(GLuint vbo, std::unique_ptr<VertexArrayDesc> attrib_desc)->bool override;
+			//auto add_buffer(GLuint vbo, std::unique_ptr<VertexArrayDesc> attrib_desc)->bool override;
 
 			/**
 			*	@brief	Enable underlying OpenGL vertex array object
 			*/
 			auto bind()->void override;
 
-			auto clear_buffers()->void override;
-
 			auto id()->uint32_t override;
 
+			auto set_buffer(GLuint bufferid, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride)->void override;
+
+			auto add_desc(std::unique_ptr<VertexArrayDesc>&& desc, bool increase_bindingindex, bool overwrite_existing_attribs)->uint32_t override;
+
 		private:
-			std::unordered_map<GLuint, std::unique_ptr<VertexArrayDesc>> m_vbuffers;
+			uint32_t m_current_bindingindex;
+			std::unique_ptr<VertexArrayDesc> m_desc;
 			GLuint m_id;
 		};
 

@@ -13,7 +13,7 @@ namespace Adonis::rendersystem {
 		Model(std::unique_ptr<Mesh>&& mesh);
 
 		auto mesh_specs()const->MeshSpecification;
-		auto primitive_count()const->uint32_t;
+		auto primitive_count()const->uint32_t; 
 
 	private:
 		std::unique_ptr<Mesh> m_mesh;

@@ -219,20 +219,18 @@ namespace Adonis {
 				attribs.push_back(std::move(col_attr));
 				static auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
 
+				static auto col_attr2 = VertexAttrib::create(0, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
+				static auto attribs2 = std::vector<std::unique_ptr<VertexAttrib>>();
+				attribs2.push_back(std::move(col_attr2));
+				static auto desc2 = VertexArrayDesc::create(std::move(attribs2), 0, sizeof(float) * 6);
+
+
 				static auto vbo2 = VertexBuffer::create(sizeof(quad), quad, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 				static auto ibo1 = IndexBuffer::create(sizeof(indices), indices, BufferBit::DYNAMIC_STORAGE);
 
 
-				static auto vao = VertexArray::create();
-
-				static bool added = false;
-
-				if (!added) {
-					vao->add_buffer(vbo->id(), std::move(desc));
-					added = true;
-				}
-
-				static auto vao2 = VertexArray::create();
+				static auto vao = VertexArray::create(std::move(desc));
+				vao->add_desc(std::move(desc2), false, true);
 
 				//vao->clear_buffers();
 				//glDisableVertexArrayAttrib(vao->id(), 0);
@@ -261,12 +259,12 @@ namespace Adonis {
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
 					pipe->activate();
-					glVertexArrayVertexBuffer(vao->id(), 0, vbo->id(), 0, sizeof(float)*6);
+					vao->set_buffer(vbo->id(), 0);
 					app->consume_renderer()->drawTriangles(0, 3);
 					fb->activate_color_attachment(1);
 					app->consume_renderer()->clear_color = { {1.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
-					glVertexArrayVertexBuffer(vao->id(), 0, vbo2->id(), 0, sizeof(float)*6);
+					vao->set_buffer(vbo2->id(), 0); 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 					////AD_CORE_INFO("{0}  {1}  {2}", vbo2->id(), 0, sizeof(float)*6);
 					//vao->bind();

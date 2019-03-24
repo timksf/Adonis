@@ -370,11 +370,11 @@ namespace Adonis {
 		uint32_t VertexBuffer::vertex_type_mapping[VertexBuffer::NUMBER_OF_VERTEX_TYPES] = { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT };
 
 		GLVertexAttrib::GLVertexAttrib(GLuint index, GLuint offset, GLenum type, GLuint size, GLboolean normalized) {
-			_index = index;
-			_offset = offset;
-			_type = type;
-			_size = size;
-			_normalized = normalized;
+			m_index = index;
+			m_offset = offset;
+			m_type = type;
+			m_size = size;
+			m_normalized = normalized;
 		}
 
 
@@ -405,38 +405,56 @@ namespace Adonis {
 			Vertex Array Object
 		*/
 
-		GLVertexArray::GLVertexArray() {
+
+		GLVertexArray::GLVertexArray(std::unique_ptr<VertexArrayDesc>&& desc): m_desc(std::move(desc)), m_current_bindingindex(0) {
 			glCreateVertexArrays(1, &m_id);
+			glVertexArrayVertexBuffer(m_id, 0, 0, m_desc->baseoffset(), m_desc->stride());
+			for (auto& attrib : m_desc->attribs()) {
+				//AD_CORE_INFO("Buffer: {0}, binding point: {1}, attrib: {2}", vbo, bindingindex, glattrib->_index);
+				glEnableVertexArrayAttrib(m_id, attrib->index());
+				glVertexArrayAttribFormat(m_id, attrib->index(), attrib->size(), static_cast<uint32_t>(attrib->type()), attrib->normalized(), attrib->offset());
+				glVertexArrayAttribBinding(m_id, attrib->index(), 0);
+			}
 		}
 
 		GLVertexArray::~GLVertexArray() {
 			glDeleteVertexArrays(1, &m_id);
 		}
 
-		std::unique_ptr<VertexArray> VertexArray::create() {
-			return std::make_unique<GLVertexArray>();
+		std::unique_ptr<VertexArray> VertexArray::create(std::unique_ptr<VertexArrayDesc>&& desc) {
+			return std::make_unique<GLVertexArray>(std::move(desc));
 		}
 
-		bool GLVertexArray::add_buffer(GLuint vbo, std::unique_ptr<VertexArrayDesc> desc) {
-			m_vbuffers.insert(std::make_pair(vbo, std::move(desc)));
-			GLuint bindingindex = static_cast<uint32_t>(m_vbuffers.size() - 1);
-			glVertexArrayVertexBuffer(m_id, bindingindex, vbo, m_vbuffers[vbo]->baseoffset(), m_vbuffers[vbo]->stride());
-			for (auto& attrib : m_vbuffers[vbo]->attribs()) {
-				auto glattrib = dynamic_cast<GLVertexAttrib*>(attrib.get());
-				//AD_CORE_INFO("Buffer: {0}, binding point: {1}, attrib: {2}", vbo, bindingindex, glattrib->_index);
-				glEnableVertexArrayAttrib(m_id, glattrib->_index);
-				glVertexArrayAttribFormat(m_id, glattrib->_index, glattrib->_size, glattrib->_type, glattrib->_normalized, glattrib->_offset);
-				glVertexArrayAttribBinding(m_id, glattrib->_index, bindingindex);
+		void GLVertexArray::set_buffer(GLuint vbo, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride) {
+			int32_t baseoffset = (custom_baseoffset < 0) ? m_desc->baseoffset() : custom_baseoffset;
+			int32_t stride = (custom_stride < 0) ? m_desc->stride() : custom_stride;
+			glVertexArrayVertexBuffer(m_id, bindingindex, vbo, baseoffset, stride);
+		}
+
+		uint32_t GLVertexArray::add_desc(std::unique_ptr<VertexArrayDesc>&& desc, bool increase_bindingindex, bool overwrite_existing_attribs) {
+			if (increase_bindingindex) {
+				m_current_bindingindex++;
 			}
-			return true;
+
+
+			for (auto& attr : desc->attribs()) {
+				if (attr == nullptr)
+					continue;
+				for (auto it = m_desc->attribs().begin(); it != m_desc->attribs().end(); it++) {
+					auto& mattr = *it;
+					if (mattr->index() == attr->index()) {
+						if (overwrite_existing_attribs) {
+							*it = std::move(attr);
+							break;
+						}
+					}
+				}
+			}
+			return m_current_bindingindex;
 		}
 
 		void GLVertexArray::bind() {
 			glBindVertexArray(m_id);
-		}
-
-		void GLVertexArray::clear_buffers() {
-			m_vbuffers.clear();
 		}
 
 		uint32_t GLVertexArray::id() {

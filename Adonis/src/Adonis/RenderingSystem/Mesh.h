@@ -59,6 +59,8 @@ namespace Adonis::rendersystem {
 		uint32_t m_n_indices;
 		uint32_t m_prim_count;
 
+		std::unique_ptr<render::VertexArrayDesc> m_buffer_desc;
+
 		MeshSpecification m_specs;
 		
 	};

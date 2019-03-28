@@ -219,7 +219,7 @@ namespace Adonis {
 				attribs.push_back(std::move(col_attr));
 				static auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
 
-				static auto col_attr2 = VertexAttrib::create(0, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
+				static auto col_attr2 = VertexAttrib::create(2, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
 				static auto attribs2 = std::vector<std::unique_ptr<VertexAttrib>>();
 				attribs2.push_back(std::move(col_attr2));
 				static auto desc2 = VertexArrayDesc::create(std::move(attribs2), 0, sizeof(float) * 6);

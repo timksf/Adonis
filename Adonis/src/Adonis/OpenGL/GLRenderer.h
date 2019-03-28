@@ -493,6 +493,10 @@ namespace Adonis {
 
 			auto add_desc(std::unique_ptr<VertexArrayDesc>&& desc, bool increase_bindingindex, bool overwrite_existing_attribs)->uint32_t override;
 
+		protected:
+
+			auto add_attrib_to_underlying_obj(uint32_t where)->void override;
+
 		private:
 			uint32_t m_current_bindingindex;
 			std::unique_ptr<VertexArrayDesc> m_desc;

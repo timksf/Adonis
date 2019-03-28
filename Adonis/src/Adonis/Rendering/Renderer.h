@@ -557,6 +557,8 @@ namespace Adonis {
 
 			virtual auto add_desc(std::unique_ptr<VertexArrayDesc>&& desc, bool increase_bindingindex = false, bool overwrite_existing_attribs = false)->uint32_t = 0;
 
+		protected:
+			virtual auto add_attrib_to_underlying_obj(uint32_t where)->void = 0;
 		};
 
 

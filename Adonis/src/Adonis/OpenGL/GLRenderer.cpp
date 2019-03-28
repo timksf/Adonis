@@ -409,11 +409,8 @@ namespace Adonis {
 		GLVertexArray::GLVertexArray(std::unique_ptr<VertexArrayDesc>&& desc): m_desc(std::move(desc)), m_current_bindingindex(0) {
 			glCreateVertexArrays(1, &m_id);
 			glVertexArrayVertexBuffer(m_id, 0, 0, m_desc->baseoffset(), m_desc->stride());
-			for (auto& attrib : m_desc->attribs()) {
-				//AD_CORE_INFO("Buffer: {0}, binding point: {1}, attrib: {2}", vbo, bindingindex, glattrib->_index);
-				glEnableVertexArrayAttrib(m_id, attrib->index());
-				glVertexArrayAttribFormat(m_id, attrib->index(), attrib->size(), static_cast<uint32_t>(attrib->type()), attrib->normalized(), attrib->offset());
-				glVertexArrayAttribBinding(m_id, attrib->index(), 0);
+			for (uint32_t i = 0; i < m_desc->attribs().size(); i++) {
+				this->add_attrib_to_underlying_obj(i);
 			}
 		}
 
@@ -423,6 +420,13 @@ namespace Adonis {
 
 		std::unique_ptr<VertexArray> VertexArray::create(std::unique_ptr<VertexArrayDesc>&& desc) {
 			return std::make_unique<GLVertexArray>(std::move(desc));
+		}
+
+		void GLVertexArray::add_attrib_to_underlying_obj(uint32_t where) {
+			auto& attrib = m_desc->attribs()[where];
+			glEnableVertexArrayAttrib(m_id, attrib->index());
+			glVertexArrayAttribFormat(m_id, attrib->index(), attrib->size(), static_cast<uint32_t>(attrib->type()), attrib->normalized(), attrib->offset());
+			glVertexArrayAttribBinding(m_id, attrib->index(), m_current_bindingindex);
 		}
 
 		void GLVertexArray::set_buffer(GLuint vbo, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride) {
@@ -440,14 +444,21 @@ namespace Adonis {
 			for (auto& attr : desc->attribs()) {
 				if (attr == nullptr)
 					continue;
+				bool already_existing = false;
 				for (auto it = m_desc->attribs().begin(); it != m_desc->attribs().end(); it++) {
 					auto& mattr = *it;
 					if (mattr->index() == attr->index()) {
+						already_existing = true;
 						if (overwrite_existing_attribs) {
 							*it = std::move(attr);
 							break;
 						}
 					}
+				}
+				if (!already_existing) {
+					m_desc->attribs().push_back(std::move(attr));
+					//Add to underlying VAO
+					this->add_attrib_to_underlying_obj(m_desc->attribs().size() - 1);
 				}
 			}
 			return m_current_bindingindex;

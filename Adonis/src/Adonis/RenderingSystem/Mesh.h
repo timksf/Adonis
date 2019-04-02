@@ -23,6 +23,7 @@ namespace Adonis::rendersystem {
 	private:
 		render::DrawMode m_draw_mode;
 		render::DrawMethod m_draw_method;
+		std::shared_ptr<render::VertexArrayDesc> m_buffer_desc;
 	};
 
 	template<typename T> class Hasher;

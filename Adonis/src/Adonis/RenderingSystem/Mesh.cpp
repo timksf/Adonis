@@ -19,7 +19,7 @@ namespace Adonis::rendersystem {
 		m_prim_count(0),
 		m_specs({})
 	{
-
+		m_specs = MeshSpecification(render::DrawMode::Triangles);
 	};
 
 	/*Mesh::Mesh(void* vertices, uint32_t nvertices, void* indices, uint32_t nindices, render::DrawMode draw_mode):
@@ -38,10 +38,10 @@ namespace Adonis::rendersystem {
 	}*/
 
 	bool MeshSpecification::operator==(const MeshSpecification& rhs) const {
-		return (m_draw_mode == rhs.m_draw_mode) && (m_draw_method == rhs.m_draw_method);
+		return (m_draw_mode == rhs.m_draw_mode) && (m_draw_method == rhs.m_draw_method) && (m_buffer_desc == rhs.m_buffer_desc);
 	}
 
-	MeshSpecification Mesh::specs()const {
+	MeshSpecification Mesh::specs()const{
 		return m_specs;
 	}
 	

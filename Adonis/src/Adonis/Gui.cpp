@@ -229,8 +229,8 @@ namespace Adonis {
 				static auto ibo1 = IndexBuffer::create(sizeof(indices), indices, BufferBit::DYNAMIC_STORAGE);
 
 
-				static auto vao = VertexArray::create(std::move(desc));
-				vao->add_desc(std::move(desc2), false, true);
+				static auto vao = VertexArray::create(desc);
+				vao->add_desc(desc2, false, true);
 
 				//vao->clear_buffers();
 				//glDisableVertexArrayAttrib(vao->id(), 0);

@@ -3,26 +3,29 @@
 #include "Adonis/Core.h"
 #include "Mesh.h"
 
-namespace Adonis::rendersystem {
+namespace Adonis {
 
-	class Model {
-	public:
+	namespace rendersystem {
 
-		Model() = delete;
+		class Model {
+		public:
 
-		Model(std::unique_ptr<Mesh>&& mesh);
+			Model() = delete;
 
-		auto mesh_specs()const->MeshSpecification;
-		auto primitive_count()const->uint32_t; 
+			Model(std::unique_ptr<Mesh>&& mesh);
 
-	private:
-		std::unique_ptr<Mesh> m_mesh;
+			auto mesh_specs()const->MeshSpecification;
+			auto primitive_count()const->uint32_t;
 
-		glm::vec3 m_pos;
-		glm::vec3 m_rotation;
-		glm::vec3 m_scale;
+		private:
+			std::unique_ptr<Mesh> m_mesh;
 
-		glm::mat4 m_matrix;
-	};
+			glm::vec3 m_pos;
+			glm::vec3 m_rotation;
+			glm::vec3 m_scale;
 
+			glm::mat4 m_matrix;
+		};
+
+	}
 }

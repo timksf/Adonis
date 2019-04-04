@@ -4,6 +4,7 @@
 #include "GLRenderer.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "Adonis/Math/Math.h"
+#include "Adonis/RenderingSystem/Scene.h"
 
 namespace Adonis {
 
@@ -40,7 +41,7 @@ namespace Adonis {
 			glDrawArrays(GL_TRIANGLES, offset, count);
 		}
 
-		void GLRenderer::draw(std::shared_ptr<rendersystem::Scene> scene) {
+		void GLRenderer::draw(std::shared_ptr<Adonis::rendersystem::Scene> scene) {
 
 			for (auto& mesh_spec : scene->mesh_specs()) {
 				

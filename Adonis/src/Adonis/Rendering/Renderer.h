@@ -3,9 +3,12 @@
 #include "Adonis/Core.h"
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "glm/glm.hpp"
-#include "Adonis/RenderingSystem/Scene.h"
 
 namespace Adonis {
+
+	namespace rendersystem {
+		class Scene;
+	};
 
 	namespace render {
 

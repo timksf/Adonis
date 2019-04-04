@@ -44,7 +44,7 @@ namespace Adonis {
 			//Extract keys from model map
 			std::vector<MeshSpecification> keys;
 			keys.reserve(m_models.size());
-			for (auto kv : m_models) {
+			for (auto& kv : m_models) {
 				keys.push_back(kv.first);
 			}
 			return keys;

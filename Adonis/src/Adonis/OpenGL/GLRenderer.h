@@ -36,6 +36,10 @@ namespace Adonis {
 
 			auto set_viewport(int x0, int y0, uint32_t width, uint32_t height)->void override;
 
+			auto draw(std::shared_ptr<rendersystem::Scene> scene)->void override;
+
+			auto draw(DrawMethod method, DrawMode mode, int offset, int count)->void override;
+
 			/**
 			*	@brief			Change the currently acitve rendering pipeline
 			*	@param pipe		A pointer to the pipeline, which should be activated
@@ -457,7 +461,7 @@ namespace Adonis {
 			/**
 			*	@brief Create the underlying OpenGL vertex array object and store the id
 			*/
-			GLVertexArray(std::unique_ptr<VertexArrayDesc>&&);
+			GLVertexArray(std::shared_ptr<VertexArrayDesc>);
 
 			/**
 			*	@brief Properly release the underlying OpenGL vertex array object
@@ -491,7 +495,9 @@ namespace Adonis {
 
 			auto set_buffer(GLuint bufferid, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride)->void override;
 
-			auto add_desc(std::unique_ptr<VertexArrayDesc>&& desc, bool increase_bindingindex, bool overwrite_existing_attribs)->uint32_t override;
+			auto add_desc(std::shared_ptr<VertexArrayDesc> desc, bool increase_bindingindex, bool overwrite_existing_attribs)->uint32_t override;
+
+			auto desc()->std::shared_ptr<VertexArrayDesc> override;
 
 		protected:
 
@@ -499,7 +505,7 @@ namespace Adonis {
 
 		private:
 			uint32_t m_current_bindingindex;
-			std::unique_ptr<VertexArrayDesc> m_desc;
+			std::shared_ptr<VertexArrayDesc> m_desc;
 			GLuint m_id;
 		};
 

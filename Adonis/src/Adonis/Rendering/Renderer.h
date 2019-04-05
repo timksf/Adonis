@@ -6,6 +6,10 @@
 
 namespace Adonis {
 
+	namespace rendersystem {
+		class Scene;
+	};
+
 	namespace render {
 
 		struct Color {
@@ -30,7 +34,7 @@ namespace Adonis {
 			Lines,
 			Points,
 		};
-
+		
 		enum class DrawMethod {
 			Classic = 0,
 			Indexed
@@ -40,6 +44,10 @@ namespace Adonis {
 
 		class ADONIS_API RenderDevice : public EventListener {
 		public:
+
+			static constexpr uint32_t NUMBER_OF_DRAWMODES = 3u;
+
+			static uint32_t drawmode_lookup[NUMBER_OF_DRAWMODES];
 
 			inline RenderDevice(const Color& clear_color) : clear_color(clear_color) {};
 
@@ -66,6 +74,10 @@ namespace Adonis {
 			virtual auto set_framebuffer(uint32_t id)->void = 0;
 
 			virtual auto set_viewport(int x0, int y0, uint32_t width, uint32_t height)->void = 0;
+
+			virtual auto draw(std::shared_ptr<rendersystem::Scene> scene)->void = 0;
+
+			virtual auto draw(DrawMethod method, DrawMode mode, int offset, int count)->void = 0;
 
 			/**
 			*	@brief			Change the currently active rendering pipeline
@@ -511,7 +523,7 @@ namespace Adonis {
 		class ADONIS_API VertexArrayDesc {
 		public:
 
-			static auto create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride)->std::unique_ptr<VertexArrayDesc>;
+			static auto create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride)->std::shared_ptr<VertexArrayDesc>;
 
 			virtual ~VertexArrayDesc() {};
 
@@ -534,7 +546,7 @@ namespace Adonis {
 		class ADONIS_API VertexArray {
 		public:
 
-			static auto create(std::unique_ptr<VertexArrayDesc>&&)->std::unique_ptr<VertexArray>;
+			static auto create(std::shared_ptr<VertexArrayDesc>)->std::unique_ptr<VertexArray>;
 
 			virtual ~VertexArray() {};
 
@@ -555,7 +567,9 @@ namespace Adonis {
 
 			virtual auto set_buffer(uint32_t id, uint32_t bindingindex, int32_t custom_baseoffset = -1, int32_t custom_stride = -1)->void = 0;
 
-			virtual auto add_desc(std::unique_ptr<VertexArrayDesc>&& desc, bool increase_bindingindex = false, bool overwrite_existing_attribs = false)->uint32_t = 0;
+			virtual auto add_desc(std::shared_ptr<VertexArrayDesc> desc, bool increase_bindingindex = false, bool overwrite_existing_attribs = false)->uint32_t = 0;
+
+			virtual auto desc()->std::shared_ptr<VertexArrayDesc> = 0;
 
 		protected:
 			virtual auto add_attrib_to_underlying_obj(uint32_t where)->void = 0;

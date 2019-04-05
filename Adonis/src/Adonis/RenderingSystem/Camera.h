@@ -4,38 +4,41 @@
 #include "glm/glm.hpp"
 
 
-namespace Adonis::rendersystem {
+namespace Adonis {
 
-	class Camera {
-	public:
+	namespace rendersystem {
 
-		Camera();
+		class Camera {
+		public:
 
-		auto view()->glm::mat4&;
-		auto view()const->glm::mat4;
-		auto projection()->glm::mat4&;
-		auto projection()const->glm::mat4;
+			Camera();
 
-	private:
-		float m_fov;
-		float m_aspectratio;
-		float m_speed;
-		float m_sensitivity;
+			auto view()->glm::mat4&;
+			auto view()const->glm::mat4;
+			auto projection()->glm::mat4&;
+			auto projection()const->glm::mat4;
 
-		glm::vec2 m_clip_space;
+		private:
+			float m_fov;
+			float m_aspectratio;
+			float m_speed;
+			float m_sensitivity;
 
-		glm::vec3 m_pos;
-		glm::vec3 m_orientation;
-		glm::vec3 m_front;
-		glm::vec3 m_world_up;
-		glm::vec3 m_up;
-		glm::vec3 m_right;
-		glm::vec3 m_down;
+			glm::vec2 m_clip_space;
 
-		glm::mat4 m_view;
-		glm::mat4 m_projection;
+			glm::vec3 m_pos;
+			glm::vec3 m_orientation;
+			glm::vec3 m_front;
+			glm::vec3 m_world_up;
+			glm::vec3 m_up;
+			glm::vec3 m_right;
+			glm::vec3 m_down;
 
-		auto update()->void;
-	};
+			glm::mat4 m_view;
+			glm::mat4 m_projection;
 
+			auto update()->void;
+		};
+
+	}
 }

@@ -43,6 +43,9 @@
 
 #define AD_EMPTY_BODY {}
 
+#define AD_ENUM_TO_UNDERLYING(value, type) static_cast<std::underlying_type_t<type>>(value)
+#define AD_ENUM_TO_INDEX(value) static_cast<uint32_t>(value)
+
 
 #define AD_FALSE 0
 #define AD_TRUE 1

@@ -4,6 +4,7 @@
 #include "GLRenderer.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "Adonis/Math/Math.h"
+#include "Adonis/RenderingSystem/Scene.h"
 
 namespace Adonis {
 
@@ -22,6 +23,8 @@ namespace Adonis {
 
 		}
 
+		uint32_t RenderDevice::drawmode_lookup[RenderDevice::NUMBER_OF_DRAWMODES] = { GL_TRIANGLES, GL_POINTS, GL_LINES };
+
 		std::unique_ptr<RenderDevice> RenderDevice::create(const Color& clear_color) {
 			return std::make_unique<GLRenderer>(clear_color);
 		}
@@ -36,6 +39,27 @@ namespace Adonis {
 
 		void GLRenderer::drawTriangles(int offset, int count) {
 			glDrawArrays(GL_TRIANGLES, offset, count);
+		}
+
+		void GLRenderer::draw(std::shared_ptr<Adonis::rendersystem::Scene> scene) {
+
+			for (auto& mesh_spec : scene->mesh_specs()) {
+				
+			}
+
+		}
+
+		void GLRenderer::draw(DrawMethod method, DrawMode mode, int offset, int count) {
+
+			switch (method) {
+				case DrawMethod::Classic:
+					glDrawArrays(RenderDevice::drawmode_lookup[AD_ENUM_TO_INDEX(mode)], 0, count);
+					break;
+				case DrawMethod::Indexed:
+					glDrawElements(RenderDevice::drawmode_lookup[AD_ENUM_TO_INDEX(mode)], count, GL_UNSIGNED_INT, 0);
+					break;
+			}
+
 		}
 
 		void GLRenderer::set_framebuffer(uint32_t id) {
@@ -397,8 +421,8 @@ namespace Adonis {
 			return m_attribs;
 		}
 
-		std::unique_ptr<VertexArrayDesc> VertexArrayDesc::create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride) {
-			return std::make_unique<GLVertexArrayDesc>(std::move(attribs), baseoffset, stride);
+		std::shared_ptr<VertexArrayDesc> VertexArrayDesc::create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride) {
+			return std::make_shared<GLVertexArrayDesc>(std::move(attribs), baseoffset, stride);
 		}
 
 		/*
@@ -406,7 +430,7 @@ namespace Adonis {
 		*/
 
 
-		GLVertexArray::GLVertexArray(std::unique_ptr<VertexArrayDesc>&& desc): m_desc(std::move(desc)), m_current_bindingindex(0) {
+		GLVertexArray::GLVertexArray(std::shared_ptr<VertexArrayDesc> desc): m_desc(desc), m_current_bindingindex(0) {
 			glCreateVertexArrays(1, &m_id);
 			glVertexArrayVertexBuffer(m_id, 0, 0, m_desc->baseoffset(), m_desc->stride());
 			for (uint32_t i = 0; i < m_desc->attribs().size(); i++) {
@@ -418,8 +442,8 @@ namespace Adonis {
 			glDeleteVertexArrays(1, &m_id);
 		}
 
-		std::unique_ptr<VertexArray> VertexArray::create(std::unique_ptr<VertexArrayDesc>&& desc) {
-			return std::make_unique<GLVertexArray>(std::move(desc));
+		std::unique_ptr<VertexArray> VertexArray::create(std::shared_ptr<VertexArrayDesc> desc) {
+			return std::make_unique<GLVertexArray>(desc);
 		}
 
 		void GLVertexArray::add_attrib_to_underlying_obj(uint32_t where) {
@@ -435,7 +459,7 @@ namespace Adonis {
 			glVertexArrayVertexBuffer(m_id, bindingindex, vbo, baseoffset, stride);
 		}
 
-		uint32_t GLVertexArray::add_desc(std::unique_ptr<VertexArrayDesc>&& desc, bool increase_bindingindex, bool overwrite_existing_attribs) {
+		uint32_t GLVertexArray::add_desc(std::shared_ptr<VertexArrayDesc> desc, bool increase_bindingindex, bool overwrite_existing_attribs) {
 			if (increase_bindingindex) {
 				m_current_bindingindex++;
 			}
@@ -472,6 +496,10 @@ namespace Adonis {
 			return m_id;
 		}
 
+		std::shared_ptr<VertexArrayDesc> GLVertexArray::desc() {
+			return m_desc;
+		}
+
 		/**
 		* Texture
 		*/
@@ -484,7 +512,7 @@ namespace Adonis {
 
 		GLTexture2D::GLTexture2D(int width, int height, const void* data, TexturePixelFormatSized fmt) {
 			glCreateTextures(GL_TEXTURE_2D, 1, &m_id);
-			glTextureStorage2D(m_id, 1, Texture::sized_pixel_format_lookup[static_cast<uint32_t>(fmt)], width, height);
+			glTextureStorage2D(m_id, 1, Texture::sized_pixel_format_lookup[AD_ENUM_TO_INDEX(fmt)], width, height);
 		}
 
 		GLTexture2D::~GLTexture2D() {
@@ -492,7 +520,7 @@ namespace Adonis {
 		}
 
 		void GLTexture2D::set_param(TextureParameter param, TextureParamValue value) {
-			glTextureParameteri(m_id, Texture::tex_param_lookup[static_cast<uint32_t>(param)], Texture::tex_param_value_lookup[static_cast<uint32_t>(value)]);
+			glTextureParameteri(m_id, Texture::tex_param_lookup[AD_ENUM_TO_INDEX(param)], Texture::tex_param_value_lookup[AD_ENUM_TO_INDEX(value)]);
 		}
 
 		uint32_t GLTexture2D::id() {

@@ -45,9 +45,7 @@ namespace Adonis {
 		class ADONIS_API RenderDevice : public EventListener {
 		public:
 
-			static constexpr uint32_t NUMBER_OF_DRAWMODES = 3u;
-
-			static uint32_t drawmode_lookup[NUMBER_OF_DRAWMODES];
+			AD_LOOKUP_TABLE_DECL_U32(drawmode, 3);
 
 			inline RenderDevice(const Color& clear_color) : clear_color(clear_color) {};
 
@@ -155,20 +153,12 @@ namespace Adonis {
 
 		class ADONIS_API Texture {
 		public:
-			static constexpr uint32_t NUMBER_OF_SIZED_PIXEL_FORMATS = 5;
-			static uint32_t sized_pixel_format_lookup[NUMBER_OF_SIZED_PIXEL_FORMATS];
 
-			static constexpr uint32_t NUMBER_OF_TEX_PARAMS = 5;
-			static uint32_t tex_param_lookup[NUMBER_OF_TEX_PARAMS];
-
-			static constexpr uint32_t NUMBER_OF_TEX_PARAM_VALUES = 7;
-			static uint32_t tex_param_value_lookup[NUMBER_OF_TEX_PARAM_VALUES];
-
-			static constexpr uint32_t NUMBER_OF_PIXEL_FORMATS = 4;
-			static uint32_t pixel_format_lookup[NUMBER_OF_PIXEL_FORMATS];
-
-			static constexpr uint32_t NUMBER_OF_PIXEL_DATATYPES = 6;
-			static uint32_t pixel_datatype_lookup[NUMBER_OF_PIXEL_DATATYPES];
+			AD_LOOKUP_TABLE_DECL_U32(sized_pixel_format, 5);
+			AD_LOOKUP_TABLE_DECL_U32(tex_param, 5);
+			AD_LOOKUP_TABLE_DECL_U32(tex_param_value, 7);
+			AD_LOOKUP_TABLE_DECL_U32(pixel_format, 4);
+			AD_LOOKUP_TABLE_DECL_U32(pixel_datatype, 6);
 
 			virtual auto id()->uint32_t = 0;
 			virtual auto set_param(TextureParameter param, TextureParamValue value)->void = 0;
@@ -194,8 +184,7 @@ namespace Adonis {
 		class ADONIS_API Framebuffer {
 		public:
 
-			static constexpr uint32_t NUMBER_OF_ATTACHMENT_TYPES = 3;
-			static uint32_t texture_attachment_types[NUMBER_OF_ATTACHMENT_TYPES];
+			AD_LOOKUP_TABLE_DECL_U32(texture_attachment_type, 3);
 
 			const int MAX_COLOR_ATTACHMENTS;
 
@@ -459,8 +448,9 @@ namespace Adonis {
 		class ADONIS_API Buffer {
 		public:
 
-			static constexpr uint8_t NUMBER_OF_BUFFER_BITS = 3;
-			static uint32_t buffer_bit_lookup[NUMBER_OF_BUFFER_BITS];
+			/*static constexpr uint8_t NUMBER_OF_BUFFER_BITS = 3;
+			static uint32_t buffer_bit_lookup[NUMBER_OF_BUFFER_BITS];*/
+			AD_LOOKUP_TABLE_DECL_U32(buffer_bit, 3);
 
 			virtual ~Buffer() {};
 			virtual auto id()->uint32_t = 0;
@@ -471,8 +461,7 @@ namespace Adonis {
 		class ADONIS_API VertexBuffer: public Buffer {
 		public:
 
-			static constexpr uint8_t NUMBER_OF_VERTEX_TYPES = 15;
-			static uint32_t vertex_type_mapping[NUMBER_OF_VERTEX_TYPES];
+			AD_LOOKUP_TABLE_DECL_U32(vertex_type, 15);
 
 			/**
 			*	@brief			This function is defined by the different implementations, of which only omne will be active

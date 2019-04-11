@@ -44,6 +44,7 @@ namespace Adonis {
 		void GLRenderer::draw(std::shared_ptr<Adonis::rendersystem::Scene> scene) {
 
 			for (auto& mesh_spec : scene->mesh_specs()) {
+				auto& mesh_group = scene->mesh_group(mesh_spec);
 				
 			}
 
@@ -345,7 +346,7 @@ namespace Adonis {
 		}
 
 		void GLVertexBuffer::bind() {
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
+			glBindBuffer(GL_ARRAY_BUFFER, m_id);
 		}
 
 		std::unique_ptr<VertexBuffer> VertexBuffer::create(int64_t size, const void* data, BufferBit flags) {

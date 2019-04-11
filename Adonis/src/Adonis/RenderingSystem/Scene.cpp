@@ -31,23 +31,27 @@ namespace Adonis {
 				//create new vao for the model's buffer description
 				auto temp_vao = render::VertexArray::create(model->mesh_specs().buffer_desc());
 				//if the description doesn't match any existing one, a new mesh group with the id for the new vao is needed
-				m_models[model->mesh_specs()].vao_id() = temp_vao->id();
+				m_meshgroups[model->mesh_specs()].vao_id() = temp_vao->id();
 				m_vaos.push_back(std::move(temp_vao));
 			}
 
 			//Increase primitive count for mesh group and transfer ownership of the model to it
-			m_models[model->mesh_specs()].prim_count() += model->primitive_count();
-			m_models[model->mesh_specs()].add_model(std::move(model));
+			m_meshgroups[model->mesh_specs()].prim_count() += model->primitive_count();
+			m_meshgroups[model->mesh_specs()].add_model(std::move(model));
 		}
 
 		std::vector<MeshSpecification> Scene::mesh_specs() {
 			//Extract keys from model map
 			std::vector<MeshSpecification> keys;
-			keys.reserve(m_models.size());
-			for (auto& kv : m_models) {
+			keys.reserve(m_meshgroups.size());
+			for (auto& kv : m_meshgroups) {
 				keys.push_back(kv.first);
 			}
 			return keys;
+		}
+
+		MeshGroup& Scene::mesh_group(MeshSpecification spec) {
+			return m_meshgroups[spec];
 		}
 
 	}

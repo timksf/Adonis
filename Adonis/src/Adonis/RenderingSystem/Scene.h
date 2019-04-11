@@ -38,6 +38,8 @@ namespace Adonis {
 
 			auto mesh_specs()->std::vector<MeshSpecification>;
 
+			auto mesh_group(MeshSpecification spec)->MeshGroup&;
+
 			auto add_cam(std::unique_ptr<Camera>&& cam)->void {};
 
 			template<typename... Args>
@@ -48,7 +50,7 @@ namespace Adonis {
 		private:
 			uint32_t m_active_cam;
 			std::vector<std::unique_ptr<Camera>> m_cams;
-			std::unordered_map<MeshSpecification, MeshGroup, Hasher<MeshSpecification>> m_models;
+			std::unordered_map<MeshSpecification, MeshGroup, Hasher<MeshSpecification>> m_meshgroups;
 			std::vector<std::unique_ptr<render::VertexArray>> m_vaos;
 		};
 

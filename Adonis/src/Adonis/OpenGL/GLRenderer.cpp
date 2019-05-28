@@ -38,7 +38,7 @@ namespace Adonis {
 		}
 
 		void GLRenderer::drawTriangles(int offset, int count) {
-			glDrawArrays(GL_TRIANGLES, offset, count);
+			this->draw(DrawMethod::Classic, DrawMode::Triangles, offset, count);
 		}
 
 		void GLRenderer::draw(std::shared_ptr<Adonis::rendersystem::Scene> scene) {
@@ -46,7 +46,7 @@ namespace Adonis {
 			for (auto& mesh_spec : scene->mesh_specs()) {
 				auto& mesh_group = scene->mesh_group(mesh_spec);
 				mesh_group.activate();
-				draw(mesh_group.)
+				draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh_group.prim_count());
 			}
 
 		}
@@ -403,6 +403,9 @@ namespace Adonis {
 			m_normalized = normalized;
 		}
 
+		std::unique_ptr<VertexAttrib> VertexAttrib::attrib3float(uint32_t index, uint32_t offset) {
+			return std::move(VertexAttrib::create(index, offset, VertexType::FLOAT, 3));
+		}
 
 		std::unique_ptr<VertexAttrib> VertexAttrib::create(uint32_t index, uint32_t offset, VertexType type, uint32_t size) {
 			bool normalized = (AD_ENUM_TO_UNDERLYING(type, VertexType) > 8);
@@ -422,6 +425,17 @@ namespace Adonis {
 		std::vector<std::unique_ptr<VertexAttrib>>& GLVertexArrayDesc::attribs() {
 			return m_attribs;
 		}
+
+		void GLVertexArrayDesc::add_attrib(VertexType type, uint32_t number, int custom_index, int custom_offset) {
+			uint32_t index = custom_index < 0 ? m_attribs.size() - 1 : custom_index;
+			uint32_t offset = custom_offset < 0 ? 0 : custom_offset;
+
+			//Calculate offset based on already added attributes
+			for (auto& attrib : m_attribs) {
+				offset += attrib->size() * attrib->type();
+			}
+		}
+
 
 		std::shared_ptr<VertexArrayDesc> VertexArrayDesc::create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride) {
 			return std::make_shared<GLVertexArrayDesc>(std::move(attribs), baseoffset, stride);
@@ -484,10 +498,14 @@ namespace Adonis {
 				if (!already_existing) {
 					m_desc->attribs().push_back(std::move(attr));
 					//Add to underlying VAO
-					this->add_attrib_to_underlying_obj(m_desc->attribs().size() - 1);
+					this->add_attrib_to_underlying_obj(static_cast<uint32_t>(m_desc->attribs().size()) - 1u);
 				}
 			}
 			return m_current_bindingindex;
+		}
+
+		void GLVertexArray::set_index_buffer(uint32_t idx_buffer_id) {
+			glVertexArrayElementBuffer(m_id, idx_buffer_id);
 		}
 
 		void GLVertexArray::bind() {

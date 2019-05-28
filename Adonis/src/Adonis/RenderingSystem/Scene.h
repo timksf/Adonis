@@ -27,13 +27,13 @@ namespace Adonis {
 		private:
 			uint32_t m_prim_count{ 0 };
 			std::unique_ptr<render::VertexArray> m_vao{ nullptr };
-			std::vector<std::unique_ptr<Model>> m_models{ {} };
+			std::vector<std::unique_ptr<Model>> m_models;
 		};
 
 		class Scene {
 		public:
 
-			Scene() {};
+			Scene();
 
 			auto select_cam(uint32_t index)->bool {};
 

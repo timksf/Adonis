@@ -168,6 +168,15 @@ namespace Adonis {
 				using namespace math::literals;
 				using namespace render;
 
+
+				//Component system tests
+
+				Adonis::rendersystem::Scene scene();
+
+
+				//Component system tests
+
+
 				static bool tex_size_changed = false;
 				if(show_tools) show_tools_window(&show_tools, &view_port_res, &texture_res, &tex_size_changed);
 
@@ -210,9 +219,9 @@ namespace Adonis {
 					1, 2, 3
 				};
 
-				static float z_translation = -10.0f;
-				static auto pos_attr = VertexAttrib::create(0, 0, VertexType::FLOAT, 3 /*floats*/);
-				static auto col_attr = VertexAttrib::create(1, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
+				//static float z_translation = -10.0f;
+				static auto pos_attr = VertexAttrib::attrib3float(0, 0);
+				static auto col_attr = VertexAttrib::attrib3float(1, 3 * sizeof(float));
 				static auto vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 				static auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
 				attribs.push_back(std::move(pos_attr));
@@ -237,7 +246,7 @@ namespace Adonis {
 				//glEnableVertexArrayAttrib(vao->id(), 2);
 				//AD_CORE_INFO(glGetError());
 
-				glVertexArrayElementBuffer(vao->id(), ibo1->id());
+				vao->set_index_buffer(ibo1->id());
 				vao->bind();
 
 				if (!ImGui::Begin("Viewport")) {
@@ -265,7 +274,7 @@ namespace Adonis {
 					app->consume_renderer()->clear_color = { {1.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
 					vao->set_buffer(vbo2->id(), 0); 
-					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+					app->consume_renderer()->draw(DrawMethod::Indexed, DrawMode::Triangles, 0, 6);
 					////AD_CORE_INFO("{0}  {1}  {2}", vbo2->id(), 0, sizeof(float)*6);
 					//vao->bind();
 					//app->consume_renderer()->drawTriangles(0, 3);

@@ -447,6 +447,8 @@ namespace Adonis {
 			*/
 			inline auto stride()->GLuint override { return m_stride; };
 
+			auto add_attrib(VertexType type, uint32_t number, int custom_index, int custom_offset)->void override;
+
 		private:
 			GLsizei m_stride;
 			GLuint m_baseoffset;
@@ -498,6 +500,8 @@ namespace Adonis {
 			auto add_desc(std::shared_ptr<VertexArrayDesc> desc, bool increase_bindingindex, bool overwrite_existing_attribs)->uint32_t override;
 
 			auto desc()->std::shared_ptr<VertexArrayDesc> override;
+
+			auto set_index_buffer(uint32_t idx_buffer_id)->void override;
 
 		protected:
 

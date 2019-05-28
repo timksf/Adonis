@@ -10,6 +10,13 @@ namespace Adonis {
 		}
 
 
+
+		Scene::Scene():
+			m_active_cam(0)
+		{
+
+		}
+
 		void Scene::add_model(std::unique_ptr<Model>&& model) {
 
 			//Create new or add buffers to existing vao
@@ -52,6 +59,7 @@ namespace Adonis {
 		void MeshGroup::set_vao(std::unique_ptr<render::VertexArray>&& vao) {
 			m_vao = std::move(vao);
 		}
+
 
 	}
 }

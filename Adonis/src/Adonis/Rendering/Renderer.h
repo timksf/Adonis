@@ -499,6 +499,8 @@ namespace Adonis {
 			*/
 			static auto create(uint32_t index, uint32_t offset, VertexType type, uint32_t size)->std::unique_ptr<VertexAttrib>;
 
+			static auto attrib3float(uint32_t index, uint32_t offset)->std::unique_ptr<VertexAttrib>;
+
 			virtual ~VertexAttrib() {};
 
 			virtual auto index()->uint32_t = 0;
@@ -514,7 +516,10 @@ namespace Adonis {
 
 			static auto create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride)->std::shared_ptr<VertexArrayDesc>;
 
+
 			virtual ~VertexArrayDesc() {};
+
+			virtual auto add_attrib(VertexType type, uint32_t number, int custom_index = -1, int custom_offset = -1)->void = 0;
 
 			/**
 			*	@return	A reference to the attribute formats, the description consists of
@@ -553,6 +558,8 @@ namespace Adonis {
 			*	@param	attrib_desc		the description of the buffer's structure, basically a list of attribute formats
 			*/
 			//virtual auto add_buffer(uint32_t id, std::unique_ptr<VertexArrayDesc> attrib_desc)->bool = 0;
+
+			virtual auto set_index_buffer(uint32_t idx_buffer_id)->void = 0;
 
 			virtual auto set_buffer(uint32_t id, uint32_t bindingindex, int32_t custom_baseoffset = -1, int32_t custom_stride = -1)->void = 0;
 

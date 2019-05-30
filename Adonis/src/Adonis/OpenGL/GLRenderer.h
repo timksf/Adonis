@@ -394,11 +394,12 @@ namespace Adonis {
 			*	@param type			the type of the attribute 
 			*	@param normalized	if true, integer values will be normalized via integer normalization
 			*/
-			GLVertexAttrib(GLuint index, GLuint offset, GLenum type, GLuint size, GLboolean normalized);
+			GLVertexAttrib(GLuint index, GLuint offset, VertexType type, GLuint size, GLboolean normalized);
 
 			inline auto index()->uint32_t override { return m_index; };
 			inline auto offset()->uint32_t override { return m_offset; };
-			inline auto type()->VertexType override { return static_cast<VertexType>(m_type); };
+			inline auto type()->VertexType override { return m_type; };
+			inline auto api_type()->uint32_t override { return m_api_type; };
 			inline auto size()->uint32_t override { return m_size; };
 
 			inline auto normalized()->bool override { return m_normalized; };
@@ -406,9 +407,10 @@ namespace Adonis {
 		private:
 			GLuint m_index;
 			GLuint m_offset;
-			GLenum m_type;
+			GLenum m_api_type;
 			GLuint m_size;
 			GLboolean m_normalized;
+			VertexType m_type;
 		};
 
 		class ADONIS_API GLVertexArrayDesc : public VertexArrayDesc {
@@ -446,6 +448,8 @@ namespace Adonis {
 			*	@return	the number of bytes between the vertex elements, usually the size of the vertex type
 			*/
 			inline auto stride()->GLuint override { return m_stride; };
+
+			auto add_attrib(std::unique_ptr<VertexAttrib>&& attrib)->void override;
 
 			auto add_attrib(VertexType type, uint32_t number, int custom_index, int custom_offset)->void override;
 

@@ -394,13 +394,15 @@ namespace Adonis {
 		*/
 
 		AD_LOOKUP_TABLE_DEF_U32(vertex_type, VertexBuffer, { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT });
+		AD_LOOKUP_TABLE_DEF_U32(vertex_type_size, VertexAttrib, { 4u, 2u, 8u, 1u, 1u, 2u, 2u, 4u, 4u});
 
-		GLVertexAttrib::GLVertexAttrib(GLuint index, GLuint offset, GLenum type, GLuint size, GLboolean normalized) {
+		GLVertexAttrib::GLVertexAttrib(GLuint index, GLuint offset, VertexType type, GLuint size, GLboolean normalized) {
 			m_index = index;
 			m_offset = offset;
 			m_type = type;
 			m_size = size;
 			m_normalized = normalized;
+			m_api_type = AD_LOOKUP(vertex_type, VertexBuffer, type);
 		}
 
 		std::unique_ptr<VertexAttrib> VertexAttrib::attrib3float(uint32_t index, uint32_t offset) {
@@ -409,7 +411,7 @@ namespace Adonis {
 
 		std::unique_ptr<VertexAttrib> VertexAttrib::create(uint32_t index, uint32_t offset, VertexType type, uint32_t size) {
 			bool normalized = (AD_ENUM_TO_UNDERLYING(type, VertexType) > 8);
-			return std::make_unique<GLVertexAttrib>(index, offset, AD_LOOKUP(vertex_type, VertexBuffer, type), size, static_cast<GLboolean>(normalized));
+			return std::make_unique<GLVertexAttrib>(index, offset, type, size, static_cast<GLboolean>(normalized));
 		}
 
 		/*
@@ -426,14 +428,22 @@ namespace Adonis {
 			return m_attribs;
 		}
 
+		void GLVertexArrayDesc::add_attrib(std::unique_ptr<VertexAttrib>&& attrib) {
+			m_attribs.push_back(std::move(attrib));
+		}
+
 		void GLVertexArrayDesc::add_attrib(VertexType type, uint32_t number, int custom_index, int custom_offset) {
-			uint32_t index = custom_index < 0 ? m_attribs.size() - 1 : custom_index;
-			uint32_t offset = custom_offset < 0 ? 0 : custom_offset;
+			int index = custom_index < 0 ? m_attribs.size() : custom_index;
+			int offset = custom_offset < 0 ? 0 : custom_offset;
 
 			//Calculate offset based on already added attributes
-			for (auto& attrib : m_attribs) {
-				offset += attrib->size() * attrib->type();
+			if (offset == 0) {
+				for (auto& attrib : m_attribs) {
+					offset += attrib->size() * AD_LOOKUP(vertex_type_size, VertexAttrib, attrib->type());
+				}
 			}
+			
+			m_attribs.push_back(VertexAttrib::create(index, offset, type, number));
 		}
 
 
@@ -465,7 +475,7 @@ namespace Adonis {
 		void GLVertexArray::add_attrib_to_underlying_obj(uint32_t where) {
 			auto& attrib = m_desc->attribs()[where];
 			glEnableVertexArrayAttrib(m_id, attrib->index());
-			glVertexArrayAttribFormat(m_id, attrib->index(), attrib->size(), static_cast<uint32_t>(attrib->type()), attrib->normalized(), attrib->offset());
+			glVertexArrayAttribFormat(m_id, attrib->index(), attrib->size(), static_cast<uint32_t>(attrib->api_type()), attrib->normalized(), attrib->offset());
 			glVertexArrayAttribBinding(m_id, attrib->index(), m_current_bindingindex);
 		}
 

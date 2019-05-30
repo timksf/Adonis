@@ -487,8 +487,16 @@ namespace Adonis {
 			static auto create(int64_t size, const void* data, BufferBit flags)->std::unique_ptr<IndexBuffer>;
 		};
 
+		enum class ADONIS_API VertexAttribPresets : uint32_t {
+			OneFloat = 0,
+			TwoFloats = 1,
+			ThreeFloats = 2,
+		};
+
 		class ADONIS_API VertexAttrib {
 		public:
+
+			AD_LOOKUP_TABLE_DECL_U32(vertex_type_size, 15);
 
 			/*
 			*	@brief				Create a vertex attribute object
@@ -506,6 +514,7 @@ namespace Adonis {
 			virtual auto index()->uint32_t = 0;
 			virtual auto offset()->uint32_t = 0;
 			virtual auto type()->VertexType = 0;
+			virtual auto api_type()->uint32_t = 0;
 			virtual auto size()->uint32_t = 0;
 			virtual auto normalized()->bool { return false; };
 		};
@@ -518,6 +527,8 @@ namespace Adonis {
 
 
 			virtual ~VertexArrayDesc() {};
+
+			virtual auto add_attrib(std::unique_ptr<VertexAttrib>&& attrib)->void = 0;
 
 			virtual auto add_attrib(VertexType type, uint32_t number, int custom_index = -1, int custom_offset = -1)->void = 0;
 

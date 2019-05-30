@@ -221,12 +221,20 @@ namespace Adonis {
 
 				//static float z_translation = -10.0f;
 				static auto pos_attr = VertexAttrib::attrib3float(0, 0);
-				static auto col_attr = VertexAttrib::attrib3float(1, 3 * sizeof(float));
+				//static auto col_attr = VertexAttrib::attrib3float(1, 3 * sizeof(float));
 				static auto vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
-				static auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
-				attribs.push_back(std::move(pos_attr));
-				attribs.push_back(std::move(col_attr));
-				static auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
+				//static auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
+				//attribs.push_back(std::move(pos_attr));
+				//attribs.push_back(std::move(col_attr));
+				//static auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
+				static auto desc = VertexArrayDesc::create({}, 0, sizeof(float) * 6);
+				//AD_CORE_INFO("Sizeof float: {0}", sizeof(float));
+				static bool xx = false;
+				if (!xx) {
+					desc->add_attrib(std::move(pos_attr));		//position attrib
+					desc->add_attrib(VertexType::FLOAT, 3);		//color attrib
+					xx = true;
+				}
 
 				static auto col_attr2 = VertexAttrib::create(2, 3 * sizeof(float), VertexType::FLOAT, 3 /*floats*/);
 				static auto attribs2 = std::vector<std::unique_ptr<VertexAttrib>>();

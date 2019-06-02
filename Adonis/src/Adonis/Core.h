@@ -46,19 +46,22 @@
 #define AD_ENUM_TO_UNDERLYING(value, type)				static_cast<std::underlying_type_t<type>>(value)
 #define AD_ENUM_TO_INDEX(value)							static_cast<uint32_t>(value)
 
-#define AD_LOOKUP_TABLE_DECL(name, size, type)			static const uint32_t number_of_##name##s = size;\
-														static type name##_lookup[size];		
+#define AD_LOOKUP_TABLE_HEADER_DECL(name, size, type)	const uint32_t number_of_##name##s = size;\
+														extern type name##_lookup[size];		
 
-#define AD_LOOKUP_TABLE_DECL_U32(name, size)			static const uint32_t number_of_##name##s = size;\
-														static uint32_t name##_lookup[size];
+#define AD_LOOKUP_TABLE_HEADER_DECL_U32(name, size)		const uint32_t number_of_##name##s = size;\
+														extern uint32_t name##_lookup[size];
 
-#define AD_LOOKUP_TABLE_SIZE_NAME(name, src)			src::number_of_##name##s
+#define AD_LOOKUP_TABLE_SIZE_NAME(name)					number_of_##name##s
 
-#define AD_LOOKUP_TABLE_DEF(name, src, type, ...)		type src::name##_lookup[src::number_of_##name##s] = __VA_ARGS__
-#define AD_LOOKUP_TABLE_DEF_U32(name, src, ...)			uint32_t src::name##_lookup[src::number_of_##name##s] = __VA_ARGS__
+#define AD_LOOKUP_TABLE_DEF(name, type, ...)			type name##_lookup[number_of_##name##s] = __VA_ARGS__
+#define AD_LOOKUP_TABLE_DEF_U32(name, ...)				uint32_t name##_lookup[number_of_##name##s] = __VA_ARGS__
 
-#define AD_LOOKUP_AT(table_name, src, index)			src::table_name##_lookup[index]
-#define AD_LOOKUP(table_name, src, enum_name)			AD_LOOKUP_AT(table_name, src, AD_ENUM_TO_INDEX(enum_name))
+#define AD_LOOKUP_AT_CORE(table_name, index)			table_name##_lookup[index]
+#define AD_LOOKUP_CORE(table_name, enum_name)			AD_LOOKUP_AT_CORE(table_name, AD_ENUM_TO_INDEX(enum_name))
+
+
+#define AD_INVERTED_MODULO(lhs, rhs)					(lhs / rhs) - (lhs % rhs)
 
 #define AD_FALSE										0
 #define AD_TRUE											1

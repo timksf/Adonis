@@ -424,6 +424,8 @@ namespace Adonis {
 			*/
 			GLVertexArrayDesc(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, GLuint baseoffset, GLsizei stride);
 
+			GLVertexArrayDesc();
+
 			/**
 			*	@brief Deleted copy constructor to restrict copy constructing, because of the owned unique pointers
 			*/
@@ -449,13 +451,19 @@ namespace Adonis {
 			*/
 			inline auto stride()->GLuint override { return m_stride; };
 
+			inline auto initialized()->bool override { return m_initialized; };
+
 			auto add_attrib(std::unique_ptr<VertexAttrib>&& attrib)->void override;
 
 			auto add_attrib(VertexType type, uint32_t number, int custom_index, int custom_offset)->void override;
 
+			auto force_init()->void override;
+
+
 		private:
-			GLsizei m_stride;
-			GLuint m_baseoffset;
+			bool m_initialized{ false };
+			GLsizei m_stride{ 0 };
+			GLuint m_baseoffset{ 0 };
 			std::vector<std::unique_ptr<VertexAttrib>> m_attribs;
 		};
 
@@ -495,7 +503,7 @@ namespace Adonis {
 			/**
 			*	@brief	Enable underlying OpenGL vertex array object
 			*/
-			auto bind()->void override;
+			auto use()->void override;
 
 			auto id()->uint32_t override;
 
@@ -512,7 +520,7 @@ namespace Adonis {
 			auto add_attrib_to_underlying_obj(uint32_t where)->void override;
 
 		private:
-			uint32_t m_current_bindingindex;
+			uint32_t m_current_bindingindex{ 0 };
 			std::shared_ptr<VertexArrayDesc> m_desc;
 			GLuint m_id;
 		};

@@ -10,6 +10,22 @@ namespace Adonis {
 
 	namespace render {
 
+		namespace lookup_tables {
+
+			AD_LOOKUP_TABLE_DEF_U32(drawmode, { GL_TRIANGLES, GL_POINTS, GL_LINES });
+			AD_LOOKUP_TABLE_DEF_U32(buffer_bit, { GL_DYNAMIC_STORAGE_BIT, GL_MAP_READ_BIT, GL_MAP_WRITE_BIT });
+			AD_LOOKUP_TABLE_DEF_U32(vertex_type, { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT });
+			AD_LOOKUP_TABLE_DEF_U32(sized_pixel_format, { GL_R3_G3_B2, GL_RGB8, GL_RGBA4, GL_RGBA8, GL_DEPTH_COMPONENT16 });
+			AD_LOOKUP_TABLE_DEF_U32(tex_param, { GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T, GL_TEXTURE_WRAP_R, GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MAG_FILTER });
+			AD_LOOKUP_TABLE_DEF_U32(pixel_format, { GL_RGB, GL_RGBA, GL_BGR, GL_BGRA });
+			AD_LOOKUP_TABLE_DEF_U32(pixel_datatype, { GL_SHORT, GL_UNSIGNED_SHORT, GL_BYTE, GL_UNSIGNED_BYTE, GL_INT, GL_UNSIGNED_INT });
+			AD_LOOKUP_TABLE_DEF_U32(tex_param_value, { GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRROR_CLAMP_TO_EDGE });
+			AD_LOOKUP_TABLE_DEF_U32(texture_attachment_type, { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT });
+			AD_LOOKUP_TABLE_DEF_U32(vertex_type_size, { 4u, 2u, 8u, 1u, 1u, 2u, 2u, 4u, 4u });
+			AD_LOOKUP_TABLE_DEF_U32(drawmode_divisor, { 3u, 2u, 1u });
+
+		}
+
 
 		GLRenderer::GLRenderer(const Color& clear_color) : RenderDevice(clear_color) {
 			ON_EVENT_BIND(WindowResizeEvent, GLRenderer);
@@ -23,8 +39,6 @@ namespace Adonis {
 
 		}
 
-		AD_LOOKUP_TABLE_DEF_U32(drawmode, RenderDevice, { GL_TRIANGLES, GL_POINTS, GL_LINES });
-
 		std::unique_ptr<RenderDevice> RenderDevice::create(const Color& clear_color) {
 			return std::make_unique<GLRenderer>(clear_color);
 		}
@@ -35,7 +49,7 @@ namespace Adonis {
 
 		void GLRenderer::clear_depth_buffer(float depth) {
 			glClearNamedFramebufferfv(m_framebuffer, GL_DEPTH, 0, &depth);
-		}
+		} 
 
 		void GLRenderer::drawTriangles(int offset, int count) {
 			this->draw(DrawMethod::Classic, DrawMode::Triangles, offset, count);
@@ -55,10 +69,10 @@ namespace Adonis {
 
 			switch (method) {
 				case DrawMethod::Classic:
-					glDrawArrays(RenderDevice::drawmode_lookup[AD_ENUM_TO_INDEX(mode)], 0, count);
+					glDrawArrays(AD_LOOKUP_CORE(drawmode, mode), 0, count);
 					break;
 				case DrawMethod::Indexed:
-					glDrawElements(RenderDevice::drawmode_lookup[AD_ENUM_TO_INDEX(mode)], count, GL_UNSIGNED_INT, 0);
+					glDrawElements(AD_LOOKUP_CORE(drawmode, mode), count, GL_UNSIGNED_INT, 0);
 					break;
 			}
 
@@ -317,7 +331,7 @@ namespace Adonis {
 			Buffers
 		*/
 
-		AD_LOOKUP_TABLE_DEF_U32(buffer_bit, Buffer, { GL_DYNAMIC_STORAGE_BIT, GL_MAP_READ_BIT, GL_MAP_WRITE_BIT });
+		/*AD_LOOKUP_TABLE_DEF_U32(buffer_bit, { GL_DYNAMIC_STORAGE_BIT, GL_MAP_READ_BIT, GL_MAP_WRITE_BIT });*/
 		
 		/*
 			Vertex buffer
@@ -329,9 +343,9 @@ namespace Adonis {
 			ss << std::hex << std::showbase << static_cast<uint32_t>(flags);
 			ss.str(std::string());
 			GLbitfield glflags = 0;
-			for (uint32_t i = 0; i < AD_LOOKUP_TABLE_SIZE_NAME(buffer_bit, Buffer); i++) {
+			for (uint32_t i = 0; i < AD_LOOKUP_TABLE_SIZE_NAME(buffer_bit); i++) {
 				if ((i & static_cast<uint32_t>(flags)) == i) {
-					glflags |= Buffer::buffer_bit_lookup[i];
+					glflags |= lookup_tables::buffer_bit_lookup[i];
 				}
 			}
 			ss << std::hex << static_cast<uint32_t>(glflags);
@@ -364,9 +378,9 @@ namespace Adonis {
 			ss << std::hex << std::showbase << static_cast<uint32_t>(flags);
 			ss.str(std::string());
 			GLbitfield glflags = 0;
-			for (uint32_t i = 0; i < AD_LOOKUP_TABLE_SIZE_NAME(buffer_bit, Buffer); i++) {
+			for (uint32_t i = 0; i < AD_LOOKUP_TABLE_SIZE_NAME(buffer_bit); i++) {
 				if ((i & static_cast<uint32_t>(flags)) == 1) {
-					glflags |= Buffer::buffer_bit_lookup[i];
+					glflags |= lookup_tables::buffer_bit_lookup[i];
 				}
 			}
 			ss << std::hex << static_cast<uint32_t>(glflags);
@@ -393,8 +407,8 @@ namespace Adonis {
 			Vertex Attributes
 		*/
 
-		AD_LOOKUP_TABLE_DEF_U32(vertex_type, VertexBuffer, { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT });
-		AD_LOOKUP_TABLE_DEF_U32(vertex_type_size, VertexAttrib, { 4u, 2u, 8u, 1u, 1u, 2u, 2u, 4u, 4u});
+		/*AD_LOOKUP_TABLE_DEF_U32(vertex_type, { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT });
+		AD_LOOKUP_TABLE_DEF_U32(vertex_type_size, { 4u, 2u, 8u, 1u, 1u, 2u, 2u, 4u, 4u});*/
 
 		GLVertexAttrib::GLVertexAttrib(GLuint index, GLuint offset, VertexType type, GLuint size, GLboolean normalized) {
 			m_index = index;
@@ -402,7 +416,7 @@ namespace Adonis {
 			m_type = type;
 			m_size = size;
 			m_normalized = normalized;
-			m_api_type = AD_LOOKUP(vertex_type, VertexBuffer, type);
+			m_api_type = AD_LOOKUP_CORE(vertex_type, type);
 		}
 
 		std::unique_ptr<VertexAttrib> VertexAttrib::attrib3float(uint32_t index, uint32_t offset) {
@@ -422,6 +436,10 @@ namespace Adonis {
 			m_attribs(std::move(attribs)) {
 			m_baseoffset = baseoffset;
 			m_stride = stride;
+			m_initialized = true;
+		}
+
+		GLVertexArrayDesc::GLVertexArrayDesc() {
 		}
 
 		std::vector<std::unique_ptr<VertexAttrib>>& GLVertexArrayDesc::attribs() {
@@ -439,11 +457,22 @@ namespace Adonis {
 			//Calculate offset based on already added attributes
 			if (offset == 0) {
 				for (auto& attrib : m_attribs) {
-					offset += attrib->size() * AD_LOOKUP(vertex_type_size, VertexAttrib, attrib->type());
+					offset += attrib->size() * AD_LOOKUP_CORE(vertex_type_size, attrib->type());
 				}
 			}
 			
 			m_attribs.push_back(VertexAttrib::create(index, offset, type, number));
+		}
+
+		void GLVertexArrayDesc::force_init() {
+			m_stride = 0;
+			m_baseoffset = 0;
+
+			for (auto& attr : m_attribs) {
+				m_stride += attr->size() * AD_LOOKUP_CORE(vertex_type_size, attr->type());
+			}
+
+			m_initialized = true;
 		}
 
 
@@ -451,12 +480,17 @@ namespace Adonis {
 			return std::make_shared<GLVertexArrayDesc>(std::move(attribs), baseoffset, stride);
 		}
 
+		std::shared_ptr<VertexArrayDesc> VertexArrayDesc::create_empty() {
+			return std::make_shared<GLVertexArrayDesc>();
+		}
+
 		/*
 			Vertex Array Object
 		*/
 
 
-		GLVertexArray::GLVertexArray(std::shared_ptr<VertexArrayDesc> desc): m_desc(desc), m_current_bindingindex(0) {
+		GLVertexArray::GLVertexArray(std::shared_ptr<VertexArrayDesc> desc): m_desc(desc){
+			AD_CORE_ASSERT(desc->initialized(), "Vertex description not initialized");
 			glCreateVertexArrays(1, &m_id);
 			glVertexArrayVertexBuffer(m_id, 0, 0, m_desc->baseoffset(), m_desc->stride());
 			for (uint32_t i = 0; i < m_desc->attribs().size(); i++) {
@@ -477,6 +511,7 @@ namespace Adonis {
 			glEnableVertexArrayAttrib(m_id, attrib->index());
 			glVertexArrayAttribFormat(m_id, attrib->index(), attrib->size(), static_cast<uint32_t>(attrib->api_type()), attrib->normalized(), attrib->offset());
 			glVertexArrayAttribBinding(m_id, attrib->index(), m_current_bindingindex);
+			//AD_CORE_INFO("Bindingindex: {0}, attribindex: {1}", m_current_bindingindex, attrib->index());
 		}
 
 		void GLVertexArray::set_buffer(GLuint vbo, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride) {
@@ -486,6 +521,7 @@ namespace Adonis {
 		}
 
 		uint32_t GLVertexArray::add_desc(std::shared_ptr<VertexArrayDesc> desc, bool increase_bindingindex, bool overwrite_existing_attribs) {
+			AD_CORE_ASSERT(desc->initialized(), "Vertex description not initialized");
 			if (increase_bindingindex) {
 				m_current_bindingindex++;
 			}
@@ -505,7 +541,8 @@ namespace Adonis {
 						}
 					}
 				}
-				if (!already_existing) {
+				if (increase_bindingindex || !already_existing && !overwrite_existing_attribs) {
+					//AD_CORE_INFO("Attribute index: {0}, bindingindex: {1}", attr->index(), m_current_bindingindex);
 					m_desc->attribs().push_back(std::move(attr));
 					//Add to underlying VAO
 					this->add_attrib_to_underlying_obj(static_cast<uint32_t>(m_desc->attribs().size()) - 1u);
@@ -518,7 +555,7 @@ namespace Adonis {
 			glVertexArrayElementBuffer(m_id, idx_buffer_id);
 		}
 
-		void GLVertexArray::bind() {
+		void GLVertexArray::use() {
 			glBindVertexArray(m_id);
 		}
 
@@ -534,15 +571,15 @@ namespace Adonis {
 		* Texture
 		*/
 
-		AD_LOOKUP_TABLE_DEF_U32(sized_pixel_format, Texture, { GL_R3_G3_B2, GL_RGB8, GL_RGBA4, GL_RGBA8, GL_DEPTH_COMPONENT16 });
-		AD_LOOKUP_TABLE_DEF_U32(tex_param, Texture, { GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T, GL_TEXTURE_WRAP_R, GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MAG_FILTER });
-		AD_LOOKUP_TABLE_DEF_U32(pixel_format, Texture, { GL_RGB, GL_RGBA, GL_BGR, GL_BGRA });
-		AD_LOOKUP_TABLE_DEF_U32(pixel_datatype, Texture, { GL_SHORT, GL_UNSIGNED_SHORT, GL_BYTE, GL_UNSIGNED_BYTE, GL_INT, GL_UNSIGNED_INT });
-		AD_LOOKUP_TABLE_DEF_U32(tex_param_value, Texture, { GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRROR_CLAMP_TO_EDGE });
+		//AD_LOOKUP_TABLE_DEF_U32(sized_pixel_format, { GL_R3_G3_B2, GL_RGB8, GL_RGBA4, GL_RGBA8, GL_DEPTH_COMPONENT16 });
+		//AD_LOOKUP_TABLE_DEF_U32(tex_param, { GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T, GL_TEXTURE_WRAP_R, GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MAG_FILTER });
+		//AD_LOOKUP_TABLE_DEF_U32(pixel_format, { GL_RGB, GL_RGBA, GL_BGR, GL_BGRA });
+		//AD_LOOKUP_TABLE_DEF_U32(pixel_datatype, { GL_SHORT, GL_UNSIGNED_SHORT, GL_BYTE, GL_UNSIGNED_BYTE, GL_INT, GL_UNSIGNED_INT });
+		//AD_LOOKUP_TABLE_DEF_U32(tex_param_value, { GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRROR_CLAMP_TO_EDGE });
 
 		GLTexture2D::GLTexture2D(int width, int height, const void* data, TexturePixelFormatSized fmt) {
 			glCreateTextures(GL_TEXTURE_2D, 1, &m_id);
-			glTextureStorage2D(m_id, 1, AD_LOOKUP(sized_pixel_format, Texture, fmt), width, height);
+			glTextureStorage2D(m_id, 1, AD_LOOKUP_CORE(sized_pixel_format, fmt), width, height);
 		}
 
 		GLTexture2D::~GLTexture2D() {
@@ -550,7 +587,7 @@ namespace Adonis {
 		}
 
 		void GLTexture2D::set_param(TextureParameter param, TextureParamValue value) {
-			glTextureParameteri(m_id, AD_LOOKUP(tex_param, Texture, param), AD_LOOKUP(tex_param_value, Texture, value));
+			glTextureParameteri(m_id, AD_LOOKUP_CORE(tex_param, param), AD_LOOKUP_CORE(tex_param_value, value));
 		}
 
 		uint32_t GLTexture2D::id() {
@@ -565,7 +602,7 @@ namespace Adonis {
 		* Framebuffer
 		*/
 
-		AD_LOOKUP_TABLE_DEF_U32(texture_attachment_type, Framebuffer, { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT });
+		/*AD_LOOKUP_TABLE_DEF_U32(texture_attachment_type, { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT });*/
 
 		GLFramebuffer::GLFramebuffer() : Framebuffer(max_color_attachments()) {
 			glCreateFramebuffers(1, &m_id);
@@ -579,11 +616,11 @@ namespace Adonis {
 			if (attachment_type != FramebufferTextureAttachment::COLOR) {
 				attachment_index = 0;
 			}
-			glNamedFramebufferTexture(m_id, AD_LOOKUP(texture_attachment_type, Framebuffer, attachment_type) + attachment_index, tex_id, 0);
+			glNamedFramebufferTexture(m_id, AD_LOOKUP_CORE(texture_attachment_type, attachment_type) + attachment_index, tex_id, 0);
 		}
 
 		void GLFramebuffer::activate_color_attachment(int index) {
-			glNamedFramebufferDrawBuffer(m_id, AD_LOOKUP(texture_attachment_type, Framebuffer, FramebufferTextureAttachment::COLOR) + index);
+			glNamedFramebufferDrawBuffer(m_id, AD_LOOKUP_CORE(texture_attachment_type, FramebufferTextureAttachment::COLOR) + index);
 		}
 
 		bool GLFramebuffer::complete() {

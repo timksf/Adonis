@@ -32,9 +32,8 @@ namespace Adonis {
 
 			if (new_vao_needed) {
 				//create new vao for the model's buffer description
-				auto temp_vao = render::VertexArray::create(model->mesh_specs().buffer_desc());
 				//if the description doesn't match any existing one, a new mesh group with the id for the new vao is needed
-				m_meshgroups[model->mesh_specs()].set_vao(std::move(temp_vao));
+				m_meshgroups[model->mesh_specs()].set_vao(std::move(model->vao()));
 			}
 
 			//Increase primitive count for mesh group and transfer ownership of the model to it

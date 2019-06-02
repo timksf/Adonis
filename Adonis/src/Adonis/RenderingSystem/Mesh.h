@@ -8,7 +8,7 @@ namespace Adonis {
 
 	namespace rendersystem {
 
-		class MeshSpecification {
+		class ADONIS_API MeshSpecification {
 		public:
 
 			MeshSpecification() = delete;
@@ -45,27 +45,24 @@ namespace Adonis {
 		};
 
 
-		class Mesh {
+		class ADONIS_API Mesh {
 		public:
 
-			Mesh();
+			inline Mesh() {};
 
-			//Mesh(void* vertices, uint32_t nvertices, void* indices = nullptr, uint32_t nindices = 0, render::DrawMode mode = render::DrawMode::Triangles);
+			Mesh(void* vertices, uint32_t nvertices, std::shared_ptr<render::VertexArrayDesc> buffer_desc, void* indices = nullptr, uint32_t nindices = 0, render::DrawMode mode = render::DrawMode::Triangles);
 
 			auto specs()const->MeshSpecification;
 			auto prim_count()const->uint32_t;
 
 		private:
-			uint32_t m_ibo;
-			uint32_t m_vbo;
-			uint32_t m_vao;
-			uint32_t m_n_vertices;
-			uint32_t m_n_indices;
-			uint32_t m_prim_count;
+			std::unique_ptr<render::IndexBuffer> m_ibo{ nullptr };
+			std::unique_ptr<render::VertexBuffer> m_vbo{ nullptr };
+			uint32_t m_n_vertices{ 0 };
+			uint32_t m_n_indices{ 0 };
+			uint32_t m_prim_count{ 0 };
 
-			std::unique_ptr<render::VertexArrayDesc> m_buffer_desc;
-
-			MeshSpecification m_specs;
+			MeshSpecification m_specs{ nullptr, render::DrawMode::Triangles, render::DrawMethod::Classic };
 
 		};
 

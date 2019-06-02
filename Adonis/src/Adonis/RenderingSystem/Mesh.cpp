@@ -13,32 +13,27 @@ namespace Adonis {
 		};
 
 
-		Mesh::Mesh() :
-			m_n_indices(0),
-			m_n_vertices(0),
-			m_vbo(0),
-			m_ibo(0),
-			m_vao(0),
-			m_prim_count(0),
-			m_specs(MeshSpecification(nullptr, render::DrawMode::Triangles))
-		{
-
-		};
-
-		/*Mesh::Mesh(void* vertices, uint32_t nvertices, void* indices, uint32_t nindices, render::DrawMode draw_mode):
+		Mesh::Mesh(void* vertices, uint32_t nvertices, std::shared_ptr<render::VertexArrayDesc> buffer_desc, void* indices, uint32_t nindices, render::DrawMode draw_mode):
 			m_n_indices(nindices),
 			m_n_vertices(nvertices)
 		{
 			render::DrawMethod draw_method;
-			if (m_n_indices == 0) {
+			if (m_n_indices == 0 || indices == nullptr) {
 				draw_method = render::DrawMethod::Classic;
+				m_prim_count = static_cast<uint32_t>(std::floor(m_n_vertices / render::AD_LOOKUP_CORE(drawmode_divisor, draw_mode)));
 			}
 			else {
+				//TODO add functionality to be able to influence buffer flags upon mesh creation
+				m_ibo = render::IndexBuffer::create(m_n_indices, indices, render::BufferBit::DYNAMIC_STORAGE);
+				m_prim_count = static_cast<uint32_t>(std::floor(m_n_indices / render::AD_LOOKUP_CORE(drawmode_divisor, draw_mode)));
 				draw_method = render::DrawMethod::Indexed;
 			}
 
-			m_specs = MeshSpecification(draw_mode, draw_method);
-		}*/
+			//TODO add functionality to be able to influence buffer flags upon mesh creation
+			m_vbo = render::VertexBuffer::create(m_n_vertices, vertices, render::BufferBit::DYNAMIC_STORAGE | render::BufferBit::MAP_READ);
+
+			m_specs = MeshSpecification(buffer_desc, draw_mode, draw_method);
+		}
 
 		bool MeshSpecification::operator==(const MeshSpecification& rhs) const {
 			return (m_draw_mode == rhs.m_draw_mode) && (m_draw_method == rhs.m_draw_method) && (m_buffer_desc == rhs.m_buffer_desc);

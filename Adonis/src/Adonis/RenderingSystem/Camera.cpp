@@ -6,20 +6,7 @@ namespace Adonis {
 
 	namespace rendersystem {
 
-		Camera::Camera() :
-			m_aspectratio(16.f / 9.f),
-			m_speed(1.f),
-			m_sensitivity(1.f),
-			m_pos({ 0.f, 0.f, 0.f }),
-			m_orientation({ 0.f, 0.f, 0.f }),
-			m_front({ 0.f, 0.f, 0.f }),
-			m_right({ 0.f, 0.f, 0.f }),
-			m_world_up({ 0.f, 1.f, 0.f }),
-			m_up({ 0.f, 1.f, 0.f }),
-			m_down({ 0.f, -1.f, 0.f }),
-			m_view(1.f),
-			m_projection(1.f)
-		{
+		Camera::Camera(){
 			using namespace math::literals;
 			m_fov = 90._degf;
 		}

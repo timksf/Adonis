@@ -20,7 +20,7 @@ namespace Adonis {
 
 			auto set_vao(std::unique_ptr<render::VertexArray>&& vao)->void;
 
-			inline auto activate()const->void { m_vao->bind(); };
+			inline auto activate()const->void { m_vao->use(); };
 
 			auto add_model(std::unique_ptr<Model>&& model)->void;
 

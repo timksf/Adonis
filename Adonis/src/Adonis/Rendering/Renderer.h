@@ -693,7 +693,7 @@ namespace Adonis {
 
 			virtual auto set_index_buffer(uint32_t idx_buffer_id)->void = 0;
 
-			virtual auto set_buffer(uint32_t id, uint32_t bindingindex, int32_t custom_baseoffset = -1, int32_t custom_stride = -1)->void = 0;
+			virtual auto set_vertex_buffer(uint32_t id, uint32_t bindingindex, int32_t custom_baseoffset = -1, int32_t custom_stride = -1)->void = 0;
 
 			virtual auto add_desc(std::shared_ptr<VertexArrayDesc> desc, bool increase_bindingindex = false, bool overwrite_existing_attribs = false)->uint32_t = 0;
 

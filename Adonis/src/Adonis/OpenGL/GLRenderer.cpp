@@ -60,6 +60,13 @@ namespace Adonis {
 			for (auto& mesh_spec : scene->mesh_specs()) {
 				auto& mesh_group = scene->mesh_group(mesh_spec);
 				mesh_group.activate();
+				//Draw each mesh respectively
+				/*
+				for(auto mesh : meshes){
+					
+					draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh->prim_count());
+				}
+				*/
 				draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh_group.prim_count());
 			}
 
@@ -514,7 +521,7 @@ namespace Adonis {
 			//AD_CORE_INFO("Bindingindex: {0}, attribindex: {1}", m_current_bindingindex, attrib->index());
 		}
 
-		void GLVertexArray::set_buffer(GLuint vbo, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride) {
+		void GLVertexArray::set_vertex_buffer(GLuint vbo, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride) {
 			int32_t baseoffset = (custom_baseoffset < 0) ? m_desc->baseoffset() : custom_baseoffset;
 			int32_t stride = (custom_stride < 0) ? m_desc->stride() : custom_stride;
 			glVertexArrayVertexBuffer(m_id, bindingindex, vbo, baseoffset, stride);

@@ -507,7 +507,7 @@ namespace Adonis {
 
 			auto id()->uint32_t override;
 
-			auto set_buffer(GLuint bufferid, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride)->void override;
+			auto set_vertex_buffer(GLuint bufferid, GLuint bindingindex, int32_t custom_baseoffset, int32_t custom_stride)->void override;
 
 			auto add_desc(std::shared_ptr<VertexArrayDesc> desc, bool increase_bindingindex, bool overwrite_existing_attribs)->uint32_t override;
 

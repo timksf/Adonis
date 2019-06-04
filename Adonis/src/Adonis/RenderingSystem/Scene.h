@@ -24,6 +24,8 @@ namespace Adonis {
 
 			auto add_model(std::unique_ptr<Model>&& model)->void;
 
+			auto draw_models()->void;
+
 		private:
 			uint32_t m_prim_count{ 0 };
 			std::unique_ptr<render::VertexArray> m_vao{ nullptr };

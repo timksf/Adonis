@@ -6,6 +6,7 @@
 #include "glm/ext.hpp"
 #include "Math/Math.h"
 #include "Adonis/RenderingSystem/Mesh.h"
+#include "Adonis/RenderingSystem/Model.h"
 
 namespace Adonis {
 
@@ -169,12 +170,37 @@ namespace Adonis {
 				using namespace math::literals;
 				using namespace render;
 
+				static auto pos_attr = VertexAttrib::attrib3float(0, 0);
+
+				static auto desc = VertexArrayDesc::create_empty();
+				//AD_CORE_INFO("Sizeof float: {0}", sizeof(float));
+				static bool xx = false;
+				if (!xx) {
+					desc->add_attrib(std::move(pos_attr));		//position attrib
+					desc->add_attrib(VertexType::FLOAT, 3);		//color attrib
+					desc->force_init();
+					xx = true;
+				}
 
 				//Component system tests
 
-				Adonis::rendersystem::Scene scene();
-				//Adonis::rendersystem::Mesh mesh();
+				static float quad[] =
+				{ /*pos:*/ -0.5f, -.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+							-0.5f, .5f, 0.0f, 0.0f, 1.0f, 0.0f,
+							0.5f, -.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+							0.5f, .5f, 0.0f, 0.0f, 0.0f, 1.0f,
+				};
 
+				static uint32_t indices[] = {
+					0, 1, 2,
+					1, 2, 3
+				};
+				//static auto vbo2 = VertexBuffer::create(sizeof(quad), quad, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
+				//static auto ibo1 = IndexBuffer::create(sizeof(indices), indices, BufferBit::DYNAMIC_STORAGE);
+
+				Adonis::rendersystem::Scene scene();
+				auto mesh = std::make_unique<Adonis::rendersystem::Mesh>(quad, sizeof(quad), desc, indices, sizeof(indices));
+				Adonis::rendersystem::Model model(std::move(mesh));
 
 				//Component system tests
 
@@ -209,20 +235,7 @@ namespace Adonis {
 								0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
 					};
 
-				static float quad[] =
-				{ /*pos:*/ -0.5f, -.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-							-0.5f, .5f, 0.0f, 0.0f, 1.0f, 0.0f,
-							0.5f, -.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-							0.5f, .5f, 0.0f, 0.0f, 0.0f, 1.0f,
-				};
-
-				static uint32_t indices[] = {
-					0, 1, 2,
-					1, 2, 3
-				};
-
 				//static float z_translation = -10.0f;
-				static auto pos_attr = VertexAttrib::attrib3float(0, 0);
 				//static auto col_attr = VertexAttrib::attrib3float(1, 3 * sizeof(float));
 				static auto vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 				//static auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
@@ -230,15 +243,6 @@ namespace Adonis {
 				//attribs.push_back(std::move(col_attr));
 				//static auto desc = VertexArrayDesc::create(std::move(attribs), 0, sizeof(float) * 6);
 				//static auto desc = VertexArrayDesc::create({}, 0, sizeof(float) * 6);
-				static auto desc = VertexArrayDesc::create_empty();
-				//AD_CORE_INFO("Sizeof float: {0}", sizeof(float));
-				static bool xx = false;
-				if (!xx) {
-					desc->add_attrib(std::move(pos_attr));		//position attrib
-					desc->add_attrib(VertexType::FLOAT, 3);		//color attrib
-					desc->force_init();
-					xx = true;
-				}
 
 				static auto vao = VertexArray::create(desc);
 
@@ -253,10 +257,6 @@ namespace Adonis {
 				//	yy = true;
 				//}
 
-				static auto vbo2 = VertexBuffer::create(sizeof(quad), quad, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
-				static auto ibo1 = IndexBuffer::create(sizeof(indices), indices, BufferBit::DYNAMIC_STORAGE);
-
-
 				//vao->add_desc(desc2, false, true);
 
 				//vao->clear_buffers();
@@ -264,7 +264,7 @@ namespace Adonis {
 				//glEnableVertexArrayAttrib(vao->id(), 2);
 				//AD_CORE_INFO(glGetError());
 
-				vao->set_index_buffer(ibo1->id());
+				//vao->set_index_buffer(ibo1->id());
 				vao->use();
 
 				if (!ImGui::Begin("Viewport")) {
@@ -290,15 +290,16 @@ namespace Adonis {
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
 					pipe->activate();
-					vao->set_buffer(vbo->id(), 0);
+					vao->set_vertex_buffer(vbo->id(), 0);
 					app->consume_renderer()->drawTriangles(0, 3);
 
-					//Draw quad
+					//Draw to button texture
 					fb->activate_color_attachment(1);
 					app->consume_renderer()->clear_color = { {1.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
-					vao->set_buffer(vbo2->id(), 0); 
-					app->consume_renderer()->draw(DrawMethod::Indexed, DrawMode::Triangles, 0, 6);
+					//vao->set_buffer(vbo2->id(), 0); 
+					//app->consume_renderer()->draw(DrawMethod::Indexed, DrawMode::Triangles, 0, 6);
+					app->consume_renderer()->drawTriangles(0, 3);
 
 					//Activate default framebuffer so that imgui can draw to it
 					app->consume_renderer()->set_framebuffer(0);

@@ -5,8 +5,7 @@
 #include "imgui_internal.h"
 #include "glm/ext.hpp"
 #include "Math/Math.h"
-#include "Adonis/RenderingSystem/Mesh.h"
-#include "Adonis/RenderingSystem/Model.h"
+#include "Adonis/RenderingSystem/RenderingSystem.h"
 
 namespace Adonis {
 
@@ -198,9 +197,10 @@ namespace Adonis {
 				//static auto vbo2 = VertexBuffer::create(sizeof(quad), quad, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 				//static auto ibo1 = IndexBuffer::create(sizeof(indices), indices, BufferBit::DYNAMIC_STORAGE);
 
-				Adonis::rendersystem::Scene scene();
+				auto scene = std::make_unique<Adonis::rendersystem::Scene>();
 				auto mesh = std::make_unique<Adonis::rendersystem::Mesh>(quad, sizeof(quad), desc, indices, sizeof(indices));
 				Adonis::rendersystem::Model model(std::move(mesh));
+				
 
 				//Component system tests
 

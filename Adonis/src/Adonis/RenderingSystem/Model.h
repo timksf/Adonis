@@ -17,7 +17,11 @@ namespace Adonis {
 
 			auto mesh_specs()const->MeshSpecification;
 			auto primitive_count()const->uint32_t;
-			auto vao()const->std::unique_ptr<render::VertexArray>;
+			auto create_vao()const->std::unique_ptr<render::VertexArray>;
+
+			auto is_indexed()->bool;
+			auto vbo_id()->uint32_t;
+			auto ibo_id()->uint32_t;
 
 		private:
 			std::unique_ptr<Mesh> m_mesh;

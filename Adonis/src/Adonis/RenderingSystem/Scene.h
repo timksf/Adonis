@@ -16,18 +16,20 @@ namespace Adonis {
 		class MeshGroup {
 		public:
 
-			inline auto prim_count()->uint32_t& { return m_prim_count; };
-
 			auto set_vao(std::unique_ptr<render::VertexArray>&& vao)->void;
 
 			inline auto activate()const->void { m_vao->use(); };
 
 			auto add_model(std::unique_ptr<Model>&& model)->void;
 
-			auto draw_models()->void;
+			auto use_model(uint32_t model_index)->void;
+
+			auto active_model_prim_count()->uint32_t;
+
+			inline auto number_of_models()->uint32_t { return m_models.size(); };
 
 		private:
-			uint32_t m_prim_count{ 0 };
+			uint32_t m_active_model{ 0 };
 			std::unique_ptr<render::VertexArray> m_vao{ nullptr };
 			std::vector<std::unique_ptr<Model>> m_models;
 		};

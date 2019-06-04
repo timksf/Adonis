@@ -60,14 +60,13 @@ namespace Adonis {
 			for (auto& mesh_spec : scene->mesh_specs()) {
 				auto& mesh_group = scene->mesh_group(mesh_spec);
 				mesh_group.activate();
+
 				//Draw each mesh respectively
-				/*
-				for(auto mesh : meshes){
-					
-					draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh->prim_count());
+				for (uint32_t i = 0; i < mesh_group.number_of_models(); i++) {
+					mesh_group.use_model(i);
+					draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh_group.active_model_prim_count());
 				}
-				*/
-				draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh_group.prim_count());
+
 			}
 
 		}

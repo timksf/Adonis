@@ -54,6 +54,9 @@ namespace Adonis {
 
 			auto specs()const->MeshSpecification;
 			auto prim_count()const->uint32_t;
+			 
+			inline auto vbo_id() { return m_vbo->id(); };
+			inline auto ibo_id() { return m_ibo->id(); };
 
 		private:
 			std::unique_ptr<render::IndexBuffer> m_ibo{ nullptr };

@@ -121,6 +121,7 @@
     <ClInclude Include="src\Adonis\RenderingSystem\Scene.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Camera.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Model.h" />
+    <ClInclude Include="src\Adonis\RenderingSystem\RenderingSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">

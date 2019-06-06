@@ -26,7 +26,7 @@ namespace Adonis {
 
 			auto active_model_prim_count()->uint32_t;
 
-			inline auto number_of_models()->uint32_t { return m_models.size(); };
+			inline auto number_of_models()->size_t { return m_models.size(); };
 
 		private:
 			uint32_t m_active_model{ 0 };
@@ -49,15 +49,22 @@ namespace Adonis {
 
 			auto add_cam(std::unique_ptr<Camera>&& cam)->void {};
 
+			auto draw_init()->void;
+
+			inline auto set_pipe(std::shared_ptr<render::RenderPipeline> pipe) { m_pipe = pipe; };
+
+			inline auto pipe()->std::shared_ptr<render::RenderPipeline> { return m_pipe; };
+
 			template<typename... Args>
 			inline void add_cam(Args&&... args) {
 				m_cams.push_back(std::make_unique<Camera>(std::forward<Args>(args)...));
 			}
 
 		private:
-			uint32_t m_active_cam;
+			uint32_t m_active_cam{ 0 };
 			std::vector<std::unique_ptr<Camera>> m_cams;
 			std::unordered_map<MeshSpecification, MeshGroup, Hasher<MeshSpecification>> m_meshgroups;
+			std::shared_ptr<render::RenderPipeline> m_pipe{ nullptr };
 			//std::vector<std::unique_ptr<render::VertexArray>> m_vaos;
 		};
 

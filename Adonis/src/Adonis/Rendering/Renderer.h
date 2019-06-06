@@ -187,7 +187,7 @@ namespace Adonis {
 
 			virtual auto clear_depth_buffer(float depth)->void = 0;
 
-			virtual auto drawTriangles(int offset, int count)->void = 0;
+			virtual auto draw_triangles(int offset, int count)->void = 0;
 
 			virtual auto aspect_ratio()->float = 0;
 
@@ -513,9 +513,9 @@ namespace Adonis {
 			*			Provides a default rendering pipeline for 2D rendering
 			*	@return A pointer to a pre-defined pipeline
 			*/
-			static auto test_pipeline_2D()->std::unique_ptr<RenderPipeline>;
+			static auto test_pipeline_2D()->std::shared_ptr<RenderPipeline>;
 
-			static auto test_pipeline_3D()->std::unique_ptr<RenderPipeline>;
+			static auto test_pipeline_3D()->std::shared_ptr<RenderPipeline>;
 
 			virtual ~RenderPipeline() {};
 

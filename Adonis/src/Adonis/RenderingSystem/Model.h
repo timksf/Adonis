@@ -8,8 +8,12 @@ namespace Adonis {
 
 	namespace rendersystem {
 
-		class Model {
+		class Model: EventListener{
 		public:
+
+			DECLARE_LISTENER(Model);
+
+			ON_EVENT_DECL_V(UpdateEvent);
 
 			Model() = delete;
 
@@ -22,6 +26,8 @@ namespace Adonis {
 			auto is_indexed()->bool;
 			auto vbo_id()->uint32_t;
 			auto ibo_id()->uint32_t;
+
+			inline auto matrix()->glm::mat4& { return m_matrix; };
 
 		private:
 			std::unique_ptr<Mesh> m_mesh;

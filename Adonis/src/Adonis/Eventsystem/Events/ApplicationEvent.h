@@ -8,7 +8,16 @@ namespace Adonis {
 
 		class UpdateEvent: public Event {
 		public:
-			DECLARE_EVENT(UpdateEvent);
+			DECLARE_EVENT(UpdateEvent);	
+
+			UpdateEvent() = delete;
+			
+			UpdateEvent(double deltatime) : m_deltatime(deltatime) {};
+
+			inline auto deltatime()const->double { return m_deltatime; };
+
+		private:
+			double m_deltatime;
 		};
 
 		class AppStartEvent : public Event {

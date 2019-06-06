@@ -5,7 +5,7 @@ namespace Adonis::rendersystem {
 
 	Model::Model(std::unique_ptr<Mesh>&& mesh) :
 		m_mesh(std::move(mesh)){
-
+		ON_EVENT_BIND(UpdateEvent, Model);
 	}
 
 	MeshSpecification Model::mesh_specs()const {
@@ -30,6 +30,9 @@ namespace Adonis::rendersystem {
 	
 	uint32_t Model::ibo_id() {
 		return m_mesh->ibo_id();
+	}
+
+	void Model::on_UpdateEvent(const event_ptr_t<UpdateEvent>& event) {
 	}
 
 

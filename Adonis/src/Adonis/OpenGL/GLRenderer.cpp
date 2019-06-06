@@ -51,11 +51,13 @@ namespace Adonis {
 			glClearNamedFramebufferfv(m_framebuffer, GL_DEPTH, 0, &depth);
 		} 
 
-		void GLRenderer::drawTriangles(int offset, int count) {
+		void GLRenderer::draw_triangles(int offset, int count) {
 			this->draw(DrawMethod::Classic, DrawMode::Triangles, offset, count);
 		}
 
 		void GLRenderer::draw(std::shared_ptr<Adonis::rendersystem::Scene> scene) {
+
+			scene->draw_init();
 
 			for (auto& mesh_spec : scene->mesh_specs()) {
 				auto& mesh_group = scene->mesh_group(mesh_spec);
@@ -230,8 +232,8 @@ namespace Adonis {
 			return nullptr;
 		}
 
-		std::unique_ptr<RenderPipeline> RenderPipeline::test_pipeline_2D() {
-			return std::make_unique<GLRenderPipeline>(
+		std::shared_ptr<RenderPipeline> RenderPipeline::test_pipeline_2D() {
+			return std::make_shared<GLRenderPipeline>(
 				std::make_unique<GLVertexShader>(
 #include "Adonis/OpenGL/Shaders/2DTest.vert"
 					),
@@ -241,8 +243,8 @@ namespace Adonis {
 				);
 		}
 
-		std::unique_ptr<RenderPipeline> RenderPipeline::test_pipeline_3D() {
-			return std::make_unique<GLRenderPipeline>(
+		std::shared_ptr<RenderPipeline> RenderPipeline::test_pipeline_3D() {
+			return std::make_shared<GLRenderPipeline>(
 				std::make_unique<GLVertexShader>(
 #include "Adonis/OpenGL/Shaders/3DTest.vert"
 					),
@@ -457,7 +459,7 @@ namespace Adonis {
 		}
 
 		void GLVertexArrayDesc::add_attrib(VertexType type, uint32_t number, int custom_index, int custom_offset) {
-			int index = custom_index < 0 ? m_attribs.size() : custom_index;
+			int index = custom_index < 0 ? static_cast<int>(m_attribs.size()) : custom_index;
 			int offset = custom_offset < 0 ? 0 : custom_offset;
 
 			//Calculate offset based on already added attributes

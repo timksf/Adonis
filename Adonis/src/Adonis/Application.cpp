@@ -56,7 +56,7 @@ namespace Adonis {
 			EventManager::queueEvent<RenderEvent>(deltatime);
 			EventManager::queueEvent<GuiRenderEvent>();
 			EventManager::queueEvent<PostRenderEvent>();
-			EventManager::queueEvent<UpdateEvent>();
+			EventManager::queueEvent<UpdateEvent>(deltatime);
 
 			EventManager::processEvents();
 		}

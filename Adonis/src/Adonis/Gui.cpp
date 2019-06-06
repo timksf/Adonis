@@ -194,12 +194,28 @@ namespace Adonis {
 					0, 1, 2,
 					1, 2, 3
 				};
+
+				static float triangle[] =
+				{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+							0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+							0.0f, 1.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+				};
 				//static auto vbo2 = VertexBuffer::create(sizeof(quad), quad, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 				//static auto ibo1 = IndexBuffer::create(sizeof(indices), indices, BufferBit::DYNAMIC_STORAGE);
 
-				auto scene = std::make_unique<Adonis::rendersystem::Scene>();
-				auto mesh = std::make_unique<Adonis::rendersystem::Mesh>(quad, sizeof(quad), desc, indices, sizeof(indices));
-				Adonis::rendersystem::Model model(std::move(mesh));
+				static auto scene = std::make_shared<Adonis::rendersystem::Scene>();
+				static auto mesh = std::make_unique<Adonis::rendersystem::Mesh>(quad, sizeof(quad), desc, indices, sizeof(indices));
+				static auto mesh2 = std::make_unique<Adonis::rendersystem::Mesh>(triangle, sizeof(triangle), desc);
+				static auto model = std::make_unique<Adonis::rendersystem::Model>(std::move(mesh));
+				static auto model2 = std::make_unique<Adonis::rendersystem::Model>(std::move(mesh2));
+				static bool lol = false;
+				
+				if (!lol) {
+					scene->set_pipe(RenderPipeline::test_pipeline_2D());
+					scene->add_model(std::move(model));
+					scene->add_model(std::move(model2));
+					lol = true;
+				}
 				
 
 				//Component system tests
@@ -227,17 +243,15 @@ namespace Adonis {
 				fb->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
 				fb->attach(colortex2->id(), FramebufferTextureAttachment::COLOR, 1);
 
-				static std::unique_ptr<RenderPipeline> pipe = RenderPipeline::test_pipeline_2D();
-
-				static float vertices[] =
-					{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-								0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-								0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-					};
+				//static float vertices[] =
+				//	{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+				//				0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+				//				0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+				//	};
 
 				//static float z_translation = -10.0f;
 				//static auto col_attr = VertexAttrib::attrib3float(1, 3 * sizeof(float));
-				static auto vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
+				//static auto vbo = VertexBuffer::create(sizeof(vertices), vertices, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 				//static auto attribs = std::vector<std::unique_ptr<VertexAttrib>>();
 				//attribs.push_back(std::move(pos_attr));
 				//attribs.push_back(std::move(col_attr));
@@ -289,22 +303,24 @@ namespace Adonis {
 					fb->activate_color_attachment(0);
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
-					pipe->activate();
-					vao->set_vertex_buffer(vbo->id(), 0);
-					app->consume_renderer()->drawTriangles(0, 3);
+					app->consume_renderer()->draw(scene);
+					//vao->set_vertex_buffer(vbo->id(), 0);
+					//app->consume_renderer()->drawTriangles(0, 3);
 
-					//Draw to button texture
+					////Draw to button texture
 					fb->activate_color_attachment(1);
-					app->consume_renderer()->clear_color = { {1.0f, 0.0f, 0.0f, 1.0f} };
+					app->consume_renderer()->clear_color = { {1.0f, 1.0f, 1.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
-					//vao->set_buffer(vbo2->id(), 0); 
-					//app->consume_renderer()->draw(DrawMethod::Indexed, DrawMode::Triangles, 0, 6);
-					app->consume_renderer()->drawTriangles(0, 3);
+					app->consume_renderer()->draw(scene);
+					////vao->set_buffer(vbo2->id(), 0); 
+					////app->consume_renderer()->draw(DrawMethod::Indexed, DrawMode::Triangles, 0, 6);
+					//app->consume_renderer()->drawTriangles(0, 3);
 
 					//Activate default framebuffer so that imgui can draw to it
 					app->consume_renderer()->set_framebuffer(0);
 
 					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
+					app->consume_renderer()->set_viewport(0, 0, 100, 100);
 					ImGui::ImageButton(reinterpret_cast<uint32_t*>(colortex2->id()), { 100, 100 }, { 0, 1 }, { 1, 0 });
 					ImGui::End();
 				}

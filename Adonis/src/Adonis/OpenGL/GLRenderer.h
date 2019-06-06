@@ -28,12 +28,12 @@ namespace Adonis {
 
 			auto clear_depth_buffer(float depth)->void override;
 
-			auto drawTriangles(int offset, int count)->void override;
+			auto draw_triangles(int offset, int count)->void override;
 
 			auto aspect_ratio()->float override;
 
 			auto set_framebuffer(uint32_t id)->void override;
-
+			
 			auto set_viewport(int x0, int y0, uint32_t width, uint32_t height)->void override;
 
 			auto draw(std::shared_ptr<rendersystem::Scene> scene)->void override;

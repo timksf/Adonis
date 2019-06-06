@@ -11,10 +11,7 @@ namespace Adonis {
 
 
 
-		Scene::Scene():
-			m_active_cam(0)
-		{
-
+		Scene::Scene(){
 		}
 
 		void Scene::add_model(std::unique_ptr<Model>&& model) {
@@ -39,6 +36,11 @@ namespace Adonis {
 			//Increase primitive count for mesh group and transfer ownership of the model to it
 			//m_meshgroups[model->mesh_specs()].prim_count() += model->primitive_count();
 			m_meshgroups[model->mesh_specs()].add_model(std::move(model));
+		}
+
+		void Scene::draw_init() {
+			AD_CORE_ASSERT((m_pipe != nullptr), "Scene: rendering pipeline not initialized");
+			m_pipe->activate();
 		}
 
 		std::vector<MeshSpecification> Scene::mesh_specs() {

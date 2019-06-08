@@ -5,12 +5,6 @@
 namespace Adonis {
 	namespace rendersystem {
 
-		void MeshGroup::add_model(std::unique_ptr<Model>&& model) {
-			m_models.push_back(std::move(model));
-		}
-
-
-
 		Scene::Scene(SceneType type):
 			m_type(type){
 		}
@@ -42,6 +36,9 @@ namespace Adonis {
 		void Scene::draw_init() {
 			AD_CORE_ASSERT((m_pipe != nullptr), "Scene: rendering pipeline not initialized");
 			m_pipe->activate();
+			if (m_type == SceneType::Scene3D) {
+				this->set_cam_uniforms();
+			}
 		}
 
 		std::vector<MeshSpecification> Scene::mesh_specs() {
@@ -52,6 +49,26 @@ namespace Adonis {
 				keys.push_back(kv.first);
 			}
 			return keys;
+		}
+
+		void Scene::add_cam(std::unique_ptr<Camera>&& cam) {
+			m_cams.push_back(std::move(cam));
+		}
+
+		void Scene::select_cam(uint32_t index) {
+			AD_CORE_ASSERT(index >= 0 && index < m_cams.size(), "Scene: Index out of bounds");
+			m_active_cam = index;
+		}
+
+		void Scene::set_cam_uniforms() {
+			m_pipe->get_param("view")->set_mat4f(m_cams[m_active_cam]->view());
+			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
+		}
+
+
+
+		void MeshGroup::add_model(std::unique_ptr<Model>&& model) {
+			m_models.push_back(std::move(model));
 		}
 
 		MeshGroup& Scene::mesh_group(MeshSpecification spec) {

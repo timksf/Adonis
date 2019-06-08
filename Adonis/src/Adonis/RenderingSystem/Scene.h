@@ -46,15 +46,15 @@ namespace Adonis {
 
 			Scene(SceneType type = SceneType::Scene2D);
 
-			auto select_cam(uint32_t index)->bool {};
+			auto select_cam(uint32_t index)->void;
+
+			auto add_cam(std::unique_ptr<Camera>&& cam)->void;
 
 			auto add_model(std::unique_ptr<Model>&& model)->void;
 
 			auto mesh_specs()->std::vector<MeshSpecification>;
 
 			auto mesh_group(MeshSpecification spec)->MeshGroup&;
-
-			auto add_cam(std::unique_ptr<Camera>&& cam)->void {};
 
 			auto draw_init()->void;
 
@@ -70,6 +70,9 @@ namespace Adonis {
 			}
 
 		private:
+			auto set_cam_uniforms()->void;
+
+
 			SceneType m_type;
 			uint32_t m_active_cam{ 0 };
 			std::vector<std::unique_ptr<Camera>> m_cams;

@@ -59,7 +59,6 @@ namespace Adonis {
 
 			scene->draw_init();
 
-
 			for (auto& mesh_spec : scene->mesh_specs()) {
 				auto& mesh_group = scene->mesh_group(mesh_spec);
 				mesh_group.activate();

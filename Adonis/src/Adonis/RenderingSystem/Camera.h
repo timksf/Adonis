@@ -34,7 +34,7 @@ namespace Adonis {
 
 			Camera();
 
-			inline auto aspectratio()->float& { return m_aspectratio; };
+			//inline auto aspectratio()->float& { return m_aspectratio; };
 			inline auto toggle_zoom()->void { m_enable_zoom = !m_enable_zoom; };
 
 			auto view()const->glm::mat4;

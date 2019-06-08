@@ -209,6 +209,7 @@ namespace Adonis {
 				static auto model = std::make_unique<Adonis::rendersystem::Model>(std::move(mesh));
 				static auto model2 = std::make_unique<Adonis::rendersystem::Model>(std::move(mesh2));
 				static bool lol = false;
+				static auto cam = std::make_unique<Adonis::rendersystem::Camera>();
 				
 				if (!lol) {
 					scene->set_pipe(RenderPipeline::test_pipeline_2D());

@@ -33,15 +33,17 @@ namespace Adonis {
 		class MouseMovedEvent : public Event {
 		public:
 			DECLARE_EVENT(MouseMovedEvent);
-			inline MouseMovedEvent(double x, double y) : m_xpos(x), m_ypos(y) {};
+			inline MouseMovedEvent(double x, double y){
+				m_xpos = x;
+				m_ypos = y;
+			};
 
 			inline auto xpos()const->double { return m_xpos; };
 			inline auto ypos()const->double { return m_ypos; };
 
-
 		private:
-			double m_xpos;
-			double m_ypos;
+			double m_xpos{ 0 };
+			double m_ypos{ 0 };
 		};
 
 		class MouseScrolledEvent : public Event {

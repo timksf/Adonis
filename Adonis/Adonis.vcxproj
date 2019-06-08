@@ -189,6 +189,7 @@
     <ClCompile Include="src\Adonis\Eventsystem\Event.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\EventManager.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Events\ApplicationEvent.cpp" />
+    <ClCompile Include="src\Adonis\Eventsystem\Events\MouseEvent.cpp" />
     <ClCompile Include="src\Adonis\GLFW\ImGuiImplGLFW.cpp" />
     <ClCompile Include="src\Adonis\GLFW\WindowGLFW.cpp" />
     <ClCompile Include="src\Adonis\Gui.cpp" />

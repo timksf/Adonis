@@ -173,6 +173,7 @@
     <ClCompile Include="src\Adonis\RenderingSystem\Camera.cpp" />
     <ClCompile Include="src\Adonis\RenderingSystem\Model.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Events\MouseEvent.cpp" />
+    <ClCompile Include="src\Adonis\RenderingSystem\Primitives\Cuboid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag">

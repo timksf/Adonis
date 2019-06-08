@@ -8,15 +8,16 @@ namespace Adonis {
 		MeshSpecification::MeshSpecification(std::shared_ptr<render::VertexArrayDesc> desc, render::DrawMode mode, render::DrawMethod method) :
 			m_draw_mode(mode),
 			m_draw_method(method),
-			m_buffer_desc(desc)
-		{
+			m_buffer_desc(desc) {
 		};
 
-
-		Mesh::Mesh(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode draw_mode, render::DrawMethod draw_method) {
-			m_specs = MeshSpecification(buffer_desc, draw_mode, draw_method);
+		Mesh::Mesh(render::DrawMode draw_mode, render::DrawMethod draw_method) {
+			m_specs = MeshSpecification(nullptr, draw_mode, draw_method);
 		}
 
+		Mesh::Mesh(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode draw_mode, render::DrawMethod draw_method) {
+			this->init_specs(buffer_desc, draw_mode, draw_method);
+		}
 
 		Mesh::Mesh(void* vertices, uint32_t nvertices, std::shared_ptr<render::VertexArrayDesc> buffer_desc, void* indices, uint32_t nindices, render::DrawMode draw_mode):
 			m_n_indices(nindices),
@@ -40,7 +41,12 @@ namespace Adonis {
 		}
 
 		void Mesh::set_data(void* vertices, uint32_t n_vertices, void* indices, uint32_t n_indices) {
+			init_buffers(vertices, n_vertices, indices, n_indices);
+		}
 
+		void Mesh::set_buffer_desc(std::shared_ptr<render::VertexArrayDesc> buffer_desc) {
+			m_specs.set_buffer_desc(buffer_desc);
+			m_specs_initialized = true;
 		}
 
 		void Mesh::init_buffers(void* vertices, uint32_t n_vertices, void* indices, uint32_t n_indices) {
@@ -57,6 +63,11 @@ namespace Adonis {
 			m_vbo = render::VertexBuffer::create(m_n_vertices, vertices, render::BufferBit::DYNAMIC_STORAGE | render::BufferBit::MAP_READ);
 
 			m_buffers_initialized = true;
+		}
+
+		void Mesh::init_specs(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode draw_mode, render::DrawMethod draw_method) {
+			m_specs = MeshSpecification(buffer_desc, draw_mode, draw_method);
+			m_specs_initialized = true;
 		}
 
 	}

@@ -202,6 +202,7 @@
     <ClCompile Include="src\Adonis\RenderingSystem\Camera.cpp" />
     <ClCompile Include="src\Adonis\RenderingSystem\Mesh.cpp" />
     <ClCompile Include="src\Adonis\RenderingSystem\Model.cpp" />
+    <ClCompile Include="src\Adonis\RenderingSystem\Primitives\Cuboid.cpp" />
     <ClCompile Include="src\Adonis\RenderingSystem\Scene.cpp" />
     <ClCompile Include="src\Adonis\Rendering\Renderer.cpp" />
     <ClCompile Include="src\pch.cpp">

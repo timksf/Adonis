@@ -126,11 +126,11 @@ namespace Adonis {
 			EventManager::queueEvent<CharTyped>(c);
 		});
 
-		ON_EVENT_BIND(UpdateEvent,		WindowGLFW);
-		ON_EVENT_BIND(PreRenderEvent,	WindowGLFW);
-		ON_EVENT_BIND(RenderEvent,		WindowGLFW);
-		ON_EVENT_BIND(PostRenderEvent,	WindowGLFW);
-		ON_EVENT_BIND(WindowResizeEvent, WindowGLFW);
+		AD_ON_EVENT_BIND(UpdateEvent,		WindowGLFW);
+		AD_ON_EVENT_BIND(PreRenderEvent,	WindowGLFW);
+		AD_ON_EVENT_BIND(RenderEvent,		WindowGLFW);
+		AD_ON_EVENT_BIND(PostRenderEvent,	WindowGLFW);
+		AD_ON_EVENT_BIND(WindowResizeEvent, WindowGLFW);
 
 		//TEMPORARY
 		int width, height, n;

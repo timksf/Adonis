@@ -11,7 +11,8 @@ namespace Adonis {
 
 
 
-		Scene::Scene(){
+		Scene::Scene(SceneType type):
+			m_type(type){
 		}
 
 		void Scene::add_model(std::unique_ptr<Model>&& model) {
@@ -76,6 +77,10 @@ namespace Adonis {
 
 		uint32_t MeshGroup::active_model_prim_count() {
 			return m_models[m_active_model]->primitive_count();
+		}
+
+		auto MeshGroup::active_model_matrix() -> glm::mat4& {
+			return m_models[m_active_model]->matrix();
 		}
 
 

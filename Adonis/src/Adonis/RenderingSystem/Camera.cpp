@@ -38,5 +38,65 @@ namespace Adonis {
 			m_up = glm::normalize(glm::cross(m_right, m_front));
 		}
 
+		AD_EVENT_FUNC_DEF_HEAD(UpdateEvent, Camera) {
+
+			float distance = m_velocity * event->deltatime();
+
+			switch (m_movement_status) {
+			case MovementDirection::Forward:
+				m_pos += m_front * distance;
+				break;
+			case MovementDirection::Backward:
+				m_pos -= m_front * distance;
+				break;
+			case MovementDirection::Left:
+				m_pos -= m_right * distance;
+				break;
+			case MovementDirection::Right:
+				m_pos += m_right * distance;
+				break;
+			case MovementDirection::Down:
+				m_pos -= m_up * distance;
+				break;
+			case MovementDirection::Up:
+				m_pos += m_up * distance;
+				break;
+			case MovementDirection::Stationary: //No need to move
+			default: break;
+			}
+
+		}
+
+		AD_EVENT_FUNC_DEF_HEAD(KeyPressed, Camera) {
+			switch (event->code()) {
+			case ADONIS_KEY_W:
+				m_movement_status = MovementDirection::Forward;
+				break;
+			case ADONIS_KEY_S:
+				m_movement_status = MovementDirection::Backward;
+				break;
+			case ADONIS_KEY_A:
+				m_movement_status = MovementDirection::Left;
+				break;
+			case ADONIS_KEY_D:
+				m_movement_status = MovementDirection::Right;
+				break;
+			case ADONIS_KEY_C:
+				m_movement_status = MovementDirection::Down;
+				break;
+			case ADONIS_KEY_SPACE:
+				m_movement_status = MovementDirection::Up;
+				break;
+			}
+		}
+
+		AD_EVENT_FUNC_DEF_HEAD(KeyReleased, Camera) {
+			switch (event->code()) {
+			default: 
+				m_movement_status = MovementDirection::Stationary;
+				break;
+			}
+		}
+
 	}
 }

@@ -5,7 +5,7 @@ namespace Adonis::rendersystem {
 
 	Model::Model(std::unique_ptr<Mesh>&& mesh) :
 		m_mesh(std::move(mesh)){
-		ON_EVENT_BIND(UpdateEvent, Model);
+		AD_ON_EVENT_BIND(UpdateEvent, Model);
 	}
 
 	MeshSpecification Model::mesh_specs()const {

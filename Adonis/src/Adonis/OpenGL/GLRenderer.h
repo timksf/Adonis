@@ -15,7 +15,7 @@ namespace Adonis {
 
 			DECLARE_LISTENER(GLRenderer);
 
-			ON_EVENT_DECL_OVERRIDE(WindowResizeEvent);
+			AD_ON_EVENT_DECL_OVERRIDE(WindowResizeEvent);
 
 			GLRenderer(const GLRenderer& other) = delete;
 

@@ -35,12 +35,12 @@ namespace Adonis {
 
 		virtual ~IWindow() {};
 
-		ON_EVENT_DECL_P_V(UpdateEvent);
-		ON_EVENT_DECL_P_V(PreRenderEvent);
-		ON_EVENT_DECL_P_V(RenderEvent);
-		ON_EVENT_DECL_P_V(PostRenderEvent);
-		ON_EVENT_DECL_P_V(WindowCloseEvent);
-		ON_EVENT_DECL_P_V(WindowResizeEvent);
+		AD_ON_EVENT_DECL_P_V(UpdateEvent);
+		AD_ON_EVENT_DECL_P_V(PreRenderEvent);
+		AD_ON_EVENT_DECL_P_V(RenderEvent);
+		AD_ON_EVENT_DECL_P_V(PostRenderEvent);
+		AD_ON_EVENT_DECL_P_V(WindowCloseEvent);
+		AD_ON_EVENT_DECL_P_V(WindowResizeEvent);
 
 		/**
 		*	@brief	Initializes underlying api/platform specific window

@@ -13,6 +13,11 @@ namespace Adonis {
 
 	namespace rendersystem {
 
+		enum class SceneType {
+			Scene2D = 0,
+			Scene3D
+		};
+
 		class MeshGroup {
 		public:
 
@@ -26,6 +31,8 @@ namespace Adonis {
 
 			auto active_model_prim_count()->uint32_t;
 
+			auto active_model_matrix()->glm::mat4 &;
+
 			inline auto number_of_models()->size_t { return m_models.size(); };
 
 		private:
@@ -37,7 +44,7 @@ namespace Adonis {
 		class Scene {
 		public:
 
-			Scene();
+			Scene(SceneType type = SceneType::Scene2D);
 
 			auto select_cam(uint32_t index)->bool {};
 
@@ -55,12 +62,15 @@ namespace Adonis {
 
 			inline auto pipe()->std::shared_ptr<render::RenderPipeline> { return m_pipe; };
 
+			inline auto type()->SceneType { return m_type; };
+
 			template<typename... Args>
 			inline void add_cam(Args&&... args) {
 				m_cams.push_back(std::make_unique<Camera>(std::forward<Args>(args)...));
 			}
 
 		private:
+			SceneType m_type;
 			uint32_t m_active_cam{ 0 };
 			std::vector<std::unique_ptr<Camera>> m_cams;
 			std::unordered_map<MeshSpecification, MeshGroup, Hasher<MeshSpecification>> m_meshgroups;

@@ -2,14 +2,33 @@
 
 #include "Adonis/Core.h"
 #include "glm/glm.hpp"
+#include "Adonis/Eventsystem/EventListener.h"
+#include "Adonis/Eventsystem/Events/Events.h"
 
 
 namespace Adonis {
 
 	namespace rendersystem {
 
-		class Camera {
+		enum class MovementDirection {
+			Stationary = 0,
+			Right,
+			Left,
+			Up,
+			Down,
+			Forward,
+			Backward
+		};
+
+
+		class Camera : EventListener {
 		public:
+
+			DECLARE_LISTENER(Camera);
+
+			AD_ON_EVENT_DECL_V(UpdateEvent);
+			AD_ON_EVENT_DECL_V(KeyPressed);
+			AD_ON_EVENT_DECL_V(KeyReleased);
 
 			Camera();
 
@@ -19,9 +38,11 @@ namespace Adonis {
 			auto projection()const->glm::mat4;
 
 		private:
+			MovementDirection m_movement_status{ MovementDirection::Stationary };
+
 			float m_fov;
 			float m_aspectratio{ 16.f / 9.f };
-			float m_speed{ 1.0f };
+			float m_velocity{ 1.0f };
 			float m_sensitivity{ 1.0f };
 
 			glm::vec2 m_clip_space{ 10.0f, 100.0f };

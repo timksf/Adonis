@@ -23,13 +23,13 @@ namespace Adonis {
 
 		auto run()->void;
 
-		ON_EVENT_DECL_V(UpdateEvent);
-		ON_EVENT_DECL_V(WindowCloseEvent);
-		ON_EVENT_DECL_V(KeyPressed);
-		ON_EVENT_DECL_V(AppStartEvent) {};
-		ON_EVENT_DECL_V(PreRenderEvent) {};
-		ON_EVENT_DECL_V(RenderEvent) {};
-		ON_EVENT_DECL_V(PostRenderEvent) {};
+		AD_ON_EVENT_DECL_V(UpdateEvent);
+		AD_ON_EVENT_DECL_V(WindowCloseEvent);
+		AD_ON_EVENT_DECL_V(KeyPressed);
+		AD_ON_EVENT_DECL_V(AppStartEvent) {};
+		AD_ON_EVENT_DECL_V(PreRenderEvent) {};
+		AD_ON_EVENT_DECL_V(RenderEvent) {};
+		AD_ON_EVENT_DECL_V(PostRenderEvent) {};
 
 		inline auto consume_window()const->IWindow* { return m_window.get(); };
 		inline auto consume_renderer()const->render::RenderDevice* { return m_renderer.get(); };

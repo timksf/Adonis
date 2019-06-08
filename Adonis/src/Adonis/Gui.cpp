@@ -10,13 +10,13 @@
 namespace Adonis {
 
 	Gui::Gui(Style style) : m_style(style) {
-		ON_EVENT_BIND(KeyPressed, Gui);
-		ON_EVENT_BIND(KeyReleased, Gui);
-		ON_EVENT_BIND(MouseButtonPressed, Gui);
-		ON_EVENT_BIND(MouseScrolledEvent, Gui);
-		ON_EVENT_BIND(CharTyped, Gui);
-		ON_EVENT_BIND(GuiRenderEvent, Gui);
-		ON_EVENT_BIND(PreRenderEvent, Gui);
+		AD_ON_EVENT_BIND(KeyPressed, Gui);
+		AD_ON_EVENT_BIND(KeyReleased, Gui);
+		AD_ON_EVENT_BIND(MouseButtonPressed, Gui);
+		AD_ON_EVENT_BIND(MouseScrolledEvent, Gui);
+		AD_ON_EVENT_BIND(CharTyped, Gui);
+		AD_ON_EVENT_BIND(GuiRenderEvent, Gui);
+		AD_ON_EVENT_BIND(PreRenderEvent, Gui);
 		init();
 	}
 

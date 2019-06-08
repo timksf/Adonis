@@ -13,7 +13,7 @@ namespace Adonis {
 
 			DECLARE_LISTENER(Model);
 
-			ON_EVENT_DECL_V(UpdateEvent);
+			AD_ON_EVENT_DECL_V(UpdateEvent);
 
 			Model() = delete;
 

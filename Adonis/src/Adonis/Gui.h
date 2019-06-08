@@ -27,13 +27,13 @@ namespace Adonis {
 
 		virtual ~Gui();
 
-		ON_EVENT_DECL(GuiRenderEvent);
-		ON_EVENT_DECL(PreRenderEvent);
-		ON_EVENT_DECL(MouseButtonPressed);
-		ON_EVENT_DECL(MouseScrolledEvent);
-		ON_EVENT_DECL(KeyPressed);
-		ON_EVENT_DECL(KeyReleased);
-		ON_EVENT_DECL(CharTyped);
+		AD_ON_EVENT_DECL(GuiRenderEvent);
+		AD_ON_EVENT_DECL(PreRenderEvent);
+		AD_ON_EVENT_DECL(MouseButtonPressed);
+		AD_ON_EVENT_DECL(MouseScrolledEvent);
+		AD_ON_EVENT_DECL(KeyPressed);
+		AD_ON_EVENT_DECL(KeyReleased);
+		AD_ON_EVENT_DECL(CharTyped);
 
 		auto ctx()->typename ImGuiContext*;
 

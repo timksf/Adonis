@@ -181,7 +181,7 @@ namespace Adonis {
 
 			virtual ~RenderDevice() {};
 
-			ON_EVENT_DECL_P_V(WindowResizeEvent);
+			AD_ON_EVENT_DECL_P_V(WindowResizeEvent);
 
 			virtual auto clear_color_buffer(uint32_t buffer_index = 0)->void = 0;
 

@@ -34,13 +34,13 @@ namespace Adonis {
 
 	void Application::run(){
 		//Set event handlers
-		ON_EVENT_BIND(KeyPressed,		Application);
-		ON_EVENT_BIND(WindowCloseEvent, Application);
-		ON_EVENT_BIND(UpdateEvent,		Application);
-		ON_EVENT_BIND(AppStartEvent,	Application);
-		ON_EVENT_BIND(PreRenderEvent,	Application);
-		ON_EVENT_BIND(RenderEvent,		Application);
-		ON_EVENT_BIND(PostRenderEvent,	Application);
+		AD_ON_EVENT_BIND(KeyPressed,		Application);
+		AD_ON_EVENT_BIND(WindowCloseEvent, Application);
+		AD_ON_EVENT_BIND(UpdateEvent,		Application);
+		AD_ON_EVENT_BIND(AppStartEvent,	Application);
+		AD_ON_EVENT_BIND(PreRenderEvent,	Application);
+		AD_ON_EVENT_BIND(RenderEvent,		Application);
+		AD_ON_EVENT_BIND(PostRenderEvent,	Application);
 
 		double time = glfwGetTime();
 

@@ -28,7 +28,7 @@ namespace Adonis {
 
 
 		GLRenderer::GLRenderer(const Color& clear_color) : RenderDevice(clear_color) {
-			ON_EVENT_BIND(WindowResizeEvent, GLRenderer);
+			AD_ON_EVENT_BIND(WindowResizeEvent, GLRenderer);
 			m_renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 			m_glslversion = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 			m_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
@@ -59,6 +59,7 @@ namespace Adonis {
 
 			scene->draw_init();
 
+
 			for (auto& mesh_spec : scene->mesh_specs()) {
 				auto& mesh_group = scene->mesh_group(mesh_spec);
 				mesh_group.activate();
@@ -66,6 +67,11 @@ namespace Adonis {
 				//Draw each mesh respectively
 				for (uint32_t i = 0; i < mesh_group.number_of_models(); i++) {
 					mesh_group.use_model(i);
+
+					if (scene->type() == rendersystem::SceneType::Scene3D) {
+						scene->pipe()->get_param("modelMatrix")->set_mat4f(mesh_group.active_model_matrix());
+					}
+
 					draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh_group.active_model_prim_count());
 				}
 

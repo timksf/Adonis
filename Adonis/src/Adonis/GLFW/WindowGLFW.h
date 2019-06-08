@@ -19,12 +19,12 @@ namespace Adonis {
 
 		virtual ~WindowGLFW();
 
-		ON_EVENT_DECL_V_OVERRIDE(UpdateEvent);
-		ON_EVENT_DECL_V_OVERRIDE(PreRenderEvent);
-		ON_EVENT_DECL_V_OVERRIDE(RenderEvent);
-		ON_EVENT_DECL_V_OVERRIDE(PostRenderEvent);
-		ON_EVENT_DECL_V_OVERRIDE(WindowCloseEvent);
-		ON_EVENT_DECL_V_OVERRIDE(WindowResizeEvent);
+		AD_ON_EVENT_DECL_V_OVERRIDE(UpdateEvent);
+		AD_ON_EVENT_DECL_V_OVERRIDE(PreRenderEvent);
+		AD_ON_EVENT_DECL_V_OVERRIDE(RenderEvent);
+		AD_ON_EVENT_DECL_V_OVERRIDE(PostRenderEvent);
+		AD_ON_EVENT_DECL_V_OVERRIDE(WindowCloseEvent);
+		AD_ON_EVENT_DECL_V_OVERRIDE(WindowResizeEvent);
 
 		auto init()->void override;																				
 		auto toggle_fullscreen()->void override;																

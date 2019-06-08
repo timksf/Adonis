@@ -177,6 +177,7 @@
     <ClInclude Include="src\Adonis\RenderingSystem\Camera.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Mesh.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Model.h" />
+    <ClInclude Include="src\Adonis\RenderingSystem\Primitives\Cuboid.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\RenderingSystem.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Scene.h" />
     <ClInclude Include="src\Adonis\Rendering\Renderer.h" />

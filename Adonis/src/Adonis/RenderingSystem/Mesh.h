@@ -48,22 +48,32 @@ namespace Adonis {
 		class ADONIS_API Mesh {
 		public:
 
-			inline Mesh() {};
+			Mesh() = delete;
+
+			Mesh(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode = render::DrawMode::Triangles, render::DrawMethod = render::DrawMethod::Classic);
 
 			Mesh(void* vertices, uint32_t nvertices, std::shared_ptr<render::VertexArrayDesc> buffer_desc, void* indices = nullptr, uint32_t nindices = 0, render::DrawMode mode = render::DrawMode::Triangles);
 
 			auto specs()const->MeshSpecification;
 			auto prim_count()const->uint32_t;
+
+			auto set_data(void* vertices, uint32_t n_vertices, void* indices, uint32_t n_indices)->void;
 			 
-			inline auto vbo_id() { return m_vbo->id(); };
-			inline auto ibo_id() { return m_ibo->id(); };
+			inline auto vbo_id()->uint32_t { return m_vbo->id(); };
+			inline auto ibo_id()->uint32_t { return m_ibo->id(); };
+			inline auto initialized()->bool { return m_buffers_initialized; };
 
 		private:
+
+			auto init_buffers(void* vertices, uint32_t n_vertices, void* indices = nullptr, uint32_t n_indices = 0)->void;
+
 			std::unique_ptr<render::IndexBuffer> m_ibo{ nullptr };
 			std::unique_ptr<render::VertexBuffer> m_vbo{ nullptr };
 			uint32_t m_n_vertices{ 0 };
 			uint32_t m_n_indices{ 0 };
 			uint32_t m_prim_count{ 0 };
+
+			bool m_buffers_initialized{ false };
 
 			MeshSpecification m_specs{ nullptr, render::DrawMode::Triangles, render::DrawMethod::Classic };
 

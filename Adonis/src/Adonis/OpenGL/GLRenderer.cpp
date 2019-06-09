@@ -344,8 +344,6 @@ namespace Adonis {
 			Buffers
 		*/
 
-		/*AD_LOOKUP_TABLE_DEF_U32(buffer_bit, { GL_DYNAMIC_STORAGE_BIT, GL_MAP_READ_BIT, GL_MAP_WRITE_BIT });*/
-		
 		/*
 			Vertex buffer
 		*/
@@ -420,8 +418,6 @@ namespace Adonis {
 			Vertex Attributes
 		*/
 
-		/*AD_LOOKUP_TABLE_DEF_U32(vertex_type, { GL_FLOAT, GL_HALF_FLOAT, GL_DOUBLE, GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT });
-		AD_LOOKUP_TABLE_DEF_U32(vertex_type_size, { 4u, 2u, 8u, 1u, 1u, 2u, 2u, 4u, 4u});*/
 
 		GLVertexAttrib::GLVertexAttrib(GLuint index, GLuint offset, VertexType type, GLuint size, GLboolean normalized) {
 			m_index = index;
@@ -583,12 +579,6 @@ namespace Adonis {
 		/**
 		* Texture
 		*/
-
-		//AD_LOOKUP_TABLE_DEF_U32(sized_pixel_format, { GL_R3_G3_B2, GL_RGB8, GL_RGBA4, GL_RGBA8, GL_DEPTH_COMPONENT16 });
-		//AD_LOOKUP_TABLE_DEF_U32(tex_param, { GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T, GL_TEXTURE_WRAP_R, GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MAG_FILTER });
-		//AD_LOOKUP_TABLE_DEF_U32(pixel_format, { GL_RGB, GL_RGBA, GL_BGR, GL_BGRA });
-		//AD_LOOKUP_TABLE_DEF_U32(pixel_datatype, { GL_SHORT, GL_UNSIGNED_SHORT, GL_BYTE, GL_UNSIGNED_BYTE, GL_INT, GL_UNSIGNED_INT });
-		//AD_LOOKUP_TABLE_DEF_U32(tex_param_value, { GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRROR_CLAMP_TO_EDGE });
 
 		GLTexture2D::GLTexture2D(int width, int height, const void* data, TexturePixelFormatSized fmt) {
 			glCreateTextures(GL_TEXTURE_2D, 1, &m_id);

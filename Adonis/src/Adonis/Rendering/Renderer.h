@@ -216,17 +216,7 @@ namespace Adonis {
 			float test = -0.1f;
 
 			Color clear_color;
-		};
-
-		enum class PixelDataType : uint32_t {
-			SHORT = 0,
-			USHORT,
-			BYTE,
-			UBYTE,
-			INT,
-			UINT
-		};*/
-	
+		};	
 
 		class ADONIS_API Texture {
 		public:
@@ -541,6 +531,15 @@ namespace Adonis {
 			static auto create(std::vector<std::unique_ptr<VertexAttrib>>&& attribs, uint32_t baseoffset, uint32_t stride)->std::shared_ptr<VertexArrayDesc>;
 			
 			static auto create_empty()->std::shared_ptr<VertexArrayDesc>;
+
+			/**
+			*	@brief A default vertex array description object describing a buffer of the type:
+			*	  POS_ATTR	 COL_ATTR
+			*	| x | y | z| r | g | b
+			*
+			*	@return pointer to the vertex array description 
+			*/
+			static auto standard_pos_color_desc()->std::shared_ptr<VertexArrayDesc>;
 					   
 			virtual ~VertexArrayDesc() {};
 

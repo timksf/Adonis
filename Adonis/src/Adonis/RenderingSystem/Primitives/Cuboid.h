@@ -10,7 +10,7 @@ namespace Adonis {
 
 		namespace primitives {
 
-			class ADONIS_API Cuboid : Mesh {
+			class ADONIS_API Cuboid : public Mesh {
 			public:
 
 				Cuboid(float height, float width, float depth);

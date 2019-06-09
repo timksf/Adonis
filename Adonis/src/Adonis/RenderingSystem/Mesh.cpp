@@ -13,7 +13,7 @@ namespace Adonis {
 
 		Mesh::Mesh(render::DrawMode draw_mode, render::DrawMethod draw_method) {
 			m_specs = MeshSpecification(nullptr, draw_mode, draw_method);
-		}
+		}	
 
 		Mesh::Mesh(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode draw_mode, render::DrawMethod draw_method) {
 			this->init_specs(buffer_desc, draw_mode, draw_method);
@@ -25,11 +25,11 @@ namespace Adonis {
 		{
 			this->init_buffers(vertices, nvertices, indices, nindices);
 
-			m_specs = MeshSpecification(buffer_desc, draw_mode, (nindices == 0 || indices == nullptr) ? render::DrawMethod::Classic : render::DrawMethod::Indexed);
+			this->init_specs(buffer_desc, draw_mode, (nindices == 0 || indices == nullptr) ? render::DrawMethod::Classic : render::DrawMethod::Indexed);
 		}
 
 		bool MeshSpecification::operator==(const MeshSpecification& rhs) const {
-			return (m_draw_mode == rhs.m_draw_mode) && (m_draw_method == rhs.m_draw_method) && (m_buffer_desc == rhs.m_buffer_desc);
+			return (m_draw_mode == rhs.m_draw_mode) && (m_draw_method == rhs.m_draw_method) && (m_buffer_desc->compare(rhs.buffer_desc()));
 		}
 
 		MeshSpecification Mesh::specs()const {

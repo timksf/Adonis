@@ -565,6 +565,8 @@ namespace Adonis {
 			virtual auto initialized()->bool = 0;
 
 			virtual auto force_init()-> void = 0;
+
+			virtual auto compare(const std::shared_ptr<VertexArrayDesc> rhs)const->bool = 0;
 		};
 
 		class ADONIS_API VertexArray {

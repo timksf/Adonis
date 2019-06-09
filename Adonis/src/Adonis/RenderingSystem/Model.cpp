@@ -4,7 +4,7 @@
 namespace Adonis::rendersystem {
 
 	Model::Model(std::unique_ptr<Mesh>&& mesh){
-		AD_CORE_ASSERT(mesh->initialized(), "Model: Mesh buffers not initialized");
+		AD_CORE_ASSERT(mesh->initialized(), "Model: Mesh not initialized properly");
 		AD_ON_EVENT_BIND(UpdateEvent, Model);
 		m_mesh = std::move(mesh);
 	}

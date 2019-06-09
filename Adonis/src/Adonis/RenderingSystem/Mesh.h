@@ -52,7 +52,7 @@ namespace Adonis {
 
 			Mesh() = delete;
 
-			Mesh(render::DrawMode = render::DrawMode::Triangles, render::DrawMethod = render::DrawMethod::Classic);
+			Mesh(render::DrawMode, render::DrawMethod = render::DrawMethod::Classic);
 
 			Mesh(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode = render::DrawMode::Triangles, render::DrawMethod = render::DrawMethod::Classic);
 

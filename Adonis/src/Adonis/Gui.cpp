@@ -203,21 +203,34 @@ namespace Adonis {
 				//static auto vbo2 = VertexBuffer::create(sizeof(quad), quad, BufferBit::DYNAMIC_STORAGE | BufferBit::MAP_READ);
 				//static auto ibo1 = IndexBuffer::create(sizeof(indices), indices, BufferBit::DYNAMIC_STORAGE);
 
-				static auto scene = std::make_shared<Adonis::rendersystem::Scene>();
-				static auto mesh = std::make_unique<Adonis::rendersystem::Mesh>(quad, sizeof(quad), desc, indices, sizeof(indices));
-				static auto mesh2 = std::make_unique<Adonis::rendersystem::Mesh>(triangle, sizeof(triangle), desc);
-				static auto model = std::make_unique<Adonis::rendersystem::Model>(std::move(mesh));
-				static auto model2 = std::make_unique<Adonis::rendersystem::Model>(std::move(mesh2));
+				static auto scene2D = std::make_shared<rendersystem::Scene>();
+				static auto mesh = std::make_unique<rendersystem::Mesh>(quad, sizeof(quad), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
+				static auto mesh2 = std::make_unique<rendersystem::Mesh>(triangle, sizeof(triangle), VertexArrayDesc::standard_pos_color_desc());
+				static auto model = std::make_unique<rendersystem::Model>(std::move(mesh));
+				static auto model2 = std::make_unique<rendersystem::Model>(std::move(mesh2));
 				static bool lol = false;
-				static auto cam = std::make_unique<Adonis::rendersystem::Camera>();
 				
 				if (!lol) {
-					scene->set_pipe(RenderPipeline::test_pipeline_2D());
-					scene->add_model(std::move(model));
-					scene->add_model(std::move(model2));
+					scene2D->set_pipe(RenderPipeline::test_pipeline_2D());
+					scene2D->add_model(std::move(model));
+					scene2D->add_model(std::move(model2));
 					lol = true;
 				}
-				
+
+				static auto scene3D = std::make_shared<Adonis::rendersystem::Scene>(rendersystem::SceneType::Scene3D);
+				/*static auto cuboid = std::make_unique<rendersystem::primitives::Cuboid>(10, 10, 10);
+				static auto cube_model = std::make_unique<rendersystem::Model>(std::move(cuboid));*/
+				static auto mesh3 = std::make_unique<rendersystem::Mesh>(quad, sizeof(quad), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
+				static auto model3 = std::make_unique<rendersystem::Model>(std::move(mesh3));
+				static auto cam = std::make_unique<Adonis::rendersystem::Camera>();
+				static bool whatamigonnacallyoulittlebool = false;
+
+				if (!whatamigonnacallyoulittlebool) {
+					scene3D->set_pipe(RenderPipeline::test_pipeline_3D());
+					scene3D->add_cam(std::move(cam));
+					scene3D->add_model(std::move(model3));
+					whatamigonnacallyoulittlebool = true;
+				}
 
 				//Component system tests
 
@@ -304,7 +317,7 @@ namespace Adonis {
 					fb->activate_color_attachment(0);
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
-					app->consume_renderer()->draw(scene);
+					app->consume_renderer()->draw(scene3D);
 					//vao->set_vertex_buffer(vbo->id(), 0);
 					//app->consume_renderer()->drawTriangles(0, 3);
 
@@ -312,7 +325,7 @@ namespace Adonis {
 					fb->activate_color_attachment(1);
 					app->consume_renderer()->clear_color = { {1.0f, 1.0f, 1.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
-					app->consume_renderer()->draw(scene);
+					app->consume_renderer()->draw(scene2D);
 					////vao->set_buffer(vbo2->id(), 0); 
 					////app->consume_renderer()->draw(DrawMethod::Indexed, DrawMode::Triangles, 0, 6);
 					//app->consume_renderer()->drawTriangles(0, 3);

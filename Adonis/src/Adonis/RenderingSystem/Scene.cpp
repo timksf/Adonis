@@ -26,6 +26,7 @@ namespace Adonis {
 				//create new vao for the model's buffer description
 				//if the description doesn't match any existing one, a new mesh group with the id for the new vao is needed
 				m_meshgroups[model->mesh_specs()].set_vao(std::move(model->create_vao()));
+				AD_CORE_INFO("SATAN");
 			}
 
 			//Increase primitive count for mesh group and transfer ownership of the model to it
@@ -62,7 +63,7 @@ namespace Adonis {
 
 		void Scene::set_cam_uniforms() {
 			m_pipe->get_param("view")->set_mat4f(m_cams[m_active_cam]->view());
-			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
+			//m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
 		}
 
 

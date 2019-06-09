@@ -68,7 +68,7 @@ namespace Adonis {
 					mesh_group.use_model(i);
 
 					if (scene->type() == rendersystem::SceneType::Scene3D) {
-						scene->pipe()->get_param("modelMatrix")->set_mat4f(mesh_group.active_model_matrix());
+						//scene->pipe()->get_param("model")->set_mat4f(mesh_group.active_model_matrix());
 					}
 
 					draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh_group.active_model_prim_count());
@@ -491,6 +491,19 @@ namespace Adonis {
 
 		std::shared_ptr<VertexArrayDesc> VertexArrayDesc::create_empty() {
 			return std::make_shared<GLVertexArrayDesc>();
+		}
+
+		std::shared_ptr<VertexArrayDesc> VertexArrayDesc::standard_pos_color_desc() {
+			auto desc = VertexArrayDesc::create_empty();
+			desc->add_attrib(VertexType::FLOAT, 3); //position
+			desc->add_attrib(VertexType::FLOAT, 3); //color
+			desc->force_init();
+			return desc;
+		}
+
+		bool GLVertexArrayDesc::compare(const std::shared_ptr<VertexArrayDesc> rhs)const {
+			//TODO
+			return true;
 		}
 
 		/*

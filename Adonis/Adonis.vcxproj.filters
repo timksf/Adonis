@@ -123,6 +123,7 @@
     <ClInclude Include="src\Adonis\RenderingSystem\Model.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\RenderingSystem.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Primitives\Cuboid.h" />
+    <ClInclude Include="src\Adonis\RenderingSystem\Primitives\Primitives.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">

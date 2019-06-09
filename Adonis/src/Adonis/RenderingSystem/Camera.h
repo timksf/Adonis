@@ -53,7 +53,7 @@ namespace Adonis {
 			bool m_constrain_pitch = false;
 			bool m_enable_zoom = false;
 
-			glm::vec2 m_clip_space{ 10.0f, 100.0f };
+			glm::vec2 m_clip_space{ 0.1f, 100.0f };
 
 			glm::vec3 m_pos{ 0.0f, 0.0f, 0.0f };
 			glm::vec3 m_front{ 0.f, 0.f, 0.f };

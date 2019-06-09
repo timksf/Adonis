@@ -459,6 +459,8 @@ namespace Adonis {
 
 			auto force_init()->void override;
 
+			auto compare(const std::shared_ptr<VertexArrayDesc> rhs)const->bool override;
+
 
 		private:
 			bool m_initialized{ false };

@@ -149,18 +149,6 @@ namespace Adonis {
 			}
 		};
 
-		/*enum class DrawMode {
-			Triangles = 0,
-			Lines,
-			Points,
-		};
-		
-		enum class DrawMethod {
-			Classic = 0,
-			Indexed
-		};*/
-
-
 
 		class RenderPipeline;
 
@@ -230,39 +218,6 @@ namespace Adonis {
 			Color clear_color;
 		};
 
-		/*enum class TexturePixelFormatSized : uint32_t {
-			R3_G3_B2 = 0,
-			RGB8,
-			RGBA4,
-			RGBA8,
-			DEPTH16
-		};
-
-		enum class TextureParameter : uint32_t {
-			WRAP_X = 0,
-			WRAP_Y,
-			WRAP_Z,
-			MIN_FILTER,
-			MAG_FILTER
-		};
-
-		enum class TextureParamValue {
-			FILTER_NEAREST = 0,
-			FILTER_LINEAR,
-			WRAP_CLAMP_TO_EDGE,
-			WRAP_CLAMP_TO_BORDER,
-			WRAP_MIRRORED_REPEAT,
-			WRAP_REPEAT,
-			WRAP_MIRROR_CLAMP_TO_EDGE
-		};
-
-		enum class PixelFormat : uint32_t {
-			RGB = 0,
-			RGBA,
-			BGR,
-			BGRA,
-		};
-
 		enum class PixelDataType : uint32_t {
 			SHORT = 0,
 			USHORT,
@@ -275,12 +230,6 @@ namespace Adonis {
 
 		class ADONIS_API Texture {
 		public:
-
-			/*AD_LOOKUP_TABLE_DECL_U32(sized_pixel_format, 5);
-			AD_LOOKUP_TABLE_DECL_U32(tex_param, 5);
-			AD_LOOKUP_TABLE_DECL_U32(tex_param_value, 7);
-			AD_LOOKUP_TABLE_DECL_U32(pixel_format, 4);
-			AD_LOOKUP_TABLE_DECL_U32(pixel_datatype, 6);*/
 
 			virtual auto id()->uint32_t = 0;
 			virtual auto set_param(TextureParameter param, TextureParamValue value)->void = 0;
@@ -296,12 +245,6 @@ namespace Adonis {
 			virtual auto id()->uint32_t = 0;
 			virtual auto set_param(TextureParameter param, TextureParamValue value)->void = 0;
 		};
-
-		//enum class FramebufferTextureAttachment : uint32_t {
-		//	COLOR = 0,
-		//	DEPTH,
-		//	STENCIL
-		//};
 
 		class ADONIS_API Framebuffer {
 		public:
@@ -531,48 +474,8 @@ namespace Adonis {
 		private:
 		};
 
-		//enum class ADONIS_API VertexType: uint32_t {
-		//	FLOAT = 0,
-		//	HALF_FLOAT = 1,
-		//	DOUBLE = 2,
-		//	BYTE = 3,
-		//	UNSIGNED_BYTE = 4,
-		//	SHORT = 5,
-		//	UNSIGNED_SHORT = 6,
-		//	INTEGER = 7,
-		//	UNSIGNED_INTEGER = 8,
-		//	NORMALIZED_BYTE = 9,
-		//	NORMALIZED_UNSIGNED_BYTE = 10,
-		//	NORMALIZED_SHORT = 11,
-		//	NORMALIZED_UNSIGNED_SHORT = 12,
-		//	NORMALIZED_INTEGER = 13,
-		//	NORMALIZED_UNSIGNED_INTEGER = 14
-		//};
-
-		//enum class ADONIS_API BufferBit : uint32_t {
-		//	DYNAMIC_STORAGE = 0,
-		//	MAP_READ,
-		//	MAP_WRITE
-		//};
-
-		//inline BufferBit operator|(BufferBit a, BufferBit b) {
-		//	return static_cast<BufferBit>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
-		//}
-
-		//inline BufferBit operator&(BufferBit a, BufferBit b) {
-		//	return static_cast<BufferBit>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
-		//}
-
-		//inline BufferBit operator^(BufferBit a, BufferBit b) {
-		//	return static_cast<BufferBit>(static_cast<uint32_t>(a) ^ static_cast<uint32_t>(b));
-		//}
-
 		class ADONIS_API Buffer {
 		public:
-
-			/*static constexpr uint8_t NUMBER_OF_BUFFER_BITS = 3;
-			static uint32_t buffer_bit_lookup[NUMBER_OF_BUFFER_BITS];*/
-			/*AD_LOOKUP_TABLE_DECL_U32(buffer_bit, 3);*/
 
 			virtual ~Buffer() {};
 			virtual auto id()->uint32_t = 0;
@@ -582,8 +485,6 @@ namespace Adonis {
 
 		class ADONIS_API VertexBuffer: public Buffer {
 		public:
-
-			/*AD_LOOKUP_TABLE_DECL_U32(vertex_type, 15);*/
 
 			/**
 			*	@brief			This function is defined by the different implementations, of which only omne will be active
@@ -611,8 +512,6 @@ namespace Adonis {
 
 		class ADONIS_API VertexAttrib {
 		public:
-
-			/*AD_LOOKUP_TABLE_DECL_U32(vertex_type_size, 15);*/
 
 			/*
 			*	@brief				Create a vertex attribute object

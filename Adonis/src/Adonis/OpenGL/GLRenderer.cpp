@@ -68,7 +68,7 @@ namespace Adonis {
 					mesh_group.use_model(i);
 
 					if (scene->type() == rendersystem::SceneType::Scene3D) {
-						//scene->pipe()->get_param("model")->set_mat4f(mesh_group.active_model_matrix());
+						scene->pipe()->get_param("model")->set_mat4f(mesh_group.active_model_matrix());
 					}
 
 					draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh_group.active_model_prim_count());

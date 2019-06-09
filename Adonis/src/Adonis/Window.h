@@ -73,6 +73,10 @@ namespace Adonis {
 
 		virtual auto is_vsync()const->bool = 0;
 		virtual auto vsync()->bool& = 0;
+
+		virtual auto toggle_cursor()->void = 0;
+		virtual auto enable_cursor()->void = 0;
+		virtual auto disable_cursor()->void = 0;
 									
 		virtual auto button_state(int button)->int = 0;
 		virtual auto mouse_pos()->glm::dvec2 = 0;

@@ -56,7 +56,7 @@ namespace Adonis {
 		float m_time = 0.0;																				//Time used for ImGui updates
 		bool m_mousejustpressed[5] = { false, false, false, false, false };
 		ImGuiContext* m_ctx = nullptr;
-
+		bool m_esc_pressed = false;
 
 
 	};

@@ -31,6 +31,10 @@ namespace Adonis {
 		auto set_mouse_pos(double x, double y)->void override;
 		auto update_vsync()->void override;
 
+		auto toggle_cursor()->void override;
+		auto enable_cursor()->void override;
+		auto disable_cursor()->void override;
+
 		auto has_focus()const->bool override;
 		
 		auto is_vsync()const->bool override { return m_vsync; };
@@ -50,6 +54,7 @@ namespace Adonis {
 		static auto shutdown(GLFWwindow* window)->void;															//Clean-up allocated storage									
 
 	private:
+		bool m_show_cursor{ true };
 		std::string m_title;
 		int m_width;
 		int m_height;

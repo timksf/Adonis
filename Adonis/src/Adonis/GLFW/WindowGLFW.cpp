@@ -221,4 +221,22 @@ namespace Adonis {
 		glfwGetWindowPos(m_window.get(), &x, &y);
 		return { x, y };
 	}
+
+	void WindowGLFW::toggle_cursor() {
+		m_show_cursor = !m_show_cursor;
+		if (m_show_cursor) {
+			this->enable_cursor();
+		}
+		else {
+			this->disable_cursor();
+		}
+	}
+
+	void WindowGLFW::enable_cursor() {
+		glfwSetInputMode(m_window.get(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+
+	void WindowGLFW::disable_cursor() {
+		glfwSetInputMode(m_window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
 }

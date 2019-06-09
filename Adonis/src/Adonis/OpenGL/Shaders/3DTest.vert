@@ -8,13 +8,13 @@ layout(location = 1) in vec3 col;
 out vec3 vert_col;
 
 uniform mat4 projection;
-//uniform mat4 model;
+uniform mat4 model;
 uniform mat4 view;
 
 void main(){
 	
 	vert_col = col;
-	gl_Position = view * vec4(pos, 1.0);
+	gl_Position = projection * view * model * vec4(pos, 1.0);
 
 }
 

@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "Adonis/Math/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include "glm/ext.hpp"
 
 namespace Adonis {
 
@@ -10,11 +12,11 @@ namespace Adonis {
 		Camera::Camera(){
 			AD_ON_EVENT_BIND(KeyPressed, Camera);
 			AD_ON_EVENT_BIND(KeyReleased, Camera);
-			//AD_ON_EVENT_BIND(MouseMovedEvent, Camera);
+			AD_ON_EVENT_BIND(MouseMovedEvent, Camera);
 			AD_ON_EVENT_BIND(MouseScrolledEvent, Camera);
 			AD_ON_EVENT_BIND(UpdateEvent, Camera);
 			using namespace math::literals;
-			m_fov = 90._degf;
+			m_fov = 100._degf;
 		}
 
 		void Camera::update() {
@@ -26,6 +28,7 @@ namespace Adonis {
 
 			m_right = glm::normalize(glm::cross(m_front, m_world_up));
 			m_up = glm::normalize(glm::cross(m_right, m_front));
+
 		}
 
 		AD_EVENT_FUNC_DEF_HEAD(UpdateEvent, Camera) {
@@ -38,7 +41,6 @@ namespace Adonis {
 				break;
 			case MovementDirection::Backward:
 				m_pos -= m_front * distance;
-				AD_CORE_INFO("Moving cam backwards");
 				break;
 			case MovementDirection::Left:
 				m_pos -= m_right * distance;
@@ -47,14 +49,16 @@ namespace Adonis {
 				m_pos += m_right * distance;
 				break;
 			case MovementDirection::Down:
-				m_pos -= m_up * distance;
+				m_pos -= m_world_up * distance;
 				break;
 			case MovementDirection::Up:
-				m_pos += m_up * distance;
+				m_pos += m_world_up * distance;
 				break;
 			case MovementDirection::Stationary: //No need to move
 			default: break;
 			}
+
+			this->update();
 
 		}
 
@@ -107,7 +111,7 @@ namespace Adonis {
 			last_y = event->ypos();
 
 			m_yaw += xoff * m_sensitivity;
-			m_pitch += yoff * m_sensitivity;
+			m_pitch -= yoff * m_sensitivity;
 
 			if (m_constrain_pitch) {
 				if (m_pitch > 89.0f) {
@@ -128,12 +132,11 @@ namespace Adonis {
 		}
 
 		glm::mat4 Camera::view()const {
-			return glm::lookAt(m_pos, m_front, m_up);
-			//return glm::mat4(1.0f);
+			return glm::lookAt(m_pos, m_pos + m_front, m_up);
 		}
 
 		glm::mat4 Camera::projection()const {
-			return glm::perspective(glm::radians(m_fov), m_aspectratio, m_clip_space.x, m_clip_space.y);
+			return glm::perspective(m_fov, m_aspectratio, m_clip_space.x, m_clip_space.y);
 		}
 
 	}

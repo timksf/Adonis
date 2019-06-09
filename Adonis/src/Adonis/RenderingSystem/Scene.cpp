@@ -63,7 +63,7 @@ namespace Adonis {
 
 		void Scene::set_cam_uniforms() {
 			m_pipe->get_param("view")->set_mat4f(m_cams[m_active_cam]->view());
-			//m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
+			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
 		}
 
 

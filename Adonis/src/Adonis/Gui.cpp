@@ -293,13 +293,17 @@ namespace Adonis {
 				//AD_CORE_INFO(glGetError());
 
 				//vao->set_index_buffer(ibo1->id());
-				vao->use();
+				vao->use(); 
+				glEnable(GL_DEPTH_TEST);
 
 				if (!ImGui::Begin("Viewport")) {
 					ImGui::End();
 					AD_CORE_ERROR("Failed to create render window");
 				}
 				else {
+					/*if (ImGui::IsWindowFocused()) {
+						app->consume_window()->disable_cursor();
+					}*/
 					float x0 = ImGui::GetCursorScreenPos().x;
 					float y0 = ImGui::GetCursorScreenPos().y;
 					float ww = ImGui::GetWindowSize().x;
@@ -317,6 +321,7 @@ namespace Adonis {
 					fb->activate_color_attachment(0);
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
+					app->consume_renderer()->clear_depth_buffer(0.0f);
 					app->consume_renderer()->draw(scene3D);
 					//vao->set_vertex_buffer(vbo->id(), 0);
 					//app->consume_renderer()->drawTriangles(0, 3);

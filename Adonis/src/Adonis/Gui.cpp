@@ -218,8 +218,8 @@ namespace Adonis {
 				}
 
 				static auto scene3D = std::make_shared<Adonis::rendersystem::Scene>(rendersystem::SceneType::Scene3D);
-				/*static auto cuboid = std::make_unique<rendersystem::primitives::Cuboid>(10, 10, 10);
-				static auto cube_model = std::make_unique<rendersystem::Model>(std::move(cuboid));*/
+				static auto cuboid = std::make_unique<rendersystem::primitives::Cuboid>(10, 10, 10);
+				static auto cube_model = std::make_unique<rendersystem::Model>(std::move(cuboid));
 				static auto mesh3 = std::make_unique<rendersystem::Mesh>(quad, sizeof(quad), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
 				static auto model3 = std::make_unique<rendersystem::Model>(std::move(mesh3));
 				static auto cam = std::make_unique<Adonis::rendersystem::Camera>();

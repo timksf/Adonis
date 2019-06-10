@@ -89,9 +89,9 @@ namespace Adonis {
 			};
 
 			enum class ADONIS_API BufferBit : uint32_t {
-				DYNAMIC_STORAGE = 0,
-				MAP_READ,
-				MAP_WRITE
+				DYNAMIC_STORAGE = 1 << 0,
+				MAP_READ = 1 << 1,
+				MAP_WRITE = 1 << 2
 			};
 
 			inline BufferBit operator|(BufferBit a, BufferBit b) {

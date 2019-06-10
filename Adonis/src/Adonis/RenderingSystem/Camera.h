@@ -11,14 +11,41 @@ namespace Adonis {
 	namespace rendersystem {
 
 		enum class MovementDirection {
-			Stationary = 0,
-			Right,
-			Left,
-			Up,
-			Down,
-			Forward,
-			Backward
+			Stationary	= 1 << 0,
+			Right		= 1 << 1,
+			Left		= 1 << 2,
+			Up			= 1 << 3,
+			Down		= 1 << 4,
+			Forward		= 1 << 5,
+			Backward	= 1 << 6
 		};
+
+		inline constexpr MovementDirection operator|(MovementDirection a, MovementDirection b) {
+			return static_cast<MovementDirection>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
+		}
+
+		inline constexpr MovementDirection operator&(MovementDirection a, MovementDirection b) {
+			return static_cast<MovementDirection>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
+		}
+
+		inline constexpr MovementDirection operator^(MovementDirection a, MovementDirection b) {
+			return static_cast<MovementDirection>(static_cast<uint32_t>(a) ^ static_cast<uint32_t>(b));
+		}
+		
+		inline constexpr MovementDirection& operator|=(MovementDirection& a, MovementDirection b) {
+			return a = a | b;
+		}
+
+		inline constexpr MovementDirection& operator&=(MovementDirection& a, MovementDirection b) {
+			return a = a & b;
+		}
+
+		inline constexpr MovementDirection operator~(MovementDirection a) {
+			return static_cast<MovementDirection>(~(static_cast<uint32_t>(a)));
+		}
+
+
+
 
 
 		class Camera : EventListener {

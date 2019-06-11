@@ -5,6 +5,7 @@
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "imgui.h"
 #include "glm/glm.hpp"
+#include "Adonis/RenderingSystem/RenderingSystem.h"
 
 namespace Adonis {
 
@@ -43,6 +44,8 @@ namespace Adonis {
 		auto show_debug(bool*)->void;
 		auto show_style_editor(bool*)->void;
 		auto show_tools_window(bool*, glm::vec2*, glm::vec2*, bool*)->void;
+		auto show_scene_info(bool*)->void;
+		auto show_cam_info_window(rendersystem::CamInfo info, bool*)->void;
 
 	private:
 		auto init()->void;
@@ -57,7 +60,8 @@ namespace Adonis {
 		bool m_mousejustpressed[5] = { false, false, false, false, false };
 		ImGuiContext* m_ctx = nullptr;
 		bool m_esc_pressed = false;
-
+		bool m_in_menu = false;
+		bool m_viewport_focused = false;
 
 	};
 

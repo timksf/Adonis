@@ -48,7 +48,7 @@ namespace Adonis {
 
 			auto select_cam(uint32_t index)->void;
 
-			auto add_cam(std::unique_ptr<Camera>&& cam)->void;
+			auto add_cam(std::unique_ptr<Camera>&& cam, bool auto_select = false)->void;
 
 			auto add_model(std::unique_ptr<Model>&& model)->void;
 
@@ -58,19 +58,30 @@ namespace Adonis {
 
 			auto draw_init()->void;
 
+			auto enable_cam()->void;
+
+			auto disable_cam()->void;
+
+			auto set_resolution(float width, float height)->void;
+
 			inline auto set_pipe(std::shared_ptr<render::RenderPipeline> pipe) { m_pipe = pipe; };
 
 			inline auto pipe()->std::shared_ptr<render::RenderPipeline> { return m_pipe; };
 
 			inline auto type()->SceneType { return m_type; };
 
+			inline auto cam_info()->CamInfo { return m_cam_info; };
+
 			template<typename... Args>
-			inline void add_cam(Args&&... args) {
+			inline void add_cam(Args&&... args, bool auto_select = false) {
 				m_cams.push_back(std::make_unique<Camera>(std::forward<Args>(args)...));
+				if(auto_select)
+					select_cam(m_cams.size() - 1);
 			}
 
 		private:
 			auto set_cam_uniforms()->void;
+			auto update_cam_info()->void;
 
 
 			SceneType m_type;
@@ -78,6 +89,7 @@ namespace Adonis {
 			std::vector<std::unique_ptr<Camera>> m_cams;
 			std::unordered_map<MeshSpecification, MeshGroup, Hasher<MeshSpecification>> m_meshgroups;
 			std::shared_ptr<render::RenderPipeline> m_pipe{ nullptr };
+			CamInfo m_cam_info;
 			//std::vector<std::unique_ptr<render::VertexArray>> m_vaos;
 		};
 

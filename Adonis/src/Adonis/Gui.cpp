@@ -132,6 +132,7 @@ namespace Adonis {
 			(*Application::get()->config())["gui"]["render_window"]["res"]["w"] = texture_res.x;
 			(*Application::get()->config())["gui"]["render_window"]["res"]["h"] = texture_res.y;
 			auto app = Application::get();
+			static bool show_cam_info = true;
 
 			//Setup main docking space
 			ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -223,9 +224,11 @@ namespace Adonis {
 				static bool whatamigonnacallyoulittlebool = false;
 
 				if (!whatamigonnacallyoulittlebool) {
+					cam->enable_zoom();
 					scene3D->set_pipe(RenderPipeline::test_pipeline_3D());
-					scene3D->add_cam(std::move(cam));
+					scene3D->add_cam(std::move(cam), true);
 					scene3D->add_model(std::move(model3));
+					scene3D->enable_cam();
 					whatamigonnacallyoulittlebool = true;
 				}
 
@@ -256,6 +259,8 @@ namespace Adonis {
 
 				static auto vao = VertexArray::create(desc);
 
+				if (show_cam_info) show_cam_info_window(scene3D->cam_info(), &show_cam_info);
+
 				vao->use(); 
 				glEnable(GL_DEPTH_TEST);
 
@@ -264,6 +269,16 @@ namespace Adonis {
 					AD_CORE_ERROR("Failed to create render window");
 				}
 				else {
+					m_viewport_focused = ImGui::IsWindowFocused();
+					if (ImGui::IsWindowFocused() && !m_in_menu) {
+						app->consume_window()->disable_cursor();
+						scene3D->enable_cam();
+					}else {
+						app->consume_window()->enable_cursor();
+						scene3D->disable_cam();
+						m_viewport_focused = false;
+					}
+
 					float x0 = ImGui::GetCursorScreenPos().x;
 					float y0 = ImGui::GetCursorScreenPos().y;
 					float ww = ImGui::GetWindowSize().x;
@@ -276,6 +291,8 @@ namespace Adonis {
 					//Set framebuffer and viewport
 					app->consume_renderer()->set_framebuffer(fb->id());
 					app->consume_renderer()->set_viewport(0, 0, texture_res.x, texture_res.y);
+
+					scene3D->set_resolution(ww, wh);
 
 					//Draw triangle
 					fb->activate_color_attachment(0);
@@ -328,6 +345,15 @@ namespace Adonis {
 				ImGui::BeginTooltip();
 				ImGui::Text("Current display size: %.fx%.f", vp_res->x, vp_res->y);
 				ImGui::EndTooltip();
+			}
+
+			ImGui::Text("Viewport status: ");
+			ImGui::SameLine();
+			if (m_in_menu) {
+				ImGui::Text("paused");
+			}
+			else {
+				ImGui::Text("active");
 			}
 
 			ImGui::End();
@@ -453,6 +479,23 @@ namespace Adonis {
 		}
 	}
 
+	void Gui::show_cam_info_window(rendersystem::CamInfo info, bool* show) {
+		if (!ImGui::Begin("CamInfo", show)) {
+			ImGui::End();
+			AD_CORE_ERROR("Failed to create cam info window");
+		}
+		else {
+
+			ImGui::Text("Position: x:%.1f; y: %.1f; z: %.1f", info.pos->x, info.pos->y, info.pos->z);
+			ImGui::Text("Looking at: x:%.1f; y: %.1f; z: %.1f", info.looking_at->x, info.looking_at->y, info.looking_at->z);
+			ImGui::Text("Yaw: %.f", *info.yaw);
+			ImGui::Text("Pitch: %.f", *info.pitch);
+			ImGui::Text("Aspectratio: %.3f", *info.aspect_ratio);
+			
+			ImGui::End();
+		}
+	}
+
 
 
 	void Gui::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
@@ -463,7 +506,6 @@ namespace Adonis {
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 			
-			AD_CORE_INFO("HELLO");
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
 		}
@@ -484,6 +526,10 @@ namespace Adonis {
 	}
 
 	void Gui::on_KeyPressed(const event_ptr_t<KeyPressed>& event) {
+		if (event->code() == ADONIS_KEY_ESCAPE) {
+			m_esc_pressed = true;
+		}
+
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[event->code()] = true;
 		io.KeyCtrl = io.KeysDown[ADONIS_KEY_LEFT_CONTROL] || io.KeysDown[ADONIS_KEY_RIGHT_CONTROL];
@@ -493,6 +539,11 @@ namespace Adonis {
 	}
 
 	void Gui::on_KeyReleased(const event_ptr_t<KeyReleased>& event) {
+		if (event->code() == ADONIS_KEY_ESCAPE && m_esc_pressed) {
+			m_in_menu = !m_in_menu;
+			m_esc_pressed = false;
+		}
+
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[event->code()] = false;
 		// Modifiers are not reliable across systems

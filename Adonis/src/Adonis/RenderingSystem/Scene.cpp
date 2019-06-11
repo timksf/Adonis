@@ -42,6 +42,18 @@ namespace Adonis {
 			}
 		}
 
+		void Scene::enable_cam() {
+			m_cams[m_active_cam]->enable_input();
+		}
+
+		void Scene::disable_cam() {
+			m_cams[m_active_cam]->disable_input();
+		}
+
+		void Scene::set_resolution(float width, float height) {
+			*m_cam_info.aspect_ratio = width / height;
+		}
+
 		std::vector<MeshSpecification> Scene::mesh_specs() {
 			//Extract keys from model map
 			std::vector<MeshSpecification> keys;
@@ -52,13 +64,16 @@ namespace Adonis {
 			return keys;
 		}
 
-		void Scene::add_cam(std::unique_ptr<Camera>&& cam) {
+		void Scene::add_cam(std::unique_ptr<Camera>&& cam, bool auto_select) {
 			m_cams.push_back(std::move(cam));
+			if(auto_select)
+				select_cam(m_cams.size() - 1);
 		}
 
 		void Scene::select_cam(uint32_t index) {
-			AD_CORE_ASSERT(index >= 0 && index < m_cams.size(), "Scene: Index out of bounds");
+			AD_CORE_ASSERT((index >= 0 && index < m_cams.size()), "Index out of bounds: ");
 			m_active_cam = index;
+			update_cam_info();
 		}
 
 		void Scene::set_cam_uniforms() {
@@ -66,6 +81,13 @@ namespace Adonis {
 			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
 		}
 
+		void Scene::update_cam_info() {
+			m_cam_info.pos			=	&m_cams[m_active_cam]->m_pos;
+			m_cam_info.looking_at	=	&m_cams[m_active_cam]->m_front;
+			m_cam_info.yaw			=	&m_cams[m_active_cam]->m_yaw;
+			m_cam_info.pitch		=	&m_cams[m_active_cam]->m_pitch;
+			m_cam_info.aspect_ratio	=	&m_cams[m_active_cam]->m_aspectratio;
+		}
 
 
 		void MeshGroup::add_model(std::unique_ptr<Model>&& model) {

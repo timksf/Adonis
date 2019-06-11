@@ -59,87 +59,94 @@ namespace Adonis {
 		}
 
 		AD_EVENT_FUNC_DEF_HEAD(KeyPressed, Camera) {
-			switch (event->code()) {
-			case ADONIS_KEY_W:
-				m_movement_status |= MovementDirection::Forward;
-				break;
-			case ADONIS_KEY_S:
-				m_movement_status |= MovementDirection::Backward;
-				break;
-			case ADONIS_KEY_A:
-				m_movement_status |= MovementDirection::Left;
-				break;
-			case ADONIS_KEY_D:
-				m_movement_status |= MovementDirection::Right;
-				break;
-			case ADONIS_KEY_C:
-				m_movement_status |= MovementDirection::Down;
-				break;
-			case ADONIS_KEY_SPACE:
-				m_movement_status |= MovementDirection::Up;
-				break;
+			if (m_enable_input) {
+				switch (event->code()) {
+				case ADONIS_KEY_W:
+					m_movement_status |= MovementDirection::Forward;
+					break;
+				case ADONIS_KEY_S:
+					m_movement_status |= MovementDirection::Backward;
+					break;
+				case ADONIS_KEY_A:
+					m_movement_status |= MovementDirection::Left;
+					break;
+				case ADONIS_KEY_D:
+					m_movement_status |= MovementDirection::Right;
+					break;
+				case ADONIS_KEY_C:
+					m_movement_status |= MovementDirection::Down;
+					break;
+				case ADONIS_KEY_SPACE:
+					m_movement_status |= MovementDirection::Up;
+					break;
+				}
 			}
 		}
 
 		AD_EVENT_FUNC_DEF_HEAD(KeyReleased, Camera) {
-			switch (event->code()) {
-			case ADONIS_KEY_W:
-				m_movement_status &= ~MovementDirection::Forward;
-				break;
-			case ADONIS_KEY_S:
-				m_movement_status &= ~MovementDirection::Backward;
-				break;
-			case ADONIS_KEY_A:
-				m_movement_status &= ~MovementDirection::Left;
-				break;
-			case ADONIS_KEY_D:
-				m_movement_status &= ~MovementDirection::Right;
-				break;
-			case ADONIS_KEY_C:
-				m_movement_status &= ~MovementDirection::Down;
-				break;
-			case ADONIS_KEY_SPACE:
-				m_movement_status &= ~MovementDirection::Up;
-				break;
+			if (m_enable_input) {
+				switch (event->code()) {
+				case ADONIS_KEY_W:
+					m_movement_status &= ~MovementDirection::Forward;
+					break;
+				case ADONIS_KEY_S:
+					m_movement_status &= ~MovementDirection::Backward;
+					break;
+				case ADONIS_KEY_A:
+					m_movement_status &= ~MovementDirection::Left;
+					break;
+				case ADONIS_KEY_D:
+					m_movement_status &= ~MovementDirection::Right;
+					break;
+				case ADONIS_KEY_C:
+					m_movement_status &= ~MovementDirection::Down;
+					break;
+				case ADONIS_KEY_SPACE:
+					m_movement_status &= ~MovementDirection::Up;
+					break;
+				}
 			}
 		}
 
 		AD_EVENT_FUNC_DEF_HEAD(MouseMovedEvent, Camera) {
-			static double last_x = 0;
-			static double last_y = 0;
-			static bool first_mouse = true;
+			if (m_enable_input) {
 
-			if (first_mouse) {
+				static double last_x = 0;
+				static double last_y = 0;
+
+				if (m_first_mouse) {
+					last_x = event->xpos();
+					last_y = event->ypos();
+					m_first_mouse = false;
+				}
+
+				double xoff = event->xpos() - last_x;
+				double yoff = event->ypos() - last_y;
+
 				last_x = event->xpos();
 				last_y = event->ypos();
-				first_mouse = false;
-			}
 
-			double xoff = event->xpos() - last_x;
-			double yoff = event->ypos() - last_y;
+				m_yaw += xoff * m_sensitivity;
+				m_pitch -= yoff * m_sensitivity;
 
-			last_x = event->xpos();
-			last_y = event->ypos();
-
-			m_yaw += xoff * m_sensitivity;
-			m_pitch -= yoff * m_sensitivity;
-
-			if (m_constrain_pitch) {
-				if (m_pitch > 89.0f) {
-					m_pitch = 89.0f;
+				if (m_constrain_pitch) {
+					if (m_pitch > 89.0f) {
+						m_pitch = 89.0f;
+					}
+					else if (m_pitch < -89.0f) {
+						m_pitch = -89.0f;
+					}
 				}
-				else if (m_pitch < -89.0f) {
-					m_pitch = -89.0f;
-				}
+
 			}
 		}
 
 		AD_EVENT_FUNC_DEF_HEAD(MouseScrolledEvent, Camera) {
-
-			if (m_enable_zoom) {
-				m_fov += event->yoffset();
+			if (m_enable_input) {
+				if (m_enable_zoom) {
+					m_fov -= glm::radians(event->yoffset());
+				}
 			}
-
 		}
 
 		glm::mat4 Camera::view()const {

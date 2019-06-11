@@ -44,12 +44,20 @@ namespace Adonis {
 			return static_cast<MovementDirection>(~(static_cast<uint32_t>(a)));
 		}
 
+		struct CamInfo {
+			glm::vec3* pos{ nullptr };
+			glm::vec3* looking_at{ nullptr };
+			float* yaw{ nullptr };
+			float* pitch{ nullptr };
+			float* aspect_ratio{ nullptr };
+		};
 
-
-
+		class Scene;
 
 		class Camera : EventListener {
 		public:
+
+			friend class Scene;
 
 			DECLARE_LISTENER(Camera);
 
@@ -61,8 +69,11 @@ namespace Adonis {
 
 			Camera();
 
-			//inline auto aspectratio()->float& { return m_aspectratio; };
-			inline auto toggle_zoom()->void { m_enable_zoom = !m_enable_zoom; };
+			inline auto enable_zoom()->void { m_enable_zoom = true; };
+			inline auto disable_zoom()->void { m_enable_zoom = false; };
+
+			inline auto enable_input()->void { m_enable_input = true; };
+			inline auto disable_input()->void { m_enable_input = false; m_first_mouse = true; };
 
 			auto view()const->glm::mat4;
 			auto projection()const->glm::mat4;
@@ -77,8 +88,10 @@ namespace Adonis {
 			float m_yaw{ 0.0f };
 			float m_pitch{ 0.0f };
 
-			bool m_constrain_pitch = false;
-			bool m_enable_zoom = false;
+			bool m_constrain_pitch{ false };
+			bool m_enable_zoom{ false };
+			bool m_enable_input{ false };
+			bool m_first_mouse{ false };
 
 			glm::vec2 m_clip_space{ 0.1f, 100.0f };
 

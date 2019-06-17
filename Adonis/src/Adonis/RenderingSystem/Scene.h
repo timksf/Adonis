@@ -72,6 +72,10 @@ namespace Adonis {
 
 			inline auto cam_info()->CamInfo { return m_cam_info; };
 
+			inline auto active_cam()->uint32_t { return m_active_cam; };
+
+			inline auto number_of_cams()->uint32_t { return m_cams.size(); };
+
 			template<typename... Args>
 			inline void add_cam(Args&&... args, bool auto_select = false) {
 				m_cams.push_back(std::make_unique<Camera>(std::forward<Args>(args)...));

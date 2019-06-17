@@ -38,17 +38,18 @@ namespace Adonis {
 
 		auto ctx()->typename ImGuiContext*;
 
-		auto setup_menu(bool*, bool*, bool*, bool*)->void;
+		auto setup_menu(bool*, bool*, bool*, bool*, bool*)->void;
 
 		auto show_viewport(bool*)->void;
 		auto show_debug(bool*)->void;
 		auto show_style_editor(bool*)->void;
 		auto show_tools_window(bool*, glm::vec2*, glm::vec2*, bool*)->void;
-		auto show_scene_info(bool*)->void;
+		auto show_scene_edit(bool*)->void;
 		auto show_cam_info_window(rendersystem::CamInfo info, bool*)->void;
 
 	private:
 		auto init()->void;
+		auto generate_scene_window(std::shared_ptr<rendersystem::Scene>)->void;
 		auto setup_grey_style()const->void;
 		auto setup_cherry_style()const->void;
 		auto setup_extasy_style()const->void;
@@ -62,6 +63,7 @@ namespace Adonis {
 		bool m_esc_pressed = false;
 		bool m_in_menu = false;
 		bool m_viewport_focused = false;
+		bool m_show_cam_info = false;
 
 	};
 

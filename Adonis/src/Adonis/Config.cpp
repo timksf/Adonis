@@ -37,9 +37,13 @@ namespace Adonis{
 		auto& render_window_cfg = gui_cfg["render_window"];
 		render_window_cfg["res"]["w"] = 1280;
 		render_window_cfg["res"]["h"] = 720;
+		render_window_cfg["enabled_on_startup"] = false;
 
 		auto& demo_window_cfg = gui_cfg["demo_window"];
 		demo_window_cfg["show"] = false;
+
+		auto& scene_window_cfg = gui_cfg["scene_window"];
+		scene_window_cfg["show"] = false;
 
 		auto& window_cfg = (*this)["window"];
 		window_cfg["title"] = "Adonis";

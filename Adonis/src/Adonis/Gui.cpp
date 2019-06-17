@@ -61,6 +61,8 @@ namespace Adonis {
 			break;
 		}
 
+		m_in_menu = !(*Application::get()->config())["gui"]["render_window"]["enabled_on_startup"];
+
 		// Setup back-end capabilities flags
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
@@ -131,8 +133,8 @@ namespace Adonis {
 			static glm::vec2 view_port_res{ 0, 0 }, texture_res{ (*Application::get()->config())["gui"]["render_window"]["res"]["w"], (*Application::get()->config())["gui"]["render_window"]["res"]["h"] };
 			(*Application::get()->config())["gui"]["render_window"]["res"]["w"] = texture_res.x;
 			(*Application::get()->config())["gui"]["render_window"]["res"]["h"] = texture_res.y;
-			auto app = Application::get();
-			static bool show_cam_info = true;
+			static bool show_scene_window = (*app->config())["gui"]["scene_window"]["show"];
+			(*app->config())["gui"]["scene_window"]["show"] = show_scene_window;
 
 			//Setup main docking space
 			ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -159,11 +161,12 @@ namespace Adonis {
 				ImGuiID dockspace_id = ImGui::GetID("Adonis");
 				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f));
 
-				setup_menu(&show_debug_window, &show_imgui_demo, &show_style_chooser, &show_tools);
+				setup_menu(&show_debug_window, &show_imgui_demo, &show_style_chooser, &show_tools, &show_scene_window);
 
 				if(show_debug_window) show_debug(&show_debug_window);
 				if(show_imgui_demo) ImGui::ShowDemoWindow(&show_imgui_demo);
 				if(show_style_chooser) show_style_editor(&show_style_chooser);
+				if (show_scene_window) show_scene_edit(&show_scene_window);
 				//if (show_render_window) show_viewport(nullptr);
 
 				//TEST RENDERING
@@ -259,10 +262,12 @@ namespace Adonis {
 
 				static auto vao = VertexArray::create(desc);
 
-				if (show_cam_info) show_cam_info_window(scene3D->cam_info(), &show_cam_info);
+				if (m_show_cam_info) show_cam_info_window(scene3D->cam_info(), &m_show_cam_info);
 
 				vao->use(); 
 				glEnable(GL_DEPTH_TEST);
+
+				app->activate_scene(scene3D);
 
 				if (!ImGui::Begin("Viewport")) {
 					ImGui::End();
@@ -360,7 +365,7 @@ namespace Adonis {
 		}
 	}
 
-	void Gui::setup_menu(bool* show_debug, bool* show_demo, bool* show_style_edit, bool* show_tools) {
+	void Gui::setup_menu(bool* show_debug, bool* show_demo, bool* show_style_edit, bool* show_tools, bool* show_scene_window) {
 		if (ImGui::BeginMenuBar()) {
 
 			if (ImGui::BeginMenu("Menu")) {
@@ -369,12 +374,57 @@ namespace Adonis {
 				ImGui::MenuItem("Demo window", NULL, show_demo);
 				ImGui::MenuItem("Style editor", NULL, show_style_edit);
 				ImGui::MenuItem("Tools", NULL, show_tools);
+				ImGui::MenuItem("Scene Edit", NULL, show_scene_window);
 
 				ImGui::EndMenu();
 			}
 
 			ImGui::EndMenuBar();
 		}
+	}
+
+	void Gui::show_scene_edit(bool* show) {
+		if (!ImGui::Begin("Scene Editor", show, ImGuiWindowFlags_NoTitleBar)) {
+			ImGui::End();
+			AD_CORE_ERROR("Failed to create scene edit window");
+		}
+		else {
+
+			generate_scene_window(Application::get()->active_scene());
+
+			ImGui::End();
+		}
+	}
+
+	void Gui::generate_scene_window(std::shared_ptr<rendersystem::Scene> scene) {
+
+		if (scene == nullptr) return;
+
+		ImGui::Text("Type: %s", scene->type() == rendersystem::SceneType::Scene2D ? "2D" : "3D");
+		if (scene->type() == rendersystem::SceneType::Scene3D) {
+			ImGui::Text("Active cam: %d", scene->active_cam());
+			ImGui::SameLine();
+			if (ImGui::SmallButton("Info")) {
+				m_show_cam_info = true;
+			}
+			ImGui::SameLine();
+			if (ImGui::SmallButton("Select...")) {
+				if (!ImGui::Begin("Select camera", NULL, ImGuiWindowFlags_NoTitleBar)) {
+					ImGui::End();
+					AD_CORE_ERROR("Failed to create scene edit window");
+				}
+				else {
+
+					ImGui::Text("Select camera: ");
+					ImGui::SameLine();
+					//for(uint32_t i = 0; i<)
+
+					ImGui::End();
+				}
+			}
+		}
+
+
 	}
 
 	void Gui::show_viewport(bool* show_render_window) {

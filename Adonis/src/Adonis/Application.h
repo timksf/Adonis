@@ -40,11 +40,16 @@ namespace Adonis {
 		inline auto running()->bool& { return m_running; };
 
 		static inline auto get()->Application* { return s_instance; };
+
+		inline auto activate_scene(std::shared_ptr<rendersystem::Scene> scene)->void { m_active_scene = scene; };
+
+		inline auto active_scene()->std::shared_ptr<rendersystem::Scene> { return m_active_scene; };
 	private:
 		static Application* s_instance;
 		std::unique_ptr<IWindow> m_window{ nullptr };
 		std::unique_ptr<render::RenderDevice> m_renderer{ nullptr };
 		std::unique_ptr<Gui> m_gui{ nullptr };
+		std::shared_ptr<rendersystem::Scene> m_active_scene{ nullptr };
 
 		std::shared_ptr<nlohmann::json> m_config{ nullptr };
 		bool m_running{ true };

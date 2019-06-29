@@ -173,17 +173,6 @@ namespace Adonis {
 				using namespace math::literals;
 				using namespace render;
 
-				static auto pos_attr = VertexAttrib::attrib3float(0, 0);
-
-				static auto desc = VertexArrayDesc::create_empty();
-				static bool xx = false;
-				if (!xx) {
-					desc->add_attrib(std::move(pos_attr));		//position attrib
-					desc->add_attrib(VertexType::FLOAT, 3);		//color attrib
-					desc->force_init();
-					xx = true;
-				}
-
 				//Component system tests
 
 				static float quad[] =
@@ -193,16 +182,31 @@ namespace Adonis {
 							0.5f, .5f, 0.0f, 0.0f, 0.0f, 1.0f,
 				};
 
-				static uint32_t indices[] = {
+				/*static uint32_t indices[] = {
 					0, 1, 2,
 					1, 2, 3
-				};
+				};*/
 
 				static float triangle[] =
 				{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
 							0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
 							0.0f, 1.5f, 0.0f, 0.0f, 0.0f, 1.0f,
 				};
+
+				float width = 10, height = 10, depth = 10;
+
+				float vertices[] = {
+				 width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
+				 width / 2.0f,  height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
+				 -width / 2.0f, height / 2.0f,  depth / 2.0f,	.0f, 1.0f, 1.0f,
+				-width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
+				 width / 2.0f,  -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
+				 width / 2.0f,  height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
+				-width / 2.0f, -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
+				 -width / 2.0f, height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f
+				};
+
+				uint32_t indices[] = { 0u,1u,2u,0u,2u,3u,1u,4u,5u,1u,5u,2u,6u,0u,3u,6u,3u,7u,6u,4u,5u,6u,5u,7u,3u,2u,5u,3u,5u,7u,0u,1u,4u,0u,4u,6u };
 
 				static auto scene2D = std::make_shared<rendersystem::Scene>();
 				static auto mesh = std::make_unique<rendersystem::Mesh>(quad, sizeof(quad), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
@@ -221,7 +225,7 @@ namespace Adonis {
 				static auto scene3D = std::make_shared<Adonis::rendersystem::Scene>(rendersystem::SceneType::Scene3D);
 				static auto cuboid = std::make_unique<rendersystem::primitives::Cuboid>(10, 10, 10);
 				static auto cube_model = std::make_unique<rendersystem::Model>(std::move(cuboid));
-				static auto mesh3 = std::make_unique<rendersystem::Mesh>(quad, sizeof(quad), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
+				static auto mesh3 = std::make_unique<rendersystem::Mesh>(vertices, sizeof(vertices), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
 				static auto model3 = std::make_unique<rendersystem::Model>(std::move(mesh3));
 				static auto cam = std::make_unique<Adonis::rendersystem::Camera>();
 				static bool whatamigonnacallyoulittlebool = false;
@@ -260,7 +264,7 @@ namespace Adonis {
 				fb->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
 				fb->attach(colortex2->id(), FramebufferTextureAttachment::COLOR, 1);
 
-				static auto vao = VertexArray::create(desc);
+				static auto vao = VertexArray::create(VertexArrayDesc::standard_pos_color_desc());
 
 				if (m_show_cam_info) show_cam_info_window(scene3D->cam_info(), &m_show_cam_info);
 

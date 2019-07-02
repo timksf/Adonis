@@ -44,10 +44,12 @@ namespace Adonis {
 
 		void Scene::enable_cam() {
 			m_cams[m_active_cam]->enable_input();
+			m_cams[m_active_cam]->m_movement_status &= ~MovementDirection::Stationary;
 		}
 
 		void Scene::disable_cam() {
 			m_cams[m_active_cam]->disable_input();
+			m_cams.at(m_active_cam)->reset_movement();
 		}
 
 		void Scene::set_resolution(float width, float height) {
@@ -88,7 +90,6 @@ namespace Adonis {
 			m_cam_info.pitch		=	&m_cams[m_active_cam]->m_pitch;
 			m_cam_info.aspect_ratio	=	&m_cams[m_active_cam]->m_aspectratio;
 		}
-
 
 		void MeshGroup::add_model(std::unique_ptr<Model>&& model) {
 			m_models.push_back(std::move(model));

@@ -75,6 +75,8 @@ namespace Adonis {
 			inline auto enable_input()->void { m_enable_input = true; };
 			inline auto disable_input()->void { m_enable_input = false; m_first_mouse = true; };
 
+			auto reset_movement()->void;
+
 			auto view()const->glm::mat4;
 			auto projection()const->glm::mat4;
 
@@ -83,7 +85,7 @@ namespace Adonis {
 
 			float m_fov;
 			float m_aspectratio{ 16.f / 9.f };
-			float m_velocity{ 1.0f };
+			float m_velocity{ 5.0f };
 			float m_sensitivity{ 0.1f };
 			float m_yaw{ 0.0f };
 			float m_pitch{ 0.0f };
@@ -100,7 +102,6 @@ namespace Adonis {
 			glm::vec3 m_world_up{ 0.f, 1.f, 0.f };
 			glm::vec3 m_up{ 0.f, 1.f, 0.f };
 			glm::vec3 m_right{ 0.f, 0.f, 0.f };
-
 
 			auto update()->void;
 		};

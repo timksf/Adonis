@@ -50,9 +50,7 @@ namespace Adonis {
 		class ADONIS_API Mesh {
 		public:
 
-			Mesh() = delete;
-
-			Mesh(render::DrawMode, render::DrawMethod = render::DrawMethod::Classic);
+			Mesh();
 
 			Mesh(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode = render::DrawMode::Triangles, render::DrawMethod = render::DrawMethod::Classic);
 
@@ -61,13 +59,16 @@ namespace Adonis {
 			auto specs()const->MeshSpecification;
 			auto prim_count()const->uint32_t;
 
-			auto set_data(void* vertices, uint32_t n_vertices, void* indices, uint32_t n_indices)->void;
 
-			auto set_buffer_desc(std::shared_ptr<render::VertexArrayDesc> buffer_desc)->void;
 			 
 			inline auto vbo_id()->uint32_t { return m_vbo->id(); };
 			inline auto ibo_id()->uint32_t { return m_ibo->id(); };
 			inline auto initialized()->bool { return m_buffers_initialized && m_specs_initialized; };
+
+		protected:
+
+			auto set_data(void* vertices, uint32_t n_vertices, void* indices, uint32_t n_indices)->void;
+			auto set_specs(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode mode, render::DrawMethod method)->void;
 
 		private:
 

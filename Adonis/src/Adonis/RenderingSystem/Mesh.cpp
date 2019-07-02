@@ -11,8 +11,7 @@ namespace Adonis {
 			m_buffer_desc(desc) {
 		};
 
-		Mesh::Mesh(render::DrawMode draw_mode, render::DrawMethod draw_method) {
-			m_specs = MeshSpecification(nullptr, draw_mode, draw_method);
+		Mesh::Mesh() {
 		}	
 
 		Mesh::Mesh(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode draw_mode, render::DrawMethod draw_method) {
@@ -44,9 +43,8 @@ namespace Adonis {
 			init_buffers(vertices, n_vertices, indices, n_indices);
 		}
 
-		void Mesh::set_buffer_desc(std::shared_ptr<render::VertexArrayDesc> buffer_desc) {
-			m_specs.set_buffer_desc(buffer_desc);
-			m_specs_initialized = true;
+		void Mesh::set_specs(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode mode, render::DrawMethod method) {
+			this->init_specs(buffer_desc, mode, method);
 		}
 
 		void Mesh::init_buffers(void* vertices, uint32_t n_vertices, void* indices, uint32_t n_indices) {
@@ -67,7 +65,8 @@ namespace Adonis {
 
 		void Mesh::init_specs(std::shared_ptr<render::VertexArrayDesc> buffer_desc, render::DrawMode draw_mode, render::DrawMethod draw_method) {
 			m_specs = MeshSpecification(buffer_desc, draw_mode, draw_method);
-			m_specs_initialized = true;
+			if(buffer_desc != nullptr)
+				m_specs_initialized = true;
 		}
 
 	}

@@ -40,6 +40,8 @@ namespace Adonis {
 
 			auto draw(DrawMethod method, DrawMode mode, int offset, int count)->void override;
 
+			auto toggle_wireframe()->void override;
+
 			/**
 			*	@brief			Change the currently acitve rendering pipeline
 			*	@param pipe		A pointer to the pipeline, which should be activated
@@ -73,7 +75,10 @@ namespace Adonis {
 			std::string m_glslversion;
 			std::string m_vendor;
 			glm::vec2 m_viewport;
+			bool m_wireframe{ false };
 			GLuint m_framebuffer{ 0 };
+
+			auto update_polygon_mode()->void;
 		};
 
 		class ADONIS_API GLTexture2D : public Texture2D {

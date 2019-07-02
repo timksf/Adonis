@@ -91,6 +91,20 @@ namespace Adonis {
 
 		}
 
+		void GLRenderer::toggle_wireframe() {
+			m_wireframe = !m_wireframe;
+			this->update_polygon_mode();
+		}
+
+		void GLRenderer::update_polygon_mode() {
+			if (m_wireframe) {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+			else {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+		}
+
 		void GLRenderer::set_framebuffer(uint32_t id) {
 			m_framebuffer = id;
 			glBindFramebuffer(GL_FRAMEBUFFER, id);

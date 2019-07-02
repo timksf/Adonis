@@ -35,23 +35,25 @@ namespace Adonis {
 
 			float distance = m_velocity * event->deltatime();
 
-			if ((MovementDirection::Forward & m_movement_status) == MovementDirection::Forward) {
-				m_pos += m_front * distance;
-			}
-			if ((MovementDirection::Backward & m_movement_status) == MovementDirection::Backward) {
-				m_pos -= m_front * distance;
-			}
-			if ((MovementDirection::Left & m_movement_status) == MovementDirection::Left) {
-				m_pos -= m_right * distance;
-			}
-			if ((MovementDirection::Right & m_movement_status) == MovementDirection::Right) {
-				m_pos += m_right * distance;
-			}
-			if ((MovementDirection::Down & m_movement_status) == MovementDirection::Down) {
-				m_pos -= m_world_up * distance;
-			}
-			if ((MovementDirection::Up & m_movement_status) == MovementDirection::Up) {
-				m_pos += m_world_up * distance;
+			if (!((MovementDirection::Stationary & m_movement_status) == MovementDirection::Stationary)) {
+				if ((MovementDirection::Forward & m_movement_status) == MovementDirection::Forward) {
+					m_pos += m_front * distance;
+				}
+				if ((MovementDirection::Backward & m_movement_status) == MovementDirection::Backward) {
+					m_pos -= m_front * distance;
+				}
+				if ((MovementDirection::Left & m_movement_status) == MovementDirection::Left) {
+					m_pos -= m_right * distance;
+				}
+				if ((MovementDirection::Right & m_movement_status) == MovementDirection::Right) {
+					m_pos += m_right * distance;
+				}
+				if ((MovementDirection::Down & m_movement_status) == MovementDirection::Down) {
+					m_pos -= m_world_up * distance;
+				}
+				if ((MovementDirection::Up & m_movement_status) == MovementDirection::Up) {
+					m_pos += m_world_up * distance;
+				}
 			}
 
 			this->update();
@@ -155,6 +157,15 @@ namespace Adonis {
 
 		glm::mat4 Camera::projection()const {
 			return glm::perspective(m_fov, m_aspectratio, m_clip_space.x, m_clip_space.y);
+		}
+
+		void Camera::reset_movement() {
+			m_movement_status &= ~MovementDirection::Forward;
+			m_movement_status &= ~MovementDirection::Backward;
+			m_movement_status &= ~MovementDirection::Left;
+			m_movement_status &= ~MovementDirection::Right;
+			m_movement_status &= ~MovementDirection::Down;
+			m_movement_status &= ~MovementDirection::Up;
 		}
 
 	}

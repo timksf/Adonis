@@ -207,26 +207,37 @@ namespace Adonis {
 				};
 
 				uint32_t indices[] = {
-					0u,1u,2u,0u,2u,3u,1u,4u,5u,1u,5u,2u,6u,0u,3u,6u,3u,7u,6u,4u,5u,6u,5u,7u,3u,2u,5u,3u,5u,7u,0u,1u,4u,0u,4u,6u 
+					0u,1u,2u,
+					0u,2u,3u,
+					1u,4u,5u,
+					1u,5u,2u,
+					6u,0u,3u,
+					6u,3u,7u,
+					6u,4u,5u,
+					6u,5u,7u,
+					3u,2u,5u,
+					3u,5u,7u,
+					0u,1u,4u,
+					0u,4u,6u
 				};
 
-				static auto scene2D = std::make_shared<rendersystem::Scene>();
-				static auto mesh = std::make_unique<rendersystem::Mesh>(quad, sizeof(quad), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
-				static auto mesh2 = std::make_unique<rendersystem::Mesh>(triangle, sizeof(triangle), VertexArrayDesc::standard_pos_color_desc());
-				static auto model = std::make_unique<rendersystem::Model>(std::move(mesh));
-				static auto model2 = std::make_unique<rendersystem::Model>(std::move(mesh2));
-				static bool lol = false;
-				
-				if (!lol) {
-					scene2D->set_pipe(RenderPipeline::test_pipeline_2D());
-					scene2D->add_model(std::move(model));
-					scene2D->add_model(std::move(model2));
-					lol = true;
-				}
+				//static auto scene2D = std::make_shared<rendersystem::Scene>();
+				//static auto mesh = std::make_unique<rendersystem::Mesh>(quad, sizeof(quad), VertexArrayDesc::standard_pos_color_desc(), indices, AD_ARRAYSIZE(indices));
+				//static auto mesh2 = std::make_unique<rendersystem::Mesh>(triangle, sizeof(triangle), VertexArrayDesc::standard_pos_color_desc());
+				//static auto model = std::make_unique<rendersystem::Model>(std::move(mesh));
+				//static auto model2 = std::make_unique<rendersystem::Model>(std::move(mesh2));
+				//static bool lol = false;
+				//
+				//if (!lol) {
+				//	scene2D->set_pipe(RenderPipeline::test_pipeline_2D());
+				//	scene2D->add_model(std::move(model));
+				//	scene2D->add_model(std::move(model2));
+				//	lol = true;
+				//}
 
 				static auto scene3D = std::make_shared<Adonis::rendersystem::Scene>(rendersystem::SceneType::Scene3D);
-				static auto cuboid = std::make_unique<rendersystem::primitives::Cuboid>(2, 2, 2);
-				static auto cube_model = std::make_unique<rendersystem::Model>(std::move(cuboid));
+				//static auto cuboid = std::make_unique<rendersystem::primitives::Cuboid>(2, 2, 2);
+				//static auto cube_model = std::make_unique<rendersystem::Model>(std::move(cuboid));
 				static auto mesh3 = std::make_unique<rendersystem::Mesh>(vertices, sizeof(vertices), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
 				static auto model3 = std::make_unique<rendersystem::Model>(std::move(mesh3));
 				static auto cam = std::make_unique<Adonis::rendersystem::Camera>();

@@ -399,16 +399,12 @@ namespace Adonis {
 
 		GLIndexBuffer::GLIndexBuffer(int64_t size, const void* data, BufferBit flags) : IndexBuffer() {
 			glCreateBuffers(1, &m_id);
-			std::stringstream ss;
-			ss << std::hex << std::showbase << static_cast<uint32_t>(flags);
-			ss.str(std::string());
 			GLbitfield glflags = 0;
 			for (uint32_t i = 0; i < AD_LOOKUP_TABLE_SIZE_NAME(buffer_bit); i++) {
 				if ((i & static_cast<uint32_t>(flags)) == 1) {
 					glflags |= lookup_tables::buffer_bit_lookup[i];
 				}
 			}
-			ss << std::hex << static_cast<uint32_t>(glflags);
 			glNamedBufferStorage(m_id, size, data, glflags);
 		}
 

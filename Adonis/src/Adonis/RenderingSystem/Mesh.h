@@ -62,7 +62,7 @@ namespace Adonis {
 
 			 
 			inline auto vbo_id()->uint32_t { return m_vbo->id(); };
-			inline auto ibo_id()->uint32_t { return m_ibo->id(); };
+			inline auto ibo_id()->uint32_t { AD_CORE_ASSERT_NOTNULL(m_ibo, "Indexbuffer object was null"); return m_ibo->id(); };
 			inline auto initialized()->bool { return m_buffers_initialized && m_specs_initialized; };
 
 		protected:

@@ -23,14 +23,21 @@
 									AD_CORE_ERROR("Assertion failed with message: \n \"{0}\"", __VA_ARGS__);\
 									__debugbreak();\
 								}
+#else
+	#define AD_CORE_ASSERT(x, ...)  
+
+	#define AD_CLIENT_ASSERT(x, ...)  
 #endif //ADONIS_PLATFORM_WINDOWS
+
+#define AD_CORE_ASSERT_NOTNULL(x, ...)					AD_CORE_ASSERT((x != nullptr), __VA_ARGS__)
+#define AD_CLIENT_ASSERT_NOTNULL(x, ...)					AD_CLIENT_ASSERT((x != nullptr), __VA_ARGS__)
 
 #define AD_NAME_FROM_TYPE(type) std::string(#type)
 
 #define AD_C_STYLE_ARRAYSIZE(x)							(static_cast<size_t>((sizeof(x) / sizeof(*x))))
 #define AD_ARRAYSIZE(x)									AD_C_STYLE_ARRAYSIZE(x)
 
-#define AD_ON_EVENT_DECL(event_type)						auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void							//straight decl
+#define AD_ON_EVENT_DECL(event_type)						auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void						//straight decl
 #define AD_ON_EVENT_DECL_OVERRIDE(event_type)			auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void override					//overriding
 #define AD_ON_EVENT_DECL_V(event_type)					virtual auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void					//virtual
 #define AD_ON_EVENT_DECL_P_V(event_type)				virtual auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void = 0				//pure virtual

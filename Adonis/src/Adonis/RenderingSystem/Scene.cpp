@@ -26,7 +26,7 @@ namespace Adonis {
 				//create new vao for the model's buffer description
 				//if the description doesn't match any existing one, a new mesh group with the id for the new vao is needed
 				m_meshgroups[model->mesh_specs()].set_vao(std::move(model->create_vao()));
-				AD_CORE_INFO("SATAN");
+				//AD_CORE_INFO("SATAN");
 			}
 
 			//Increase primitive count for mesh group and transfer ownership of the model to it

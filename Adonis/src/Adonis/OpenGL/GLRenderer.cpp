@@ -124,6 +124,7 @@ namespace Adonis {
 		}
 
 		void GLRenderer::on_WindowResizeEvent(const event_ptr_t<WindowResizeEvent>& e) {
+			AD_CORE_WARN("That shouldnt happen");
 			m_viewport = { e->width(), e->height() };
 			glViewport(0, 0, e->width(), e->height());
 		}

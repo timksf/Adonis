@@ -23,6 +23,8 @@ namespace Adonis {
 
 		auto run()->void;
 
+		auto viewport_focus_changed(bool focus)->void;
+
 		AD_ON_EVENT_DECL_V(UpdateEvent);
 		AD_ON_EVENT_DECL_V(WindowCloseEvent);
 		AD_ON_EVENT_DECL_V(KeyPressed);
@@ -30,6 +32,7 @@ namespace Adonis {
 		AD_ON_EVENT_DECL_V(PreRenderEvent) {};
 		AD_ON_EVENT_DECL_V(RenderEvent) {};
 		AD_ON_EVENT_DECL_V(PostRenderEvent) {};
+		AD_ON_EVENT_DECL_V(ViewportResizeEvent) {};
 
 		inline auto consume_window()const->IWindow* { return m_window.get(); };
 		inline auto consume_renderer()const->render::RenderDevice* { return m_renderer.get(); };
@@ -44,7 +47,17 @@ namespace Adonis {
 		inline auto activate_scene(std::shared_ptr<rendersystem::Scene> scene)->void { m_active_scene = scene; };
 
 		inline auto active_scene()->std::shared_ptr<rendersystem::Scene> { return m_active_scene; };
+
+	protected:
+
+		inline auto renderer()const->render::RenderDevice* { return m_renderer.get(); };
+
+
 	private:
+
+		auto activate_viewport()->void;
+		auto deactivate_viewport()->void;
+		
 		static Application* s_instance;
 		std::unique_ptr<IWindow> m_window{ nullptr };
 		std::unique_ptr<render::RenderDevice> m_renderer{ nullptr };

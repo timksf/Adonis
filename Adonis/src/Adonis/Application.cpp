@@ -83,5 +83,29 @@ namespace Adonis {
 		}
 	}
 
+	void Application::activate_viewport() {
+
+		m_window->disable_cursor();
+		m_active_scene->enable_cam();
+
+	}
+
+	void Application::deactivate_viewport(){
+
+		m_window->enable_cursor();
+
+	}
+
+	void Application::viewport_focus_changed(bool focus) {
+
+		if (focus) {
+			this->activate_viewport();
+		}
+		else {
+			this->deactivate_viewport();
+		}
+
+	}
+
 
 }

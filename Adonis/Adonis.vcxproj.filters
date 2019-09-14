@@ -124,6 +124,7 @@
     <ClInclude Include="src\Adonis\RenderingSystem\RenderingSystem.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Primitives\Cuboid.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Primitives\Primitives.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\Events\ViewportResizeEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">

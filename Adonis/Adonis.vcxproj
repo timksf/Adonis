@@ -164,6 +164,7 @@
     <ClInclude Include="src\Adonis\Eventsystem\Events\KeyboardEvent.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Events\MouseEvent.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Events\RenderEvent.h" />
+    <ClInclude Include="src\Adonis\Eventsystem\Events\ViewportResizeEvent.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Events\WindowEvent.h" />
     <ClInclude Include="src\Adonis\GLFW\ImGuiImplGLFW.h" />
     <ClInclude Include="src\Adonis\GLFW\WindowGLFW.h" />

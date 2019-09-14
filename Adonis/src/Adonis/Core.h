@@ -38,7 +38,7 @@
 #define AD_ARRAYSIZE(x)									AD_C_STYLE_ARRAYSIZE(x)
 
 #define AD_ON_EVENT_DECL(event_type)						auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void						//straight decl
-#define AD_ON_EVENT_DECL_OVERRIDE(event_type)			auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void override					//overriding
+#define AD_ON_EVENT_DECL_OVERRIDE(event_type)			auto on_##event_type(const Adonis::event_ptr_t<Adonis::event_type>& event)->void override					//overriding
 #define AD_ON_EVENT_DECL_V(event_type)					virtual auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void					//virtual
 #define AD_ON_EVENT_DECL_P_V(event_type)				virtual auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void = 0				//pure virtual
 #define AD_ON_EVENT_DECL_V_OVERRIDE(event_type)			virtual auto on_##event_type(const Adonis::event_ptr_t<event_type>& event)->void override			//virtual and overriding

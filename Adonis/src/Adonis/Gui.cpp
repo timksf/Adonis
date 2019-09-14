@@ -317,14 +317,14 @@ namespace Adonis {
 
 					scene3D->set_resolution(ww, wh);
 
-					//Draw triangle
+					//Render triangle to main rendering window
 					fb->activate_color_attachment(0);
 					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
 					app->consume_renderer()->clear_depth_buffer(0.0f);
 					app->consume_renderer()->draw(scene3D);
 
-					////Draw to button texture
+					//Render to button texture
 					fb->activate_color_attachment(1);
 					app->consume_renderer()->clear_color = { {1.0f, 1.0f, 1.0f, 1.0f} };
 					app->consume_renderer()->clear_color_buffer();
@@ -567,6 +567,26 @@ namespace Adonis {
 
 
 	void Gui::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
+
+		/*auto app = Application::get();
+
+		if (!ImGui::Begin("Viewport")) {
+			ImGui::End();
+			AD_CORE_ERROR("Failed to create render window");
+		}
+		else {
+			m_viewport_focused = ImGui::IsWindowFocused();
+			if (ImGui::IsWindowFocused() && !m_in_menu) {
+				app->viewport_focus_changed(true);
+			}
+			else {
+				app->viewport_focus_changed(false);
+				m_viewport_focused = false;
+			}
+
+
+		}*/
+
 		ImGui::Render();
 		imgui_renderer_renderdata(ImGui::GetDrawData());
 

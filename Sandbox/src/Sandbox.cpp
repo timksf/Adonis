@@ -15,7 +15,15 @@ extern "C" {
 class Sandbox : public Adonis::Application {
 public:
 	Sandbox() {
+		/*m_scene = std::make_shared<Adonis::rendersystem::Scene>(Adonis::rendersystem::SceneType::Scene3D);
 
+		m_colortex = Adonis::render::Texture2D::create(400, 300);
+		m_colortex->set_param(Adonis::render::TextureParameter::MIN_FILTER, Adonis::render::TextureParamValue::FILTER_LINEAR);
+
+		m_depthtex = Adonis::render::Texture2D::create(400, 300, nullptr, Adonis::render::TexturePixelFormatSized::DEPTH16);
+
+		m_framebuffer = Adonis::render::Framebuffer::create();
+		m_framebuffer->attach(m_colortex->id(), Adonis::render::FramebufferTextureAttachment::COLOR);*/
 	};
 
 	~Sandbox() {};
@@ -54,7 +62,6 @@ public:
 			0u,4u,6u
 		};
 
-		static auto scene3D = std::make_shared<Scene>(SceneType::Scene3D);
 		static auto cube_mesh = std::make_unique<Mesh>(cube_vertices, sizeof(cube_vertices), VertexArrayDesc::standard_pos_color_desc(), cube_indices, sizeof(cube_indices));
 		static auto cube_model = std::make_unique<Model>(std::move(cube_mesh));
 		static auto cam = std::make_unique<Camera>();
@@ -76,6 +83,8 @@ public:
 	inline AD_ON_EVENT_DECL_OVERRIDE(ViewportResizeEvent) {
 
 		renderer()->set_viewport(0, 0, event->width(), event->height());
+		//m_colortex.reset();
+		//m_colortex = Adonis::render::Texture2D::create(event->width(), event->height());
 
 	}
 
@@ -84,6 +93,11 @@ private:
 	std::unique_ptr<Adonis::render::RenderPipeline> m_pipe;
 	std::unique_ptr<Adonis::render::VertexArray> m_vao;
 	std::unique_ptr<Adonis::render::VertexBuffer> m_vbo;
+
+	/*std::shared_ptr<Adonis::rendersystem::Scene> m_scene;
+	std::unique_ptr<Adonis::render::Texture2D> m_colortex;
+	std::unique_ptr<Adonis::render::Texture2D> m_depthtex;
+	std::unique_ptr<Adonis::render::Framebuffer> m_framebuffer;*/
 
 
 };

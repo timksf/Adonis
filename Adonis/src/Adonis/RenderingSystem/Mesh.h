@@ -8,7 +8,7 @@ namespace Adonis {
 
 	namespace rendersystem {
 
-		class ADONIS_API MeshSpecification {
+		class MeshSpecification {
 		public:
 
 			MeshSpecification() = delete;

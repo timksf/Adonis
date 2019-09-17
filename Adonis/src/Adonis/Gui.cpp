@@ -276,6 +276,7 @@ namespace Adonis {
 				colortex->set_param(TextureParameter::MAG_FILTER, TextureParamValue::FILTER_LINEAR);
 
 				fb->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
+				//fb->attach(depthtex->id(), FramebufferTextureAttachment::DEPTH);
 				fb->attach(colortex2->id(), FramebufferTextureAttachment::COLOR, 1);
 
 				static auto vao = VertexArray::create(VertexArrayDesc::standard_pos_color_desc());

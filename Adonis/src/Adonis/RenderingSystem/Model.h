@@ -8,7 +8,7 @@ namespace Adonis {
 
 	namespace rendersystem {
 
-		class Model: EventListener{
+		class ADONIS_API Model: EventListener{
 		public:
 
 			DECLARE_LISTENER(Model);

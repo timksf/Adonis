@@ -10,7 +10,7 @@ namespace Adonis {
 
 	namespace rendersystem {
 
-		enum class MovementDirection {
+		enum class ADONIS_API MovementDirection {
 			Stationary	= 1 << 0,
 			Right		= 1 << 1,
 			Left		= 1 << 2,
@@ -44,7 +44,7 @@ namespace Adonis {
 			return static_cast<MovementDirection>(~(static_cast<uint32_t>(a)));
 		}
 
-		struct CamInfo {
+		struct ADONIS_API CamInfo {
 			glm::vec3* pos{ nullptr };
 			glm::vec3* looking_at{ nullptr };
 			float* yaw{ nullptr };
@@ -54,7 +54,7 @@ namespace Adonis {
 
 		class Scene;
 
-		class Camera : EventListener {
+		class ADONIS_API Camera : EventListener {
 		public:
 
 			friend class Scene;

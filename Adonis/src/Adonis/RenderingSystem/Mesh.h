@@ -8,7 +8,7 @@ namespace Adonis {
 
 	namespace rendersystem {
 
-		class MeshSpecification {
+		class ADONIS_API MeshSpecification {
 		public:
 
 			MeshSpecification() = delete;
@@ -34,7 +34,7 @@ namespace Adonis {
 		template<typename T> class Hasher;
 
 		template<>
-		class Hasher<MeshSpecification> {
+		class ADONIS_API Hasher<MeshSpecification> {
 		public:
 
 			size_t operator()(const MeshSpecification& mg) const {

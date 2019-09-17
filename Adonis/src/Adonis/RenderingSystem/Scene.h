@@ -1,10 +1,12 @@
 #pragma once
-
+#ifndef SCENE_H
+#define SCENE_H
 
 #include "Adonis/Core.h"
 #include <memory>
 #include <vector>
 #include "Model.h"
+#include "Mesh.h"
 #include "Camera.h"
 #include "Adonis/Rendering/Renderer.h"
 
@@ -13,12 +15,12 @@ namespace Adonis {
 
 	namespace rendersystem {
 
-		enum class SceneType {
+		enum class ADONIS_API SceneType {
 			Scene2D = 0,
 			Scene3D
 		};
 
-		class MeshGroup {
+		class ADONIS_API MeshGroup {
 		public:
 
 			auto set_vao(std::unique_ptr<render::VertexArray>&& vao)->void;
@@ -41,7 +43,7 @@ namespace Adonis {
 			std::vector<std::unique_ptr<Model>> m_models;
 		};
 
-		class Scene {
+		class ADONIS_API Scene {
 		public:
 
 			Scene(SceneType type = SceneType::Scene2D);
@@ -99,3 +101,5 @@ namespace Adonis {
 
 	}
 }
+
+#endif

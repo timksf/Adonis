@@ -91,12 +91,12 @@ namespace Adonis {
 			m_cam_info.aspect_ratio	=	&m_cams[m_active_cam]->m_aspectratio;
 		}
 
-		void MeshGroup::add_model(std::unique_ptr<Model>&& model) {
-			m_models.push_back(std::move(model));
-		}
-
 		MeshGroup& Scene::mesh_group(MeshSpecification spec) {
 			return m_meshgroups[spec];
+		}
+
+		void MeshGroup::add_model(std::unique_ptr<Model>&& model) {
+			m_models.push_back(std::move(model));
 		}
 
 		void MeshGroup::set_vao(std::unique_ptr<render::VertexArray>&& vao) {

@@ -15,8 +15,9 @@ extern "C" {
 class Sandbox : public Adonis::Application {
 public:
 	Sandbox() {
-		/*m_scene = std::make_shared<Adonis::rendersystem::Scene>(Adonis::rendersystem::SceneType::Scene3D);
+		//m_scene = std::make_shared<Adonis::rendersystem::Scene>(Adonis::rendersystem::SceneType::Scene3D);
 
+		/*
 		m_colortex = Adonis::render::Texture2D::create(400, 300);
 		m_colortex->set_param(Adonis::render::TextureParameter::MIN_FILTER, Adonis::render::TextureParamValue::FILTER_LINEAR);
 
@@ -90,12 +91,9 @@ public:
 
 	static float z_translation;
 private:
-	std::unique_ptr<Adonis::render::RenderPipeline> m_pipe;
-	std::unique_ptr<Adonis::render::VertexArray> m_vao;
-	std::unique_ptr<Adonis::render::VertexBuffer> m_vbo;
 
-	/*std::shared_ptr<Adonis::rendersystem::Scene> m_scene;
-	std::unique_ptr<Adonis::render::Texture2D> m_colortex;
+	//std::shared_ptr<Adonis::rendersystem::Scene> m_scene;
+	/*std::unique_ptr<Adonis::render::Texture2D> m_colortex;
 	std::unique_ptr<Adonis::render::Texture2D> m_depthtex;
 	std::unique_ptr<Adonis::render::Framebuffer> m_framebuffer;*/
 

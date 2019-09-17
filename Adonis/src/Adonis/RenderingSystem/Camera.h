@@ -52,8 +52,6 @@ namespace Adonis {
 			float* aspect_ratio{ nullptr };
 		};
 
-		class Scene;
-
 		class ADONIS_API Camera : EventListener {
 		public:
 

@@ -207,18 +207,20 @@ namespace Adonis {
 				};
 
 				uint32_t indices[] = {
-					0u,1u,2u,
-					0u,2u,3u,
-					1u,4u,5u,
-					1u,5u,2u,
-					6u,0u,3u,
-					6u,3u,7u,
-					6u,4u,5u,
-					6u,5u,7u,
-					3u,2u,5u,
-					3u,5u,7u,
-					0u,1u,4u,
-					0u,4u,6u
+
+					0,1,4,
+					4,1,5,
+					0,2,1,
+					0,3,2,
+					0,4,6,
+					0,3,6,
+					1,5,2,
+					2,5,7,
+					2,3,6,
+					2,6,7,
+					5,6,7,
+					5,4,6
+
 				};
 
 				//static auto scene2D = std::make_shared<rendersystem::Scene>();

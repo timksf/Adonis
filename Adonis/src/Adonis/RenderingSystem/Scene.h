@@ -3,8 +3,6 @@
 #define SCENE_H
 
 #include "Adonis/Core.h"
-#include <memory>
-#include <vector>
 #include "Model.h"
 #include "Mesh.h"
 #include "Camera.h"
@@ -43,7 +41,7 @@ namespace Adonis {
 			std::vector<std::unique_ptr<Model>> m_models;
 		};
 
-		class ADONIS_API Scene {
+		class Scene {
 		public:
 
 			Scene(SceneType type = SceneType::Scene2D);
@@ -93,7 +91,7 @@ namespace Adonis {
 			SceneType m_type;
 			uint32_t m_active_cam{ 0 };
 			std::vector<std::unique_ptr<Camera>> m_cams;
-			std::unordered_map<MeshSpecification, MeshGroup, Hasher<MeshSpecification>> m_meshgroups;
+			std::unordered_map<MeshSpecification, MeshGroup, hash<MeshSpecification>> m_meshgroups;
 			std::shared_ptr<render::RenderPipeline> m_pipe{ nullptr };
 			CamInfo m_cam_info;
 			//std::vector<std::unique_ptr<render::VertexArray>> m_vaos;

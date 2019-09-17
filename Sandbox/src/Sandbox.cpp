@@ -92,7 +92,7 @@ public:
 	static float z_translation;
 private:
 
-	//std::shared_ptr<Adonis::rendersystem::Scene> m_scene;
+	std::shared_ptr<Adonis::rendersystem::Scene> m_scene;
 	/*std::unique_ptr<Adonis::render::Texture2D> m_colortex;
 	std::unique_ptr<Adonis::render::Texture2D> m_depthtex;
 	std::unique_ptr<Adonis::render::Framebuffer> m_framebuffer;*/

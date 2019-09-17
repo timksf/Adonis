@@ -31,13 +31,13 @@ namespace Adonis {
 			std::shared_ptr<render::VertexArrayDesc> m_buffer_desc;
 		};
 
-		template<typename T> class Hasher;
+		template<typename T> class hash;
 
 		template<>
-		class ADONIS_API Hasher<MeshSpecification> {
+		class ADONIS_API hash<MeshSpecification> {
 		public:
 
-			size_t operator()(const MeshSpecification& mg) const {
+			size_t operator()(const MeshSpecification& mg)const {
 				auto hash1 = std::hash<uint32_t>()(static_cast<uint32_t>(mg.mode()));
 				auto hash2 = std::hash<uint32_t>()(static_cast<uint32_t>(mg.method()));
 

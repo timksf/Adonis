@@ -20,14 +20,31 @@ namespace Adonis {
 			double m_deltatime;
 		};
 
+		enum class ADONIS_API ExitStatus {
+
+			ADONIS_FINE = 0,
+			ADONIS_ERROR
+
+		};
+
 		class AppStartEvent : public Event {
 		public:
 			DECLARE_EVENT(AppStartEvent);
+		private:
 		};
 
 		class AppStopEvent : public Event {
 		public:
 			DECLARE_EVENT(AppStopEvent);
+
+			AppStopEvent() = delete;
+
+			AppStopEvent(ExitStatus s) : m_status(s) {};
+
+			inline auto exit_status()->ExitStatus { return m_status; };
+
+		private:
+			ExitStatus m_status;
 		};
 
 }

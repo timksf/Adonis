@@ -35,9 +35,10 @@ namespace Adonis {
 	void Application::run(){
 		//Set event handlers
 		AD_ON_EVENT_BIND(KeyPressed,		Application);
-		AD_ON_EVENT_BIND(WindowCloseEvent, Application);
+		AD_ON_EVENT_BIND(WindowCloseEvent,	Application);
 		AD_ON_EVENT_BIND(UpdateEvent,		Application);
-		AD_ON_EVENT_BIND(AppStartEvent,	Application);
+		AD_ON_EVENT_BIND(AppStartEvent,		Application);
+		AD_ON_EVENT_BIND(AppStopEvent,		Application);
 		AD_ON_EVENT_BIND(PreRenderEvent,	Application);
 		AD_ON_EVENT_BIND(RenderEvent,		Application);
 		AD_ON_EVENT_BIND(PostRenderEvent,	Application);
@@ -68,13 +69,11 @@ namespace Adonis {
 	}
 
 	void Application::on_WindowCloseEvent(const event_ptr_t<WindowCloseEvent>& ev) {
-		(*m_config)["window"]["res"]["w"] = m_window->width();
-		(*m_config)["window"]["res"]["h"] = m_window->height();
-		(*m_config)["window"]["vsync"] = m_window->vsync();
-		(*m_config)["window"]["pos"]["x"] = m_window->pos().x;
-		(*m_config)["window"]["pos"]["y"] = m_window->pos().y;
-		m_window.reset();
-		m_running = false;
+		cleanup();
+	}
+
+	AD_EVENT_FUNC_DEF_HEAD(AppStopEvent, Application) {
+		cleanup();
 	}
 
 	void Application::on_KeyPressed(const event_ptr_t<KeyPressed>& ev) {
@@ -88,6 +87,17 @@ namespace Adonis {
 		m_window->disable_cursor();
 		m_active_scene->enable_cam();
 
+	}
+
+	void Application::cleanup() {
+
+		(*m_config)["window"]["res"]["w"] = m_window->width();
+		(*m_config)["window"]["res"]["h"] = m_window->height();
+		(*m_config)["window"]["vsync"] = m_window->vsync();
+		(*m_config)["window"]["pos"]["x"] = m_window->pos().x;
+		(*m_config)["window"]["pos"]["y"] = m_window->pos().y;
+		m_window.reset();
+		m_running = false;
 	}
 
 	void Application::deactivate_viewport(){

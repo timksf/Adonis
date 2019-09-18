@@ -3,6 +3,7 @@
 
 
 namespace Adonis {
+
 	namespace rendersystem {
 
 		Scene::Scene(SceneType type):

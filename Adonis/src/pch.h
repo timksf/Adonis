@@ -15,6 +15,7 @@
 #include <functional>
 #include <type_traits>
 #include <cmath>
+#include <unordered_map>
 #include "nlohmann/json.hpp"
 
 
@@ -23,6 +24,7 @@
 //
 
 #ifndef ADONIS_WINDOW_CONTEXT_LIB
+#define ADONIS_WINDOW_CONTEXT_LIB
 	#ifndef ADONIS_USE_GLFW
 		#define ADONIS_USE_GLFW //Default lib
 	#endif

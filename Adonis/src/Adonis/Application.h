@@ -29,6 +29,7 @@ namespace Adonis {
 		AD_ON_EVENT_DECL_V(WindowCloseEvent);
 		AD_ON_EVENT_DECL_V(KeyPressed);
 		AD_ON_EVENT_DECL_V(AppStartEvent) {};
+		AD_ON_EVENT_DECL_V(AppStopEvent);
 		AD_ON_EVENT_DECL_V(PreRenderEvent) {};
 		AD_ON_EVENT_DECL_V(RenderEvent) {};
 		AD_ON_EVENT_DECL_V(PostRenderEvent) {};
@@ -57,6 +58,8 @@ namespace Adonis {
 
 		auto activate_viewport()->void;
 		auto deactivate_viewport()->void;
+
+		auto cleanup()->void;
 		
 		static Application* s_instance;
 		std::unique_ptr<IWindow> m_window{ nullptr };

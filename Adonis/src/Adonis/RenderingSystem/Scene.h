@@ -8,6 +8,8 @@
 #include "Camera.h"
 #include "Adonis/Rendering/Renderer.h"
 
+#include <unordered_map>
+
 namespace Adonis {
 
 
@@ -41,10 +43,14 @@ namespace Adonis {
 			std::vector<std::unique_ptr<Model>> m_models;
 		};
 
-		class Scene {
+		class ADONIS_API Scene {
 		public:
 
 			Scene(SceneType type = SceneType::Scene2D);
+
+			Scene(const Scene&) = delete;
+
+			Scene& operator=(const Scene&) = delete;
 
 			auto select_cam(uint32_t index)->void;
 

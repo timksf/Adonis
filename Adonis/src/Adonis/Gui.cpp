@@ -201,9 +201,9 @@ namespace Adonis {
 					 -width / 2.0f, height / 2.0f,  depth / 2.0f,	.0f, 1.0f, 1.0f,
 					-width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
 					 width / 2.0f,  -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-					 width / 2.0f,  height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-					-width / 2.0f, -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-					 -width / 2.0f, height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f
+					 width / 2.0f,  height / 2.0f, -depth / 2.0f,	1.0f, 1.0f, 1.0f,
+					-width / 2.0f, -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, .0f,
+					 -width / 2.0f, height / 2.0f, -depth / 2.0f,	.2f, 1.0f, .0f
 				};
 
 				uint32_t indices[] = {
@@ -339,7 +339,6 @@ namespace Adonis {
 
 					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
 					app->consume_renderer()->set_viewport(0, 0, 100, 100);
-					ImGui::ImageButton(reinterpret_cast<uint32_t*>(colortex2->id()), { 100, 100 }, { 0, 1 }, { 1, 0 });
 					ImGui::End();
 				}
 
@@ -367,6 +366,8 @@ namespace Adonis {
 				tex_res->x = vp_res->x;
 				tex_res->y = vp_res->y;
 			}
+
+
 			if (ImGui::IsItemHovered()) {
 				ImGui::BeginTooltip();
 				ImGui::Text("Current display size: %.fx%.f", vp_res->x, vp_res->y);
@@ -380,6 +381,10 @@ namespace Adonis {
 			}
 			else {
 				ImGui::Text("active");
+			}
+
+			if (ImGui::Button("Exit Application")) {
+				EventManager::queueEvent<AppStopEvent>(ExitStatus::ADONIS_FINE);
 			}
 
 			ImGui::End();

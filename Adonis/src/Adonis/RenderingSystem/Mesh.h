@@ -17,6 +17,10 @@ namespace Adonis {
 
 			auto operator==(const MeshSpecification& rhs)const->bool;
 
+			inline auto operator<(const MeshSpecification& rhs)const->bool {
+				return true;
+			}
+
 			inline auto set_buffer_desc(std::shared_ptr<render::VertexArrayDesc> buffer_desc)->void { m_buffer_desc = buffer_desc; };
 
 			inline auto mode()const->render::DrawMode { return m_draw_mode; };

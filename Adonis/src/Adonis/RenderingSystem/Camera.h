@@ -88,7 +88,7 @@ namespace Adonis {
 			float m_yaw{ 0.0f };
 			float m_pitch{ 0.0f };
 
-			bool m_constrain_pitch{ false };
+			bool m_constrain_pitch{ true };
 			bool m_enable_zoom{ false };
 			bool m_enable_input{ false };
 			bool m_first_mouse{ false };

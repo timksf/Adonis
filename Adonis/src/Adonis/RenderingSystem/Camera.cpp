@@ -17,6 +17,7 @@ namespace Adonis {
 			AD_ON_EVENT_BIND(UpdateEvent, Camera);
 			using namespace math::literals;
 			m_fov = 100._degf;
+			this->update();
 		}
 
 		void Camera::update() {

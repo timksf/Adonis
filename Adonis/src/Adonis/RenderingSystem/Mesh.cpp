@@ -48,7 +48,7 @@ namespace Adonis {
 		}
 
 		void Mesh::init_buffers(void* vertices, uint32_t n_vertices, void* indices, uint32_t n_indices) {
-			AD_CORE_INFO("Number of provided indices: {0}; Index buffer is nullptr: {1}", n_indices, (indices == nullptr));
+			//AD_CORE_INFO("Number of provided indices: {0}; Index buffer is nullptr: {1}", n_indices, (indices == nullptr));
 			if (m_n_indices == 0 || indices == nullptr) {
 				m_prim_count = static_cast<uint32_t>(std::floor(m_n_vertices / render::AD_LOOKUP_CORE(drawmode_divisor, m_specs.mode())));
 			}
@@ -56,7 +56,7 @@ namespace Adonis {
 				//TODO add functionality to be able to influence buffer flags upon mesh creation
 				m_ibo = render::IndexBuffer::create(m_n_indices, indices, render::BufferBit::DYNAMIC_STORAGE);
 				m_prim_count = static_cast<uint32_t>(std::floor(m_n_indices / render::AD_LOOKUP_CORE(drawmode_divisor, m_specs.mode())));
-				AD_CORE_INFO("PRIM COUNT: {0}", m_prim_count);
+				//AD_CORE_INFO("PRIM COUNT: {0}", m_prim_count);
 				//m_prim_count = 12;// static_cast<uint32_t>(std::floor(m_n_indices / render::AD_LOOKUP_CORE(drawmode_divisor, m_specs.mode())));
 			}
 

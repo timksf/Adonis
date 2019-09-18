@@ -7,6 +7,8 @@
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "glm/glm.hpp"
 
+#define DEFAULT_FRAMEBUFFER 0
+
 namespace Adonis {
 
 	namespace rendersystem {
@@ -541,7 +543,7 @@ namespace Adonis {
 			*
 			*	@return pointer to the vertex array description 
 			*/
-			static auto standard_pos_color_desc()->std::shared_ptr<VertexArrayDesc>;
+			static auto default_pos_color_desc()->std::shared_ptr<VertexArrayDesc>;
 					   
 			virtual ~VertexArrayDesc() {};
 

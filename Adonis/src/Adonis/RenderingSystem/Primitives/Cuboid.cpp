@@ -23,7 +23,7 @@ namespace Adonis::rendersystem::primitives {
 		};
 
 		this->set_data(vertices, sizeof(vertices), indices, sizeof(indices));
-		this->set_specs(render::VertexArrayDesc::standard_pos_color_desc(), render::DrawMode::Triangles, render::DrawMethod::Indexed);
+		this->set_specs(render::VertexArrayDesc::default_pos_color_desc(), render::DrawMode::Triangles, render::DrawMethod::Indexed);
 	}
 
 

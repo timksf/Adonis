@@ -15,25 +15,22 @@ extern "C" {
 class Sandbox : public Adonis::Application {
 public:
 	Sandbox() {
-		//m_scene = std::make_shared<Adonis::rendersystem::Scene>(Adonis::rendersystem::SceneType::Scene3D);
 
-		/*
-		m_colortex = Adonis::render::Texture2D::create(400, 300);
-		m_colortex->set_param(Adonis::render::TextureParameter::MIN_FILTER, Adonis::render::TextureParamValue::FILTER_LINEAR);
-
-		m_depthtex = Adonis::render::Texture2D::create(400, 300, nullptr, Adonis::render::TexturePixelFormatSized::DEPTH16);
-
-		m_framebuffer = Adonis::render::Framebuffer::create();
-		m_framebuffer->attach(m_colortex->id(), Adonis::render::FramebufferTextureAttachment::COLOR);*/
-	};
-
-	~Sandbox() {};
-
-	inline AD_ON_EVENT_DECL_OVERRIDE(RenderEvent) {
-
-		/*using namespace Adonis::math::literals;
+		using namespace Adonis::math::literals;
 		using namespace Adonis::render;
 		using namespace Adonis::rendersystem;
+
+		m_scene = std::make_shared<Scene>(SceneType::Scene3D);
+
+		m_colortex = Texture2D::create(400, 300);
+		m_colortex->set_param(TextureParameter::MIN_FILTER, TextureParamValue::FILTER_LINEAR);
+
+		//m_depthtex = Adonis::render::Texture2D::create(400, 300, nullptr, Adonis::render::TexturePixelFormatSized::DEPTH16);
+
+		m_framebuffer = Framebuffer::create();
+		m_framebuffer->attach(m_colortex->id(), FramebufferTextureAttachment::COLOR);
+
+		m_default_vao = VertexArray::create(VertexArrayDesc::default_pos_color_desc());
 
 		float width = 10, height = 10, depth = 10;
 
@@ -63,27 +60,48 @@ public:
 			0u,4u,6u
 		};
 
-		static auto cube_mesh = std::make_unique<Mesh>(cube_vertices, sizeof(cube_vertices), VertexArrayDesc::standard_pos_color_desc(), cube_indices, sizeof(cube_indices));
-		static auto cube_model = std::make_unique<Model>(std::move(cube_mesh));
-		static auto cam = std::make_unique<Camera>();
-		static auto initialized = false;
+		auto temp_cube_mesh = std::make_unique<Mesh>(cube_vertices, sizeof(cube_vertices), VertexArrayDesc::default_pos_color_desc(), cube_indices, sizeof(cube_indices));
 
-		if (!initialized) {
-			cam->enable_zoom();
-			scene3D->set_pipe(RenderPipeline::test_pipeline_3D());
-			scene3D->add_cam(std::move(cam), true);
-			scene3D->add_model(std::move(cube_model));
-			scene3D->enable_cam();
-			renderer()->toggle_wireframe();
-			initialized = true;
-		}*/
+		auto temp_cube_model = std::make_unique<Model>(std::move(temp_cube_mesh));
 
+		m_scene->set_pipe(RenderPipeline::test_pipeline_3D());
+		//AD_CLIENT_INFO("Camera address from sandbox constructor: {0}", (uint32_t)(temp_cam.get());
+		m_scene->add_default_cam();
+		//AD_CLIENT_INFO("CAMS: {0}", m_scene->number_of_cams());
+		//m_scene->add_model(std::move(temp_cube_model));
+		//m_scene->enable_cam();
+		
+	};
+
+	~Sandbox() {};
+
+	inline AD_ON_EVENT_DECL_OVERRIDE(RenderEvent) {
+
+		using namespace Adonis::math::literals;
+		using namespace Adonis::render;
+		using namespace Adonis::rendersystem;
+
+		//m_default_vao->use();
+
+		//activate_scene(m_scene);
+
+		//renderer()->set_framebuffer(m_framebuffer->id());
+
+		//m_framebuffer->activate_color_attachment(0);
+		/*renderer()->clear_color = { {.0f, .0f, .0f, 1.f} };
+		renderer()->clear_color_buffer();
+		renderer()->clear_depth_buffer(0.f);
+		renderer()->draw(m_scene);*/
+
+		//Activate default framebuffer so that imgui can render to it
+		//renderer()->set_framebuffer(DEFAULT_FRAMEBUFFER);
 
 	}
 
 	inline AD_ON_EVENT_DECL_OVERRIDE(ViewportResizeEvent) {
 
 		renderer()->set_viewport(0, 0, event->width(), event->height());
+		//	m_scene->set_resolution(event->width(), event->height());
 		//m_colortex.reset();
 		//m_colortex = Adonis::render::Texture2D::create(event->width(), event->height());
 
@@ -93,9 +111,10 @@ public:
 private:
 
 	std::shared_ptr<Adonis::rendersystem::Scene> m_scene;
-	/*std::unique_ptr<Adonis::render::Texture2D> m_colortex;
+	std::unique_ptr<Adonis::render::Texture2D> m_colortex;
 	std::unique_ptr<Adonis::render::Texture2D> m_depthtex;
-	std::unique_ptr<Adonis::render::Framebuffer> m_framebuffer;*/
+	std::unique_ptr<Adonis::render::Framebuffer> m_framebuffer;
+	std::unique_ptr<Adonis::render::VertexArray> m_default_vao;
 
 
 };

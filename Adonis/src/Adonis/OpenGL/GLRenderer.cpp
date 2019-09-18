@@ -504,7 +504,7 @@ namespace Adonis {
 			return std::make_shared<GLVertexArrayDesc>();
 		}
 
-		std::shared_ptr<VertexArrayDesc> VertexArrayDesc::standard_pos_color_desc() {
+		std::shared_ptr<VertexArrayDesc> VertexArrayDesc::default_pos_color_desc() {
 			auto desc = VertexArrayDesc::create_empty();
 			desc->add_attrib(VertexType::FLOAT, 3); //position
 			desc->add_attrib(VertexType::FLOAT, 3); //color

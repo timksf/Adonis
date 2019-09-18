@@ -240,7 +240,7 @@ namespace Adonis {
 				static auto scene3D = std::make_shared<Adonis::rendersystem::Scene>(rendersystem::SceneType::Scene3D);
 				//static auto cuboid = std::make_unique<rendersystem::primitives::Cuboid>(2, 2, 2);
 				//static auto cube_model = std::make_unique<rendersystem::Model>(std::move(cuboid));
-				static auto mesh3 = std::make_unique<rendersystem::Mesh>(vertices, sizeof(vertices), VertexArrayDesc::standard_pos_color_desc(), indices, sizeof(indices));
+				static auto mesh3 = std::make_unique<rendersystem::Mesh>(vertices, sizeof(vertices), VertexArrayDesc::default_pos_color_desc(), indices, sizeof(indices));
 				static auto model3 = std::make_unique<rendersystem::Model>(std::move(mesh3));
 				static auto cam = std::make_unique<Adonis::rendersystem::Camera>();
 				static bool whatamigonnacallyoulittlebool = false;
@@ -281,11 +281,10 @@ namespace Adonis {
 				//fb->attach(depthtex->id(), FramebufferTextureAttachment::DEPTH);
 				fb->attach(colortex2->id(), FramebufferTextureAttachment::COLOR, 1);
 
-				static auto vao = VertexArray::create(VertexArrayDesc::standard_pos_color_desc());
+				static auto vao = VertexArray::create(VertexArrayDesc::default_pos_color_desc());
 
 				if (m_show_cam_info) show_cam_info_window(scene3D->cam_info(), &m_show_cam_info);
 
-				vao->use(); 
 				glEnable(GL_DEPTH_TEST);
 
 				app->activate_scene(scene3D);
@@ -327,18 +326,10 @@ namespace Adonis {
 					app->consume_renderer()->clear_depth_buffer(0.0f);
 					app->consume_renderer()->draw(scene3D);
 
-					//Render to button texture
-					fb->activate_color_attachment(1);
-					app->consume_renderer()->clear_color = { {1.0f, 1.0f, 1.0f, 1.0f} };
-					app->consume_renderer()->clear_color_buffer();
-					app->consume_renderer()->clear_depth_buffer(0.0f);
-					app->consume_renderer()->draw(scene3D);
-
 					//Activate default framebuffer so that imgui can draw to it
 					app->consume_renderer()->set_framebuffer(0);
 
 					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
-					app->consume_renderer()->set_viewport(0, 0, 100, 100);
 					ImGui::End();
 				}
 

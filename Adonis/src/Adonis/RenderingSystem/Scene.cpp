@@ -68,6 +68,9 @@ namespace Adonis {
 		}
 
 		void Scene::add_cam(std::unique_ptr<Camera>&& cam, bool auto_select) {
+			std::stringstream address;
+			address << (uint32_t)(cam.get());
+			AD_CORE_INFO("Camera address from inside scene's add_cam function: {0}", address.str());
 			m_cams.push_back(std::move(cam));
 			if(auto_select)
 				select_cam(m_cams.size() - 1);
@@ -80,6 +83,8 @@ namespace Adonis {
 		}
 
 		void Scene::set_cam_uniforms() {
+			//AD_CORE_INFO("Camera nullptr: {0}", m_cams[m_active_cam] == nullptr);
+			//_CORE_INFO("Camera index: {0}",m_active_cam);
 			m_pipe->get_param("view")->set_mat4f(m_cams[m_active_cam]->view());
 			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
 		}

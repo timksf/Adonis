@@ -46,7 +46,7 @@ namespace Adonis {
 		double time = glfwGetTime();
 
 		EventManager::queueEvent<AppStartEvent>();
-
+		
 		//Main action loop
 		while (m_running) {
 

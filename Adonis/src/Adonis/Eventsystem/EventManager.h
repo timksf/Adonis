@@ -9,13 +9,53 @@ namespace Adonis {
 
 		class ADONIS_API EventManager {
 		public:
-			static auto subscribe(size_t id, const std::pair<size_t, event_handler>& handler)->size_t;
-			static auto unsubscribe(size_t ev_id, const size_t& listener_id)->bool;
+			/*
+			*	@brief								Add handler with associcated listener id to event subscriptions
+			*
+			*	@param		event_id				ID of the event, the new handler will be registered to
+			*	@param		listener_handler_pair	Pair consisting of listener id and handler function
+			*
+			*	@return								Boolean representing success or failure while adding handler to list of event's subscriptions
+			*/
+			static auto subscribe(size_t id, const std::pair<size_t, event_handler>& handler)->bool;
+
+			/*
+			*	@brief								Remove handlers, that are associated with listener_id, from event_id's subscription list
+			*
+			*	@param		event_id				ID of the event, the handler will be removed from
+			*	@param		listener_id				ID of the listener that will get its' handlers removed from the event's subscription list
+			*
+			*/
+			static auto unsubscribe(const size_t& event_id, const size_t& listener_id)->void;
+
+
+			/*
+			*	@brief								Add event to static event queue
+			*
+			*	@param		event					Shared pointer to new event
+			*/
 			static auto queueEvent(event_ptr event)->void;
+
+
+			/*
+			*	@brief								Execute all handlers that are registered to events currently in the queue
+			*
+			*/
 			static auto processEvents()->void;
 
+			/*
+			*	@brief								Get queue size
+			*	@return								Current size of event queue
+			*
+			*/
 			static inline auto n_queued_events()->size_t { return s_queue.size(); };
 
+			/*
+			*	@brief								Add event to static event queue
+			*
+			*	@tparam		EventType				Class name of the event to add to the queue
+			*	@tparam		Args...					Types of values that will be passed on to the event's constructor
+			*/
 			template<typename EventType, typename... Args>
 			static inline auto queueEvent(Args&&... args)->void {
 				if (!valid_type<EventType>()) {

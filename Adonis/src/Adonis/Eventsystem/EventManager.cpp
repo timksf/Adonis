@@ -7,26 +7,38 @@ namespace Adonis {
 		std::vector<event_ptr> EventManager::s_queue = std::vector<event_ptr>();
 		std::map<Event::evID, std::vector<std::pair<size_t, event_handler>>> EventManager::s_subscriptions = std::map<Event::evID, std::vector<std::pair<size_t, event_handler>>>();
 
-		size_t EventManager::subscribe(size_t id, const std::pair<size_t, event_handler>& handler) {
-			auto where = s_subscriptions.find(id);
+		
+		bool EventManager::subscribe(size_t event_id, const std::pair<size_t, event_handler>& listener_handler_pair) {
+			//Determine if event of type event_id already has a subscriber list
+			auto where = s_subscriptions.find(event_id);
 
+			//If event of type event_id does not have a subscriber list yet, initialize new list with size of 2
+			bool has_subs = true;
 			if (where == s_subscriptions.end()) {
-				s_subscriptions[id] = std::vector<std::pair<size_t, event_handler>>();
+				s_subscriptions[event_id] = std::vector<std::pair<size_t, event_handler>>();
+				s_subscriptions[event_id].reserve(2);
+				has_subs = false;
 			}
-			{
-				//Check if handler function already exists
-				auto& registered_handlers = s_subscriptions[id];
+		
+			auto& registered_handlers = s_subscriptions[event_id];
+
+			//If event of type event_id already has a list of subscribers, check if listener is already registered in this list
+			//If the case, just return false, as one class cannot have two different functions subscribed to the same event
+			if (has_subs) {
 				for (auto& entry : registered_handlers) {
-					if (entry.first == handler.first) {
+					if (entry.first == listener_handler_pair.first) {
+						AD_CORE_ERROR("Trying to register function to event from instance that is already subscribed to this event");
 						return false;
 					}
 				}
-				registered_handlers.push_back(handler);
-				return handler.first;
 			}
+
+			//Add event handler to the subscriber list of the event
+			registered_handlers.push_back(listener_handler_pair);
+			return true;
 		}
 
-		bool EventManager::unsubscribe(size_t ev_id, const size_t& listener_id) {
+		void EventManager::unsubscribe(const size_t& ev_id, const size_t& listener_id) {
 			auto where = s_subscriptions.find(ev_id);
 
 			if (where != s_subscriptions.end()) {
@@ -41,8 +53,6 @@ namespace Adonis {
 					}
 				}
 			}
-
-			return false;
 		}
 
 		void EventManager::queueEvent(event_ptr event) {

@@ -65,11 +65,11 @@ public:
 		auto temp_cube_model = std::make_unique<Model>(std::move(temp_cube_mesh));
 
 		m_scene->set_pipe(RenderPipeline::test_pipeline_3D());
-		//AD_CLIENT_INFO("Camera address from sandbox constructor: {0}", (uint32_t)(temp_cam.get());
-		m_scene->add_default_cam();
+		//AD_CLIENT_INFO("Camera address from sandbox constructor: {0}", (uint32_t)(temp_xcam.get());
+		m_scene->add_default_cam(true);
 		//AD_CLIENT_INFO("CAMS: {0}", m_scene->number_of_cams());
-		//m_scene->add_model(std::move(temp_cube_model));
-		//m_scene->enable_cam();
+		m_scene->add_model(std::move(temp_cube_model));
+		m_scene->enable_cam();
 		
 	};
 

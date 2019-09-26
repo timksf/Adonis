@@ -90,11 +90,7 @@ namespace Adonis {
 			}
 
 			inline auto add_default_cam(bool auto_select = false)->void {
-				//m_cams.push_back(std::make_unique<Camera>());
 				m_cams.emplace_back(new Camera());
-				AD_CORE_INFO("Amount of cams: {0}", m_cams.size());
-				//m_cams.erase(m_cams.end() - 1);
-				AD_CORE_INFO("Amount of cams: {0}", m_cams.size());
 				if (auto_select)
 					select_cam(m_cams.size() - 1);
 			}

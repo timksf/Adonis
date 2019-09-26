@@ -168,7 +168,8 @@
     <ClInclude Include="src\Adonis\Eventsystem\Events\WindowEvent.h" />
     <ClInclude Include="src\Adonis\GLFW\ImGuiImplGLFW.h" />
     <ClInclude Include="src\Adonis\GLFW\WindowGLFW.h" />
-    <ClInclude Include="src\Adonis\Gui.h" />
+    <ClInclude Include="src\Adonis\Gui\Gui.h" />
+    <ClInclude Include="src\Adonis\Gui\ViewportWindow.h" />
     <ClInclude Include="src\Adonis\ImGui\ImGuiImplRenderer.h" />
     <ClInclude Include="src\Adonis\ImGui\ImGuiImplWindow.h" />
     <ClInclude Include="src\Adonis\Log.h" />
@@ -195,7 +196,8 @@
     <ClCompile Include="src\Adonis\Eventsystem\Events\MouseEvent.cpp" />
     <ClCompile Include="src\Adonis\GLFW\ImGuiImplGLFW.cpp" />
     <ClCompile Include="src\Adonis\GLFW\WindowGLFW.cpp" />
-    <ClCompile Include="src\Adonis\Gui.cpp" />
+    <ClCompile Include="src\Adonis\Gui\Gui.cpp" />
+    <ClCompile Include="src\Adonis\Gui\ViewportWindow.cpp" />
     <ClCompile Include="src\Adonis\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Adonis\Log.cpp" />
     <ClCompile Include="src\Adonis\Math\Math.cpp" />

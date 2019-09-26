@@ -87,9 +87,6 @@
     <ClInclude Include="src\Adonis\GLFW\WindowGLFW.h">
       <Filter>src\Adonis\GLFW</Filter>
     </ClInclude>
-    <ClInclude Include="src\Adonis\Gui.h">
-      <Filter>src\Adonis</Filter>
-    </ClInclude>
     <ClInclude Include="src\Adonis\ImGui\ImGuiImplRenderer.h">
       <Filter>src\Adonis\ImGui</Filter>
     </ClInclude>
@@ -125,6 +122,10 @@
     <ClInclude Include="src\Adonis\RenderingSystem\Primitives\Cuboid.h" />
     <ClInclude Include="src\Adonis\RenderingSystem\Primitives\Primitives.h" />
     <ClInclude Include="src\Adonis\Eventsystem\Events\ViewportResizeEvent.h" />
+    <ClInclude Include="src\Adonis\Gui\Gui.h">
+      <Filter>src\Adonis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Adonis\Gui\ViewportWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
@@ -147,9 +148,6 @@
     </ClCompile>
     <ClCompile Include="src\Adonis\GLFW\WindowGLFW.cpp">
       <Filter>src\Adonis\GLFW</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Adonis\Gui.cpp">
-      <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\ImGui\ImGuiBuild.cpp">
       <Filter>src\Adonis\ImGui</Filter>
@@ -176,6 +174,10 @@
     <ClCompile Include="src\Adonis\RenderingSystem\Model.cpp" />
     <ClCompile Include="src\Adonis\Eventsystem\Events\MouseEvent.cpp" />
     <ClCompile Include="src\Adonis\RenderingSystem\Primitives\Cuboid.cpp" />
+    <ClCompile Include="src\Adonis\Gui\Gui.cpp">
+      <Filter>src\Adonis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Adonis\Gui\ViewportWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag">

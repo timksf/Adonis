@@ -6,6 +6,8 @@
 #include "imgui.h"
 #include "glm/glm.hpp"
 #include "Adonis/RenderingSystem/RenderingSystem.h"
+#include "ViewportWindow.h"
+#include <memory>
 
 namespace Adonis {
 
@@ -23,6 +25,10 @@ namespace Adonis {
 			Extasy,
 			LightGreen
 		};
+
+		Gui(const Gui&) = delete;
+
+		Gui& operator=(const Gui&) = delete;
 
 		Gui(Style style = Style::Dark);
 
@@ -64,6 +70,8 @@ namespace Adonis {
 		bool m_in_menu = false;
 		bool m_viewport_focused = false;
 		bool m_show_cam_info = false;
+
+		std::vector<std::unique_ptr<gui::ViewportWindow>> m_viewport_windows;
 
 	};
 

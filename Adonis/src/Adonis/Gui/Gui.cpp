@@ -4,8 +4,7 @@
 #include "Adonis/Application.h"
 #include "imgui_internal.h"
 #include "glm/ext.hpp"
-#include "Math/Math.h"
-#include "ViewportWindow.h"
+#include "Adonis/Math/Math.h"
 #include "Adonis/RenderingSystem/RenderingSystem.h"
 
 namespace Adonis {

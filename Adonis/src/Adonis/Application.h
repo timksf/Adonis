@@ -7,7 +7,7 @@
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "Adonis/Window.h"
 #include "Adonis/Rendering/Renderer.h"
-#include "Gui.h"
+#include "Gui/Gui.h"
 
 namespace Adonis {
 

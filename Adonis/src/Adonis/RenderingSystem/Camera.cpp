@@ -114,20 +114,18 @@ namespace Adonis {
 		AD_EVENT_FUNC_DEF_HEAD(MouseMovedEvent, Camera) {
 			if (m_enable_input) {
 
-				static double last_x = 0;
-				static double last_y = 0;
 
 				if (m_first_mouse) {
-					last_x = event->xpos();
-					last_y = event->ypos();
+					m_lastx = event->xpos();
+					m_lasty = event->ypos();
 					m_first_mouse = false;
 				}
 
-				double xoff = event->xpos() - last_x;
-				double yoff = event->ypos() - last_y;
+				double xoff = event->xpos() - m_lastx;
+				double yoff = event->ypos() - m_lasty;
 
-				last_x = event->xpos();
-				last_y = event->ypos();
+				m_lastx = event->xpos();
+				m_lasty = event->ypos();
 
 				m_yaw += xoff * m_sensitivity;
 				m_pitch -= yoff * m_sensitivity;

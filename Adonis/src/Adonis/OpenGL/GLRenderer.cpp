@@ -604,7 +604,9 @@ namespace Adonis {
 		* Texture
 		*/
 
-		GLTexture2D::GLTexture2D(int width, int height, const void* data, TexturePixelFormatSized fmt) {
+		GLTexture2D::GLTexture2D(int width, int height, const void* data, TexturePixelFormatSized fmt):
+			m_fmt(fmt)
+		{
 			glCreateTextures(GL_TEXTURE_2D, 1, &m_id);
 			glTextureStorage2D(m_id, 1, AD_LOOKUP_CORE(sized_pixel_format, fmt), width, height);
 		}
@@ -621,6 +623,12 @@ namespace Adonis {
 			return m_id;
 		}
 
+		void GLTexture2D::resize(int width, int height) {
+			glDeleteTextures(1, &m_id);
+			glCreateTextures(GL_TEXTURE_2D, 1, &m_id);
+			glTextureStorage2D(m_id, 1, AD_LOOKUP_CORE(sized_pixel_format, m_fmt), width, height);
+		}
+
 		std::unique_ptr<Texture2D> Texture2D::create(int width, int height, const void* data, TexturePixelFormatSized fmt) {
 			return std::make_unique<GLTexture2D>(width, height, data, fmt);
 		}
@@ -629,7 +637,6 @@ namespace Adonis {
 		* Framebuffer
 		*/
 
-		/*AD_LOOKUP_TABLE_DEF_U32(texture_attachment_type, { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT });*/
 
 		GLFramebuffer::GLFramebuffer() : Framebuffer(max_color_attachments()) {
 			glCreateFramebuffers(1, &m_id);

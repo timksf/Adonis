@@ -267,10 +267,7 @@ namespace Adonis {
 				static std::unique_ptr<Framebuffer> fb = Framebuffer::create();
 
 				if (tex_size_changed) {
-					colortex.reset();
-					colortex2.reset();
-					colortex = Texture2D::create(texture_res.x, texture_res.y);
-					colortex2 = Texture2D::create(texture_res.x, texture_res.y);
+					colortex->resize(texture_res.x, texture_res.y);
 					tex_size_changed = false;
 				}
 

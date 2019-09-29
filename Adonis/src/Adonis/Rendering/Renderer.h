@@ -226,6 +226,7 @@ namespace Adonis {
 		public:
 
 			virtual auto id()->uint32_t = 0;
+			virtual auto resize(int width, int height)->void = 0;
 			virtual auto set_param(TextureParameter param, TextureParamValue value)->void = 0;
 		};
 
@@ -235,6 +236,8 @@ namespace Adonis {
 			static auto create(int width, int height, const void* data = nullptr, TexturePixelFormatSized fmt = TexturePixelFormatSized::RGB8)->std::unique_ptr<Texture2D>;
 
 			virtual ~Texture2D() = default;
+
+			virtual auto resize(int width, int height)->void = 0;
 
 			virtual auto id()->uint32_t = 0;
 			virtual auto set_param(TextureParameter param, TextureParamValue value)->void = 0;

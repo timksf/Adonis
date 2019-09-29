@@ -86,11 +86,13 @@ namespace Adonis {
 			GLTexture2D(int width, int height, const void* data, TexturePixelFormatSized fmt);
 			~GLTexture2D() override;
 
+			auto resize(int width, int height)->void override;
 			auto id()->GLuint override;
 			auto set_param(TextureParameter param, TextureParamValue value)->void override;
 
 		private:
 			GLuint m_id;
+			TexturePixelFormatSized m_fmt;
 		};
 
 

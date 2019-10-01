@@ -20,7 +20,7 @@ namespace Adonis {
 	/**
 	*	@brief Interface for platform/api specific window class implementations
 	*/
-	class ADONIS_API IWindow: public EventListener{
+	class ADONIS_API Window: public EventListener{
 	public:
 
 		/**
@@ -31,9 +31,9 @@ namespace Adonis {
 		*	@param mode			Mode used to init window, of type WindowMode
 		*	@param vsync		Initial vsync status (enabled/disabled)
 		*/
-		static std::unique_ptr<IWindow> create(const uint16_t& width = 640, const uint16_t& height = 480, const std::string& title = "Window", const bool& vsnyc = true, WindowMode mode = WindowMode::Windowed);
+		static std::unique_ptr<Window> create(const uint16_t& width = 640, const uint16_t& height = 480, const std::string& title = "Window", const bool& vsnyc = true, WindowMode mode = WindowMode::Windowed);
 
-		virtual ~IWindow() {};
+		virtual ~Window() {};
 
 		AD_ON_EVENT_DECL_P_V(UpdateEvent);
 		AD_ON_EVENT_DECL_P_V(PreRenderEvent);

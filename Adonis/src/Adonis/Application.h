@@ -35,7 +35,7 @@ namespace Adonis {
 		AD_ON_EVENT_DECL_V(PostRenderEvent) {};
 		AD_ON_EVENT_DECL_V(ViewportResizeEvent) {};
 
-		inline auto consume_window()const->IWindow* { return m_window.get(); };
+		inline auto consume_window()const->Window* { return m_window.get(); };
 		inline auto consume_renderer()const->render::RenderDevice* { return m_renderer.get(); };
 		inline auto consume_gui()const->Gui* { return m_gui.get(); };
 
@@ -53,6 +53,8 @@ namespace Adonis {
 
 		inline auto renderer()const->render::RenderDevice* { return m_renderer.get(); };
 
+		inline auto window()const->Window* { return m_window.get(); };
+
 
 	private:
 
@@ -62,7 +64,7 @@ namespace Adonis {
 		auto cleanup()->void;
 		
 		static Application* s_instance;
-		std::unique_ptr<IWindow> m_window{ nullptr };
+		std::unique_ptr<Window> m_window{ nullptr };
 		std::unique_ptr<render::RenderDevice> m_renderer{ nullptr };
 		std::unique_ptr<Gui> m_gui{ nullptr };
 		std::shared_ptr<rendersystem::Scene> m_active_scene{ nullptr };

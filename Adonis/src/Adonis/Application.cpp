@@ -17,7 +17,7 @@ namespace Adonis {
 
 		AD_CORE_ASSERT((s_instance == nullptr), "Only one application object can exist");
 		s_instance = this;
-		m_window = IWindow::create((*m_config)["window"]["res"]["w"], (*m_config)["window"]["res"]["h"], (*m_config)["window"]["title"], (*m_config)["window"]["vsync"]);
+		m_window = Window::create((*m_config)["window"]["res"]["w"], (*m_config)["window"]["res"]["h"], (*m_config)["window"]["title"], (*m_config)["window"]["vsync"]);
 		m_window->set_pos((*m_config)["window"]["pos"]["x"], (*m_config)["window"]["pos"]["y"]);
 		m_renderer = render::RenderDevice::create();
 		#ifdef ADONIS_DEBUG

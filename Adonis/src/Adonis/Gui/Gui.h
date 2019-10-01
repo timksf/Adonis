@@ -53,6 +53,12 @@ namespace Adonis {
 		auto show_scene_edit(bool*)->void;
 		auto show_cam_info_window(rendersystem::CamInfo info, bool*)->void;
 
+		static inline auto test(std::shared_ptr<gui::ViewportWindow> w) {
+
+			w->draw();
+
+		};
+
 	private:
 		auto init()->void;
 		auto generate_scene_window(std::shared_ptr<rendersystem::Scene>)->void;

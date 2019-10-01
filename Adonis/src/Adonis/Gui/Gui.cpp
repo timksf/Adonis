@@ -282,53 +282,54 @@ namespace Adonis {
 
 				if (m_show_cam_info) show_cam_info_window(scene3D->cam_info(), &m_show_cam_info);
 
-				glEnable(GL_DEPTH_TEST);
+				//glEnable(GL_DEPTH_TEST);
 
 				app->activate_scene(scene3D);
 
-				if (!ImGui::Begin("Viewport")) {
-					ImGui::End();
-					AD_CORE_ERROR("Failed to create render window");
-				}
-				else {
-					m_viewport_focused = ImGui::IsWindowFocused();
-					if (ImGui::IsWindowFocused() && !m_in_menu) {
-						app->consume_window()->disable_cursor();
-						scene3D->enable_cam();
-					}else {
-						app->consume_window()->enable_cursor();
-						scene3D->disable_cam();
-						m_viewport_focused = false;
-					}
+				//if (!ImGui::Begin("Viewport")) {
+				//	ImGui::End();
+				//	AD_CORE_ERROR("Failed to create render window");
+				//}
+				//else {
+				//	m_viewport_focused = ImGui::IsWindowFocused();
+				//	if (ImGui::IsWindowFocused() && !m_in_menu) {
+				//		app->consume_window()->disable_cursor();
+				//		scene3D->enable_cam();
+				//	}else {
+				//		app->consume_window()->enable_cursor();
+				//		scene3D->disable_cam();
+				//		m_viewport_focused = false;
+				//	}
 
-					float x0 = ImGui::GetCursorScreenPos().x;
-					float y0 = ImGui::GetCursorScreenPos().y;
-					float ww = ImGui::GetWindowSize().x;
-					float wh = ImGui::GetWindowSize().y;
-					view_port_res.x = ww;
-					view_port_res.y = wh;
-					auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
-					auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
+				//	float x0 = ImGui::GetCursorScreenPos().x;
+				//	float y0 = ImGui::GetCursorScreenPos().y;
+				//	float ww = ImGui::GetWindowSize().x;
+				//	float wh = ImGui::GetWindowSize().y;
+				//	view_port_res.x = ww;
+				//	view_port_res.y = wh;
+				//	auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
+				//	auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
 
-					//Set framebuffer and viewport
-					app->consume_renderer()->set_framebuffer(fb->id());
-					app->consume_renderer()->set_viewport(0, 0, texture_res.x, texture_res.y);
+				//	//Set framebuffer and viewport
+				//	app->consume_renderer()->set_framebuffer(fb->id());
+				//	app->consume_renderer()->set_viewport(0, 0, texture_res.x, texture_res.y);
 
-					scene3D->set_resolution(ww, wh);
+				//	scene3D->set_resolution(ww, wh);
 
-					//Render triangle to main rendering window
-					fb->activate_color_attachment(0);
-					app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
-					app->consume_renderer()->clear_color_buffer();
-					app->consume_renderer()->clear_depth_buffer(0.0f);
-					app->consume_renderer()->draw(scene3D);
+				//	//Render triangle to main rendering window
+				//	fb->activate_color_attachment(0);
+				//	app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
+				//	app->consume_renderer()->clear_color_buffer();
+				//	app->consume_renderer()->clear_depth_buffer(0.0f);
+				//	app->consume_renderer()->draw(scene3D);
 
-					//Activate default framebuffer so that imgui can draw to it
-					app->consume_renderer()->set_framebuffer(0);
+				//	//Activate default framebuffer so that imgui can draw to it
+				//	app->consume_renderer()->set_framebuffer(0);
 
-					ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
-					ImGui::End();
-				}
+				//	ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
+				//	ImGui::End();
+				//}
+
 
 				//TEST RENDERING END
 

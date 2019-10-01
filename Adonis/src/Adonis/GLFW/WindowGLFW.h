@@ -11,7 +11,7 @@
 namespace Adonis {
 
 
-	class WindowGLFW: public IWindow{
+	class WindowGLFW: public Window{
 	public:
 		DECLARE_LISTENER(WindowGLFW);
 

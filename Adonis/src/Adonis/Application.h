@@ -55,6 +55,8 @@ namespace Adonis {
 
 		inline auto window()const->Window* { return m_window.get(); };
 
+		inline auto gui()const->Gui* { return m_gui.get(); };
+
 
 	private:
 

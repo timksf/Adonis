@@ -32,7 +32,7 @@ public:
 		m_framebuffer = Framebuffer::create();
 		m_framebuffer->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
 
-		m_viewport_window = std::make_shared<gui::ViewportWindow>(std::move(colortex), true);
+		m_viewport_window = std::make_shared<gui::ViewportWindow>(std::move(colortex), gui::ViewportWindowType::MAIN);
 
 		m_default_vao = VertexArray::create(VertexArrayDesc::default_pos_color_desc());
 
@@ -74,7 +74,10 @@ public:
 		m_scene->add_default_cam(true);
 		m_scene->add_model(std::move(temp_cube_model));
 		m_scene->enable_cam();
+
+		renderer()->toggle_wireframe();
 		
+		gui()->add_viewport_window(m_viewport_window);
 	};
 
 	~Sandbox() {};
@@ -95,7 +98,7 @@ public:
 				m_scene->set_resolution(m_viewport_window->width(), m_viewport_window->height());
 			}
 
-			if (m_viewport_window->focused() && m_viewport_window->is_main()) {
+			if (m_viewport_window->active()) {
 				window()->disable_cursor();
 				m_scene->enable_cam();
 			}
@@ -116,7 +119,7 @@ public:
 			renderer()->clear_depth_buffer(0.f);
 			renderer()->draw(m_scene);
 
-			Adonis::Gui::test(m_viewport_window);
+			//Adonis::Gui::test(m_viewport_window);
 
 			//Activate default framebuffer so that imgui can render to it
 			renderer()->set_framebuffer(DEFAULT_FRAMEBUFFER);

@@ -26,9 +26,9 @@ namespace Adonis {
 			LightGreen
 		};
 
-		Gui(const Gui&) = delete;
+		//Gui(const Gui&) = delete;
 
-		Gui& operator=(const Gui&) = delete;
+		//Gui& operator=(const Gui&) = delete;
 
 		Gui(Style style = Style::Dark);
 
@@ -49,13 +49,19 @@ namespace Adonis {
 		auto show_viewport(bool*)->void;
 		auto show_debug(bool*)->void;
 		auto show_style_editor(bool*)->void;
-		auto show_tools_window(bool*, glm::vec2*, glm::vec2*, bool*)->void;
+		auto show_tools_window(bool*)->void;
 		auto show_scene_edit(bool*)->void;
 		auto show_cam_info_window(rendersystem::CamInfo info, bool*)->void;
 
 		static inline auto test(std::shared_ptr<gui::ViewportWindow> w) {
 
 			w->draw();
+
+		};
+
+		inline auto add_viewport_window(std::shared_ptr<gui::ViewportWindow> w)->void {
+
+			m_viewport_windows.push_back(w);
 
 		};
 
@@ -77,7 +83,7 @@ namespace Adonis {
 		bool m_viewport_focused = false;
 		bool m_show_cam_info = false;
 
-		std::vector<std::unique_ptr<gui::ViewportWindow>> m_viewport_windows;
+		std::vector<std::shared_ptr<gui::ViewportWindow>> m_viewport_windows;
 
 	};
 

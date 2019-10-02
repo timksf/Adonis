@@ -19,13 +19,13 @@ namespace Adonis {
 
 		namespace enums {
 
-			enum class DrawMode {
+			enum class DrawMode : uint32_t {
 				Triangles = 0,
 				Lines,
 				Points,
 			};
 
-			enum class DrawMethod {
+			enum class DrawMethod : uint32_t {
 				Classic = 0,
 				Indexed
 			};
@@ -46,7 +46,7 @@ namespace Adonis {
 				MAG_FILTER
 			};
 
-			enum class TextureParamValue {
+			enum class TextureParamValue : uint32_t {
 				FILTER_NEAREST = 0,
 				FILTER_LINEAR,
 				WRAP_CLAMP_TO_EDGE,

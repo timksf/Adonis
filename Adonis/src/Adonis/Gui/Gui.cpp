@@ -118,6 +118,12 @@ namespace Adonis {
 		double current_time = app->consume_window()->get_time();
 		io.DeltaTime = m_time > 0.0 ? static_cast<float>(current_time - m_time) : static_cast<float>(1.0f / 60.0f);
 		m_time = static_cast<float>(current_time);
+		
+	}
+
+	void Gui::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
+
+		auto app = Application::get();
 
 		ImGui::NewFrame();
 		{
@@ -154,7 +160,7 @@ namespace Adonis {
 				AD_CORE_ERROR("Failed to set up gui");
 			}
 			else {
-				
+
 				ImGui::PopStyleVar();
 				ImGui::PopStyleVar(2);
 
@@ -163,184 +169,41 @@ namespace Adonis {
 
 				setup_menu(&show_debug_window, &show_imgui_demo, &show_style_chooser, &show_tools, &show_scene_window);
 
-				if(show_debug_window) show_debug(&show_debug_window);
-				if(show_imgui_demo) ImGui::ShowDemoWindow(&show_imgui_demo);
-				if(show_style_chooser) show_style_editor(&show_style_chooser);
+				if (show_debug_window) show_debug(&show_debug_window);
+				if (show_imgui_demo) ImGui::ShowDemoWindow(&show_imgui_demo);
+				if (show_style_chooser) show_style_editor(&show_style_chooser);
 				if (show_scene_window) show_scene_edit(&show_scene_window);
-				//if (show_render_window) show_viewport(nullptr);
+				if (show_tools) show_tools_window(&show_tools);
 
-				//TEST RENDERING
-				using namespace math::literals;
-				using namespace render;
-
-				//Component system tests
-
-				static float quad[] =
-				{ /*pos:*/ -0.5f, -.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-							-0.5f, .5f, 0.0f, 0.0f, 1.0f, 0.0f,
-							0.5f, -.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-							0.5f, .5f, 0.0f, 0.0f, 0.0f, 1.0f,
-				};
-
-				/*static uint32_t indices[] = {
-					0, 1, 2,
-					1, 2, 3
-				};*/
-
-				static float triangle[] =
-				{ /*pos:*/ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-							0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-							0.0f, 1.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-				};
-
-				float width = 10, height = 10, depth = 10;
-
-				float vertices[] = {
-					 width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
-					 width / 2.0f,  height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
-					 -width / 2.0f, height / 2.0f,  depth / 2.0f,	.0f, 1.0f, 1.0f,
-					-width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
-					 width / 2.0f,  -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-					 width / 2.0f,  height / 2.0f, -depth / 2.0f,	1.0f, 1.0f, 1.0f,
-					-width / 2.0f, -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, .0f,
-					 -width / 2.0f, height / 2.0f, -depth / 2.0f,	.2f, 1.0f, .0f
-				};
-
-				uint32_t indices[] = {
-
-					0,1,4,
-					4,1,5,
-					0,2,1,
-					0,3,2,
-					0,4,6,
-					0,3,6,
-					1,5,2,
-					2,5,7,
-					2,3,6,
-					2,6,7,
-					5,6,7,
-					5,4,6
-
-				};
-
-				//static auto scene2D = std::make_shared<rendersystem::Scene>();
-				//static auto mesh = std::make_unique<rendersystem::Mesh>(quad, sizeof(quad), VertexArrayDesc::standard_pos_color_desc(), indices, AD_ARRAYSIZE(indices));
-				//static auto mesh2 = std::make_unique<rendersystem::Mesh>(triangle, sizeof(triangle), VertexArrayDesc::standard_pos_color_desc());
-				//static auto model = std::make_unique<rendersystem::Model>(std::move(mesh));
-				//static auto model2 = std::make_unique<rendersystem::Model>(std::move(mesh2));
-				//static bool lol = false;
-				//
-				//if (!lol) {
-				//	scene2D->set_pipe(RenderPipeline::test_pipeline_2D());
-				//	scene2D->add_model(std::move(model));
-				//	scene2D->add_model(std::move(model2));
-				//	lol = true;
-				//}
-
-				static auto scene3D = std::make_shared<Adonis::rendersystem::Scene>(rendersystem::SceneType::Scene3D);
-				//static auto cuboid = std::make_unique<rendersystem::primitives::Cuboid>(2, 2, 2);
-				//static auto cube_model = std::make_unique<rendersystem::Model>(std::move(cuboid));
-				static auto mesh3 = std::make_unique<rendersystem::Mesh>(vertices, sizeof(vertices), VertexArrayDesc::default_pos_color_desc(), indices, sizeof(indices));
-				static auto model3 = std::make_unique<rendersystem::Model>(std::move(mesh3));
-				static auto cam = std::make_unique<Adonis::rendersystem::Camera>();
-				static bool whatamigonnacallyoulittlebool = false;
-
-				if (!whatamigonnacallyoulittlebool) {
-					cam->enable_zoom();
-					scene3D->set_pipe(RenderPipeline::test_pipeline_3D());
-					scene3D->add_cam(std::move(cam), true);
-					scene3D->add_model(std::move(model3));
-					scene3D->enable_cam();
-					whatamigonnacallyoulittlebool = true;
-					app->consume_renderer()->toggle_wireframe();
+				for (auto& w : m_viewport_windows) {
+					w->draw();
+					if (w->type() == gui::ViewportWindowType::MAIN) {
+						if (m_in_menu)
+							w->set_focus(false);
+					}
 				}
-
-				//Component system tests
-
-
-				static bool tex_size_changed = false;
-				if(show_tools) show_tools_window(&show_tools, &view_port_res, &texture_res, &tex_size_changed);
-
-				static std::unique_ptr<Texture2D> colortex = Texture2D::create(texture_res.x, texture_res.y);
-				static std::unique_ptr<Texture2D> colortex2 = Texture2D::create(texture_res.x, texture_res.y);
-				static std::unique_ptr<Texture2D> depthtex = Texture2D::create(texture_res.x, texture_res.y, nullptr, TexturePixelFormatSized::DEPTH16);
-				static std::unique_ptr<Framebuffer> fb = Framebuffer::create();
-
-				if (tex_size_changed) {
-					colortex->resize(texture_res.x, texture_res.y);
-					tex_size_changed = false;
-				}
-
-				colortex->set_param(TextureParameter::MIN_FILTER, TextureParamValue::FILTER_LINEAR);
-				colortex->set_param(TextureParameter::MAG_FILTER, TextureParamValue::FILTER_LINEAR);
-
-				fb->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
-				//fb->attach(depthtex->id(), FramebufferTextureAttachment::DEPTH);
-				fb->attach(colortex2->id(), FramebufferTextureAttachment::COLOR, 1);
-
-				static auto vao = VertexArray::create(VertexArrayDesc::default_pos_color_desc());
-
-				if (m_show_cam_info) show_cam_info_window(scene3D->cam_info(), &m_show_cam_info);
-
-				//glEnable(GL_DEPTH_TEST);
-
-				app->activate_scene(scene3D);
-
-				//if (!ImGui::Begin("Viewport")) {
-				//	ImGui::End();
-				//	AD_CORE_ERROR("Failed to create render window");
-				//}
-				//else {
-				//	m_viewport_focused = ImGui::IsWindowFocused();
-				//	if (ImGui::IsWindowFocused() && !m_in_menu) {
-				//		app->consume_window()->disable_cursor();
-				//		scene3D->enable_cam();
-				//	}else {
-				//		app->consume_window()->enable_cursor();
-				//		scene3D->disable_cam();
-				//		m_viewport_focused = false;
-				//	}
-
-				//	float x0 = ImGui::GetCursorScreenPos().x;
-				//	float y0 = ImGui::GetCursorScreenPos().y;
-				//	float ww = ImGui::GetWindowSize().x;
-				//	float wh = ImGui::GetWindowSize().y;
-				//	view_port_res.x = ww;
-				//	view_port_res.y = wh;
-				//	auto lr = ImVec2(x0 + ww - 2, y0 + wh - 2);
-				//	auto ul = ImVec2(x0 - ImGui::GetStyle().FramePadding[0] * 2 + 2, y0 - ImGui::GetStyle().FramePadding[1] * 2 + 2);
-
-				//	//Set framebuffer and viewport
-				//	app->consume_renderer()->set_framebuffer(fb->id());
-				//	app->consume_renderer()->set_viewport(0, 0, texture_res.x, texture_res.y);
-
-				//	scene3D->set_resolution(ww, wh);
-
-				//	//Render triangle to main rendering window
-				//	fb->activate_color_attachment(0);
-				//	app->consume_renderer()->clear_color = { {0.0f, 0.0f, 0.0f, 1.0f} };
-				//	app->consume_renderer()->clear_color_buffer();
-				//	app->consume_renderer()->clear_depth_buffer(0.0f);
-				//	app->consume_renderer()->draw(scene3D);
-
-				//	//Activate default framebuffer so that imgui can draw to it
-				//	app->consume_renderer()->set_framebuffer(0);
-
-				//	ImGui::GetWindowDrawList()->AddImage(reinterpret_cast<uint32_t*>(colortex->id()), ul, lr, { 0, 1 }, { 1, 0 });
-				//	ImGui::End();
-				//}
-
-
-				//TEST RENDERING END
 
 				ImGui::End();
 			}
 
 
 		}
+
+
+		ImGui::Render();
+		imgui_renderer_renderdata(ImGui::GetDrawData());
+
+		auto& io = ImGui::GetIO();
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
+
 	}
 
-	void Gui::show_tools_window(bool* show, glm::vec2* vp_res, glm::vec2* tex_res, bool* tex_size_changed) {
+	void Gui::show_tools_window(bool* show) {
 		if (!ImGui::Begin("Tools", show)) {
 			AD_CORE_ERROR("Failed to build Tools window");
 			ImGui::End();
@@ -348,20 +211,6 @@ namespace Adonis {
 		else {
 
 			static bool selected;
-
-			ImGui::Text("Current framebuffer size: %.fx%.f", tex_res->x, tex_res->y);
-			if (ImGui::Button("Update resolution")) {
-				*tex_size_changed = true;
-				tex_res->x = vp_res->x;
-				tex_res->y = vp_res->y;
-			}
-
-
-			if (ImGui::IsItemHovered()) {
-				ImGui::BeginTooltip();
-				ImGui::Text("Current display size: %.fx%.f", vp_res->x, vp_res->y);
-				ImGui::EndTooltip();
-			}
 
 			ImGui::Text("Viewport status: ");
 			ImGui::SameLine();
@@ -559,42 +408,6 @@ namespace Adonis {
 			
 			ImGui::End();
 		}
-	}
-
-
-
-	void Gui::on_GuiRenderEvent(const event_ptr_t<GuiRenderEvent>& e) {
-
-		/*auto app = Application::get();
-
-		if (!ImGui::Begin("Viewport")) {
-			ImGui::End();
-			AD_CORE_ERROR("Failed to create render window");
-		}
-		else {
-			m_viewport_focused = ImGui::IsWindowFocused();
-			if (ImGui::IsWindowFocused() && !m_in_menu) {
-				app->viewport_focus_changed(true);
-			}
-			else {
-				app->viewport_focus_changed(false);
-				m_viewport_focused = false;
-			}
-
-
-		}*/
-
-		ImGui::Render();
-		imgui_renderer_renderdata(ImGui::GetDrawData());
-
-		auto& io = ImGui::GetIO();
-
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-			
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
-
 	}
 
 	void Gui::on_MouseButtonPressed(const event_ptr_t<MouseButtonPressed>& event) {

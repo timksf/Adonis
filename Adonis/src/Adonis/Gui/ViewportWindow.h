@@ -12,21 +12,30 @@ namespace Adonis {
 
 	namespace gui {
 
+		enum class ADONIS_API ViewportWindowType : uint32_t {
+			DEBUG = 0,
+			MAIN
+		};
+
 
 		class ADONIS_API ViewportWindow {
 		public:
 
-			ViewportWindow(std::unique_ptr<render::Texture2D>&& texture, bool is_main);
+			ViewportWindow(std::unique_ptr<render::Texture2D>&& texture, ViewportWindowType type);
 
 			auto draw()->void;
 
+			auto active()->bool;
+
 			inline auto texture_id()->uint32_t { return m_texture->id(); };
 
-			inline auto focused()->bool { return m_focused; };
+			//inline auto focused()->bool { return m_focused; };
 
-			inline auto resized()->bool { return m_size_changed; };
+			inline auto set_focus(bool focused)->void { m_focused = focused; };
+				
+			inline auto resized()->bool { return m_resized; };
 
-			inline auto is_main()->bool { return m_is_main; };
+			inline auto type()->ViewportWindowType { return m_type; };
 
 			inline auto width()->int { return m_width; };
 			inline auto height()->int { return m_height; };
@@ -41,9 +50,9 @@ namespace Adonis {
 
 			bool m_focused{ false };
 
-			bool m_size_changed{ false };
+			bool m_resized{ false };
 
-			bool m_is_main{ false };
+			ViewportWindowType m_type;
 
 			std::unique_ptr<render::Texture2D> m_texture;
 

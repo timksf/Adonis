@@ -130,15 +130,15 @@ namespace Adonis {
 
 			static bool show_debug_window = true;
 			static bool show_imgui_demo = (*app->config())["gui"]["demo_window"]["show"];
-			(*Application::get()->config())["gui"]["demo_window"]["show"] = show_imgui_demo;
+			(*app->config())["gui"]["demo_window"]["show"] = show_imgui_demo;
 			static bool show_style_chooser = (*app->config())["gui"]["style_chooser"]["show"];
-			(*Application::get()->config())["gui"]["style_chooser"]["show"] = show_style_chooser;
+			(*app->config())["gui"]["style_chooser"]["show"] = show_style_chooser;
 			static bool show_render_window = true;
 			static bool show_tools = (*app->config())["gui"]["tool_window"]["show"];
-			(*Application::get()->config())["gui"]["tool_window"]["show"] = show_tools;
+			(*app->config())["gui"]["tool_window"]["show"] = show_tools;
 			static glm::vec2 view_port_res{ 0, 0 }, texture_res{ (*Application::get()->config())["gui"]["render_window"]["res"]["w"], (*Application::get()->config())["gui"]["render_window"]["res"]["h"] };
-			(*Application::get()->config())["gui"]["render_window"]["res"]["w"] = texture_res.x;
-			(*Application::get()->config())["gui"]["render_window"]["res"]["h"] = texture_res.y;
+			//(*Application::get()->config())["gui"]["render_window"]["res"]["w"] = texture_res.x;
+			//(*Application::get()->config())["gui"]["render_window"]["res"]["h"] = texture_res.y;
 			static bool show_scene_window = (*app->config())["gui"]["scene_window"]["show"];
 			(*app->config())["gui"]["scene_window"]["show"] = show_scene_window;
 
@@ -411,6 +411,9 @@ namespace Adonis {
 	}
 
 	void Gui::on_MouseButtonPressed(const event_ptr_t<MouseButtonPressed>& event) {
+		if (!m_in_menu) {
+			return;
+		}
 		if (event->button() >= 0 && event->button() < AD_ARRAYSIZE(m_mousejustpressed)) {
 			m_mousejustpressed[event->button()] = true;
 		}

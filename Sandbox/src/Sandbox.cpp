@@ -25,14 +25,18 @@ public:
 		m_scene = std::make_shared<Scene>(SceneType::Scene3D);
 
 		auto colortex = Texture2D::create(400, 300);
+		auto colortex2 = Texture2D::create(400, 300);
 		colortex->set_param(TextureParameter::MIN_FILTER, TextureParamValue::FILTER_LINEAR);
+		colortex2->set_param(TextureParameter::MIN_FILTER, TextureParamValue::FILTER_LINEAR);
 
 		//m_depthtex = Adonis::render::Texture2D::create(400, 300, nullptr, Adonis::render::TexturePixelFormatSized::DEPTH16);
 
 		m_framebuffer = Framebuffer::create();
 		m_framebuffer->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
+		m_framebuffer->attach(colortex2->id(), FramebufferTextureAttachment::COLOR, 1);
 
 		m_viewport_window = std::make_shared<gui::ViewportWindow>(std::move(colortex), gui::ViewportWindowType::MAIN);
+		m_test_viewport = std::make_shared<gui::ViewportWindow>(std::move(colortex2), gui::ViewportWindowType::DEBUG);
 
 		m_default_vao = VertexArray::create(VertexArrayDesc::default_pos_color_desc());
 
@@ -78,6 +82,7 @@ public:
 		renderer()->toggle_wireframe();
 		
 		gui()->add_viewport_window(m_viewport_window);
+		gui()->add_viewport_window(m_test_viewport);
 	};
 
 	~Sandbox() {};
@@ -96,6 +101,10 @@ public:
 				m_framebuffer->attach(m_viewport_window->texture_id(), FramebufferTextureAttachment::COLOR);
 				renderer()->set_viewport(0, 0, m_viewport_window->width(), m_viewport_window->height());
 				m_scene->set_resolution(m_viewport_window->width(), m_viewport_window->height());
+			}
+
+			if (m_test_viewport->resized()) {
+				m_framebuffer->attach(m_test_viewport->texture_id(), FramebufferTextureAttachment::COLOR, 1);
 			}
 
 			if (m_viewport_window->active()) {
@@ -119,7 +128,10 @@ public:
 			renderer()->clear_depth_buffer(0.f);
 			renderer()->draw(m_scene);
 
-			//Adonis::Gui::test(m_viewport_window);
+			//m_framebuffer->activate_color_attachment(1);
+			/*renderer()->clear_color_buffer();
+			renderer()->clear_depth_buffer(0.f);*/
+			//renderer()->draw(m_scene);
 
 			//Activate default framebuffer so that imgui can render to it
 			renderer()->set_framebuffer(DEFAULT_FRAMEBUFFER);
@@ -144,6 +156,7 @@ private:
 	std::unique_ptr<Adonis::render::Framebuffer> m_framebuffer;
 	std::unique_ptr<Adonis::render::VertexArray> m_default_vao;
 	std::shared_ptr<Adonis::gui::ViewportWindow> m_viewport_window;
+	std::shared_ptr<Adonis::gui::ViewportWindow> m_test_viewport;
 
 
 };

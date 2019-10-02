@@ -29,8 +29,6 @@ namespace Adonis {
 
 			inline auto texture_id()->uint32_t { return m_texture->id(); };
 
-			//inline auto focused()->bool { return m_focused; };
-
 			inline auto set_focus(bool focused)->void { m_focused = focused; };
 				
 			inline auto resized()->bool { return m_resized; };
@@ -55,6 +53,10 @@ namespace Adonis {
 			ViewportWindowType m_type;
 
 			std::unique_ptr<render::Texture2D> m_texture;
+
+			uint32_t m_id;
+
+			static uint32_t s_window_count;
 
 		};
 

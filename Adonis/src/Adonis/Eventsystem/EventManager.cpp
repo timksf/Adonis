@@ -60,6 +60,7 @@ namespace Adonis {
 		}
 
 		void EventManager::processEvents() {
+			//AD_CORE_WARN("Number of events in queue: {0}", s_queue.size());
 			while (s_queue.size() > 0) {
 				auto&& entry = s_subscriptions.find(s_queue[0]->id());
 				if (entry != s_subscriptions.end()) {

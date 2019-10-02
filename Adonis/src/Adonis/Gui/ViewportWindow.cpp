@@ -7,10 +7,13 @@ namespace Adonis {
 
 	namespace gui {
 
+		uint32_t ViewportWindow::s_window_count = 0; 
+
 		ViewportWindow::ViewportWindow(std::unique_ptr<render::Texture2D>&& texture, ViewportWindowType type) :
 			m_type(type),
 			m_texture(std::move(texture))
 		{
+			m_id = s_window_count++;
 			m_focused = false;
 			m_last_width = m_width;
 			m_last_height = m_height;
@@ -19,8 +22,10 @@ namespace Adonis {
 
 		void ViewportWindow::draw() {
 
-			//TODO Add unique name
-			if (!ImGui::Begin("Viewport")) {
+			std::stringstream name;
+			name << "Viewport" << m_id;
+
+			if (!ImGui::Begin(name.str().c_str())) {
 				AD_CORE_ERROR("Failed to create viewport window!");
 			}
 			else {

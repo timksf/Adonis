@@ -258,7 +258,7 @@ namespace Adonis {
 
 			virtual ~Framebuffer() {};
 
-			virtual auto attach(uint32_t, FramebufferTextureAttachment, int = 0)->void = 0;
+			virtual auto attach(uint32_t, FramebufferTextureAttachment, int attachment_index = 0)->void = 0;
 
 			virtual auto activate_color_attachment(int = 0)->void = 0;
 

@@ -90,6 +90,19 @@ namespace Adonis {
 				NORMALIZED_UNSIGNED_INTEGER = 14
 			};
 
+			enum class ADONIS_API FramebufferStatus : uint32_t {
+				UNDEFINED = 0,
+				INCOMPLETE_ATTACHMENT,
+				INCOMPLETE_MISSING_ATTACHMENT,
+				INCOMPLETE_DRAW_BUFFER,
+				INCOMPLETE_READ_BUFFER,
+				UNSUPPORTED,
+				INCOMPLETE_MULTISAMPLE,
+				INCOMPLETE_LAYER_TARGETS,
+				COMPLETE,
+				UNKNOWN
+			};
+
 			enum class ADONIS_API BufferBit : uint32_t {
 				DYNAMIC_STORAGE = 1 << 0,
 				MAP_READ = 1 << 1,
@@ -128,6 +141,7 @@ namespace Adonis {
 			AD_LOOKUP_TABLE_HEADER_DECL_U32(vertex_type, 15);
 			AD_LOOKUP_TABLE_HEADER_DECL_U32(vertex_type_size, 15);
 			AD_LOOKUP_TABLE_HEADER_DECL_U32(drawmode_divisor, 3);
+			AD_LOOKUP_TABLE_HEADER_DECL_U32(framebuffer_status, 9);
 
 		}
 
@@ -191,6 +205,8 @@ namespace Adonis {
 
 			virtual auto draw(DrawMethod method, DrawMode mode, int offset, int count)->void = 0;
 
+			virtual auto last_error()->uint32_t = 0;
+
 			/**
 			*	@brief			Change the currently active rendering pipeline
 			*	@param pipe		A pointer to the rendering pipeline which should be acitvated
@@ -246,7 +262,7 @@ namespace Adonis {
 		class ADONIS_API Framebuffer {
 		public:
 
-			/*AD_LOOKUP_TABLE_DECL_U32(texture_attachment_type, 3);*/
+			/*AD_LOOKUP_TABLE_DECL_U32(texture_attachment_type, 3);*/	
 
 			const int MAX_COLOR_ATTACHMENTS;
 
@@ -263,6 +279,8 @@ namespace Adonis {
 			virtual auto activate_color_attachment(int = 0)->void = 0;
 
 			virtual auto complete()->bool = 0;
+
+			virtual auto status()->enums::FramebufferStatus = 0;
 
 			virtual auto id()->uint32_t = 0;
 

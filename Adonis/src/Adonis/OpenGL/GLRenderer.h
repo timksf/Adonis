@@ -42,6 +42,8 @@ namespace Adonis {
 
 			auto toggle_wireframe()->void override;
 
+			auto last_error()->uint32_t override;
+
 			/**
 			*	@brief			Change the currently acitve rendering pipeline
 			*	@param pipe		A pointer to the pipeline, which should be activated
@@ -106,6 +108,7 @@ namespace Adonis {
 			auto activate_color_attachment(int index)->void override;
 
 			auto complete()->bool override;
+			auto status()->enums::FramebufferStatus override;
 			auto id()->uint32_t override;
 			auto max_color_attachments()->int override;
 

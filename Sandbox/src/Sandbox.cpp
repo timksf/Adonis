@@ -32,15 +32,13 @@ public:
 		//m_depthtex = Adonis::render::Texture2D::create(400, 300, nullptr, Adonis::render::TexturePixelFormatSized::DEPTH16);
 
 		m_framebuffer = Framebuffer::create();
-		m_framebuffer->attach(colortex->id(), FramebufferTextureAttachment::COLOR);
-		m_framebuffer->attach(colortex2->id(), FramebufferTextureAttachment::COLOR, 1);
 
 		m_viewport_window = std::make_shared<gui::ViewportWindow>(std::move(colortex), gui::ViewportWindowType::MAIN);
 		m_test_viewport = std::make_shared<gui::ViewportWindow>(std::move(colortex2), gui::ViewportWindowType::DEBUG);
 
 		m_default_vao = VertexArray::create(VertexArrayDesc::default_pos_color_desc());
 
-		float width = 10, height = 10, depth = 10;
+		float width = 10, height = 10, depth = 20;
 
 		float cube_vertices[] = {
 			width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
@@ -98,14 +96,17 @@ public:
 		if (test) {
 
 			if (m_viewport_window->resized()) {
-				m_framebuffer->attach(m_viewport_window->texture_id(), FramebufferTextureAttachment::COLOR);
 				renderer()->set_viewport(0, 0, m_viewport_window->width(), m_viewport_window->height());
+				m_framebuffer->attach(m_viewport_window->texture_id(), FramebufferTextureAttachment::COLOR);
 				m_scene->set_resolution(m_viewport_window->width(), m_viewport_window->height());
 			}
 
 			if (m_test_viewport->resized()) {
 				m_framebuffer->attach(m_test_viewport->texture_id(), FramebufferTextureAttachment::COLOR, 1);
+				AD_CORE_INFO("Error: {0}", renderer()->last_error());
 			}
+
+			AD_CORE_INFO("Framebuffer completeness: {0}", m_framebuffer->complete());
 
 			if (m_viewport_window->active()) {
 				window()->disable_cursor();
@@ -121,17 +122,17 @@ public:
 			activate_scene(m_scene);
 
 			renderer()->set_framebuffer(m_framebuffer->id());
-			m_framebuffer->activate_color_attachment(0);
 
+			m_framebuffer->activate_color_attachment(0);
 			renderer()->clear_color = { {.0f, .0f, .0f, 1.f} };
 			renderer()->clear_color_buffer();
-			renderer()->clear_depth_buffer(0.f);
+			//renderer()->clear_depth_buffer(0.f);
 			renderer()->draw(m_scene);
 
-			//m_framebuffer->activate_color_attachment(1);
-			/*renderer()->clear_color_buffer();
-			renderer()->clear_depth_buffer(0.f);*/
-			//renderer()->draw(m_scene);
+			m_framebuffer->activate_color_attachment(1);
+			renderer()->clear_color_buffer();
+			//renderer()->clear_depth_buffer(0.f);
+			renderer()->draw(m_scene);
 
 			//Activate default framebuffer so that imgui can render to it
 			renderer()->set_framebuffer(DEFAULT_FRAMEBUFFER);

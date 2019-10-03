@@ -23,6 +23,8 @@ namespace Adonis {
 			AD_LOOKUP_TABLE_DEF_U32(texture_attachment_type, { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT });
 			AD_LOOKUP_TABLE_DEF_U32(vertex_type_size, { 4u, 2u, 8u, 1u, 1u, 2u, 2u, 4u, 4u });
 			AD_LOOKUP_TABLE_DEF_U32(drawmode_divisor, { 3u, 2u, 1u });
+			AD_LOOKUP_TABLE_DEF_U32(framebuffer_status, { GL_FRAMEBUFFER_UNDEFINED, GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT, GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT, GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER, 
+															GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER, GL_FRAMEBUFFER_UNSUPPORTED, GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE, GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS, GL_FRAMEBUFFER_COMPLETE });
 
 		}
 
@@ -103,6 +105,10 @@ namespace Adonis {
 			else {
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			}
+		}
+
+		uint32_t GLRenderer::last_error() {
+			return glGetError();
 		}
 
 		void GLRenderer::set_framebuffer(uint32_t id) {
@@ -651,6 +657,7 @@ namespace Adonis {
 				attachment_index = 0;
 			}
 			glNamedFramebufferTexture(m_id, AD_LOOKUP_CORE(texture_attachment_type, attachment_type) + attachment_index, tex_id, 0);
+			AD_CORE_INFO("Index: {0}", AD_LOOKUP_CORE(texture_attachment_type, attachment_type) + attachment_index);
 		}
 
 		void GLFramebuffer::activate_color_attachment(int index) {
@@ -659,6 +666,20 @@ namespace Adonis {
 
 		bool GLFramebuffer::complete() {
 			return glCheckNamedFramebufferStatus(m_id, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+		}
+
+		enums::FramebufferStatus GLFramebuffer::status() {
+			uint32_t index = 0;
+			uint32_t status = glCheckNamedFramebufferStatus(m_id, GL_FRAMEBUFFER);
+			AD_CORE_INFO("Status: {0}", status);
+			for (auto& v : framebuffer_status_lookup) {
+				if (v == status) {
+					break;
+				}
+				index++;
+			}
+
+			return static_cast<enums::FramebufferStatus>(index);
 		}
 
 		uint32_t GLFramebuffer::id() {

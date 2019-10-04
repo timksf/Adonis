@@ -96,17 +96,14 @@ public:
 		if (test) {
 
 			if (m_viewport_window->resized()) {
-				renderer()->set_viewport(0, 0, m_viewport_window->width(), m_viewport_window->height());
+				auto width = m_viewport_window->width();
+				auto height = m_viewport_window->height();
+				renderer()->set_viewport(0, 0, width, height);
 				m_framebuffer->attach(m_viewport_window->texture_id(), FramebufferTextureAttachment::COLOR);
-				m_scene->set_resolution(m_viewport_window->width(), m_viewport_window->height());
-			}
-
-			if (m_test_viewport->resized()) {
+				m_scene->set_resolution(width, height);
+				m_test_viewport->set_texture_size(width, height);
 				m_framebuffer->attach(m_test_viewport->texture_id(), FramebufferTextureAttachment::COLOR, 1);
-				AD_CORE_INFO("Error: {0}", renderer()->last_error());
 			}
-
-			AD_CORE_INFO("Framebuffer completeness: {0}", m_framebuffer->complete());
 
 			if (m_viewport_window->active()) {
 				window()->disable_cursor();
@@ -116,6 +113,7 @@ public:
 				window()->enable_cursor();
 				m_scene->disable_cam();
 			}
+			renderer()->clear_color = { {.0f, .0f, .0f, 1.f} };
 
 			m_default_vao->use();
 
@@ -124,12 +122,12 @@ public:
 			renderer()->set_framebuffer(m_framebuffer->id());
 
 			m_framebuffer->activate_color_attachment(0);
-			renderer()->clear_color = { {.0f, .0f, .0f, 1.f} };
 			renderer()->clear_color_buffer();
 			//renderer()->clear_depth_buffer(0.f);
 			renderer()->draw(m_scene);
 
 			m_framebuffer->activate_color_attachment(1);
+			renderer()->clear_color = { {.0f, .0f, .0f, .2f} };
 			renderer()->clear_color_buffer();
 			//renderer()->clear_depth_buffer(0.f);
 			renderer()->draw(m_scene);

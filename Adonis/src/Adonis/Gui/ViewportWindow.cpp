@@ -17,6 +17,10 @@ namespace Adonis {
 			m_focused = false;
 			m_last_width = m_width;
 			m_last_height = m_height;
+
+			if (m_type == ViewportWindowType::MAIN) {
+				m_auto_resize = true;
+			}
 		}
 
 
@@ -37,12 +41,14 @@ namespace Adonis {
 				m_width = ImGui::GetWindowSize().x;
 				m_height = ImGui::GetWindowSize().y;
 
-				if ((m_width != m_last_width) || (m_height != m_last_height)) {
-					m_texture->resize(m_width, m_height);
-					m_resized = true;
-				}
-				else {
-					m_resized = false;
+				if (m_auto_resize) {
+					if ((m_width != m_last_width) || (m_height != m_last_height)) {
+						m_texture->resize(m_width, m_height);
+						m_resized = true;
+					}
+					else {
+						m_resized = false;
+					}
 				}
 
 
@@ -62,6 +68,14 @@ namespace Adonis {
 		bool ViewportWindow::active() {
 
 			return m_focused && (m_type == ViewportWindowType::MAIN);
+
+		}
+
+		void ViewportWindow::set_texture_size(float width, float height) {
+
+			m_width = width;
+			m_height = height;
+			m_texture->resize(m_width, m_height);
 
 		}
 

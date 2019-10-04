@@ -27,6 +27,8 @@ namespace Adonis {
 
 			auto active()->bool;
 
+			auto set_texture_size(float width, float height)->void;
+
 			inline auto texture_id()->uint32_t { return m_texture->id(); };
 
 			inline auto set_focus(bool focused)->void { m_focused = focused; };
@@ -49,6 +51,8 @@ namespace Adonis {
 			bool m_focused{ false };
 
 			bool m_resized{ false };
+
+			bool m_auto_resize{ false };
 
 			ViewportWindowType m_type;
 

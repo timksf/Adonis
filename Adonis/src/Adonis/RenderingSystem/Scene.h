@@ -95,6 +95,8 @@ namespace Adonis {
 					select_cam(m_cams.size() - 1);
 			}
 
+			inline auto update()->void { this->update_cam_info(); };
+
 		private:
 			auto set_cam_uniforms()->void;
 			auto update_cam_info()->void;

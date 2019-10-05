@@ -53,7 +53,8 @@ namespace Adonis {
 		}
 
 		void Scene::set_resolution(float width, float height) {
-			*m_cam_info.aspect_ratio = width / height;
+			m_cam_info.aspect_ratio = width / height;
+			m_cams[m_active_cam]->m_aspectratio = width / height;
 		}
 
 		std::vector<MeshSpecification> Scene::mesh_specs() {
@@ -89,11 +90,11 @@ namespace Adonis {
 		}
 
 		void Scene::update_cam_info() {
-			m_cam_info.pos			=	&m_cams[m_active_cam]->m_pos;
-			m_cam_info.looking_at	=	&m_cams[m_active_cam]->m_front;
-			m_cam_info.yaw			=	&m_cams[m_active_cam]->m_yaw;
-			m_cam_info.pitch		=	&m_cams[m_active_cam]->m_pitch;
-			m_cam_info.aspect_ratio	=	&m_cams[m_active_cam]->m_aspectratio;
+			m_cam_info.pos			=	m_cams[m_active_cam]->m_pos;
+			m_cam_info.looking_at	=	m_cams[m_active_cam]->m_front;
+			m_cam_info.yaw			=	m_cams[m_active_cam]->m_yaw;
+			m_cam_info.pitch		=	m_cams[m_active_cam]->m_pitch;
+			m_cam_info.aspect_ratio	=	m_cams[m_active_cam]->m_aspectratio;
 		}
 
 		MeshGroup& Scene::mesh_group(MeshSpecification spec) {

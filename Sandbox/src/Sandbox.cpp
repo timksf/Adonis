@@ -127,13 +127,15 @@ public:
 			renderer()->draw(m_scene);
 
 			m_framebuffer->activate_color_attachment(1);
-			renderer()->clear_color = { {.0f, .0f, .0f, .2f} };
+			renderer()->clear_color = { {.0f, .0f, .3f, .2f} };
 			renderer()->clear_color_buffer();
 			//renderer()->clear_depth_buffer(0.f);
 			renderer()->draw(m_scene);
 
 			//Activate default framebuffer so that imgui can render to it
 			renderer()->set_framebuffer(DEFAULT_FRAMEBUFFER);
+
+			m_scene->update();
 
 		}
 	}

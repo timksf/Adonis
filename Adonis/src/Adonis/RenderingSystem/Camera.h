@@ -45,11 +45,11 @@ namespace Adonis {
 		}
 
 		struct ADONIS_API CamInfo {
-			glm::vec3* pos{ nullptr };
-			glm::vec3* looking_at{ nullptr };
-			float* yaw{ nullptr };
-			float* pitch{ nullptr };
-			float* aspect_ratio{ nullptr };
+			glm::vec3 pos{ 0.f, 0.f, 0.f };
+			glm::vec3 looking_at{ 0.f, 0.f, 0.f };
+			float yaw{ 0.f };
+			float pitch{ 0.f };
+			float aspect_ratio{ 0.f };
 		};
 
 		class ADONIS_API Camera : EventListener {

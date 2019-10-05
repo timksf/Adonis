@@ -183,6 +183,8 @@ namespace Adonis {
 					}
 				}
 
+				if (m_show_cam_info) show_cam_info_window(app->active_scene()->cam_info(), &m_show_cam_info);
+
 				ImGui::End();
 			}
 
@@ -400,11 +402,11 @@ namespace Adonis {
 		}
 		else {
 
-			ImGui::Text("Position: x:%.1f; y: %.1f; z: %.1f", info.pos->x, info.pos->y, info.pos->z);
-			ImGui::Text("Looking at: x:%.1f; y: %.1f; z: %.1f", info.looking_at->x, info.looking_at->y, info.looking_at->z);
-			ImGui::Text("Yaw: %.f", *info.yaw);
-			ImGui::Text("Pitch: %.f", *info.pitch);
-			ImGui::Text("Aspectratio: %.3f", *info.aspect_ratio);
+			ImGui::Text("Position: x:%.1f; y: %.1f; z: %.1f", info.pos.x, info.pos.y, info.pos.z);
+			ImGui::Text("Looking at: x:%.1f; y: %.1f; z: %.1f", info.looking_at.x, info.looking_at.y, info.looking_at.z);
+			ImGui::Text("Yaw: %.f", info.yaw);
+			ImGui::Text("Pitch: %.f", info.pitch);
+			ImGui::Text("Aspectratio: %.3f", info.aspect_ratio);
 			
 			ImGui::End();
 		}

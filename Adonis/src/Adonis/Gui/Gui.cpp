@@ -174,6 +174,7 @@ namespace Adonis {
 				if (show_style_chooser) show_style_editor(&show_style_chooser);
 				if (show_scene_window) show_scene_edit(&show_scene_window);
 				if (show_tools) show_tools_window(&show_tools);
+				if (m_show_cam_info) show_cam_info_window(&m_show_cam_info);
 
 				for (auto& w : m_viewport_windows) {
 					w->draw();
@@ -183,7 +184,6 @@ namespace Adonis {
 					}
 				}
 
-				if (m_show_cam_info) show_cam_info_window(app->active_scene()->cam_info(), &m_show_cam_info);
 
 				ImGui::End();
 			}
@@ -268,10 +268,12 @@ namespace Adonis {
 
 		ImGui::Text("Type: %s", scene->type() == rendersystem::SceneType::Scene2D ? "2D" : "3D");
 		if (scene->type() == rendersystem::SceneType::Scene3D) {
-			ImGui::Text("Active cam: %d", scene->active_cam());
+			ImGui::Text("Active cam: %d", scene->active_cam_idx());
 			ImGui::SameLine();
 			if (ImGui::SmallButton("Info")) {
 				m_show_cam_info = true;
+
+
 			}
 			ImGui::SameLine();
 			if (ImGui::SmallButton("Select...")) {
@@ -287,6 +289,10 @@ namespace Adonis {
 
 					ImGui::End();
 				}
+			}
+
+			if (ImGui::Button("Reset")) {
+
 			}
 		}
 
@@ -395,19 +401,66 @@ namespace Adonis {
 		}
 	}
 
-	void Gui::show_cam_info_window(rendersystem::CamInfo info, bool* show) {
+	void Gui::show_cam_info_window(bool* show) {
 		if (!ImGui::Begin("CamInfo", show)) {
 			ImGui::End();
 			AD_CORE_ERROR("Failed to create cam info window");
 		}
 		else {
 
-			ImGui::Text("Position: x:%.1f; y: %.1f; z: %.1f", info.pos.x, info.pos.y, info.pos.z);
-			ImGui::Text("Looking at: x:%.1f; y: %.1f; z: %.1f", info.looking_at.x, info.looking_at.y, info.looking_at.z);
-			ImGui::Text("Yaw: %.f", info.yaw);
-			ImGui::Text("Pitch: %.f", info.pitch);
-			ImGui::Text("Aspectratio: %.3f", info.aspect_ratio);
-			
+			bool update_scene_cam = false;
+
+			auto cam = Application::get()->active_scene()->active_cam();
+
+			auto first_tab_x = ImGui::CalcTextSize("[Viewing direction]").x + ImGui::GetWindowWidth() * 0.05;
+			auto second_tab_x = first_tab_x + ImGui::CalcTextSize("[ %.1f, % .1f, %.1f ]").x + ImGui::GetWindowWidth() * 0.05;
+
+			ImGui::Text("[Position]");			ImGui::SameLine(first_tab_x);			ImGui::Text("[ %.1f, %.1f, %.1f ]", cam->pos().x, cam->pos().y, cam->pos().z);
+
+			ImGui::SameLine(second_tab_x);
+			if (ImGui::SmallButton("...")) {
+				ImGui::OpenPopup("Edit camera position");
+			};
+			if (ImGui::BeginPopupModal("Edit camera position", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+				ImGui::InputFloat3("position", &cam->pos().x, 1);
+
+				if (ImGui::Button("Close")) {
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::EndPopup();
+			}
+
+			ImGui::Text("[Viewing direction]"); ImGui::SameLine(first_tab_x);			ImGui::Text("[ %.1f, %.1f, %.1f ]", cam->viewing_dir().x, cam->viewing_dir().y, cam->viewing_dir().z);
+			ImGui::Text("[Yaw]");				ImGui::SameLine(first_tab_x);			ImGui::Text("%.f", cam->yaw());
+			ImGui::Text("[Pitch]");				ImGui::SameLine(first_tab_x);			ImGui::Text("%.f", cam->pitch());
+			ImGui::Text("[Aspect-ratio]");		ImGui::SameLine(first_tab_x);			ImGui::Text("%.3f", cam->aspect_ratio());
+			ImGui::Text("[Fov]");				ImGui::SameLine(first_tab_x);			ImGui::Text("%.f", glm::degrees(cam->fov()));
+			ImGui::Text("[Clip space] ");		ImGui::SameLine(first_tab_x);			ImGui::Text("[ %.1f, %.1f]", cam->clip_space().x, cam->clip_space().y);
+												
+			ImGui::SameLine(second_tab_x);			
+			if (ImGui::SmallButton("...")) {
+				ImGui::OpenPopup("Edit camera clip-space");
+			};
+			if (ImGui::BeginPopupModal("Edit camera clip-space", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+				ImGui::InputFloat2("clip space", &cam->clip_space().x, 1);
+
+				if (ImGui::Button("Close")) {
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::EndPopup();
+			}
+
+			ImGui::Text("[Constrain pitch] ");  ImGui::SameLine(first_tab_x);			(cam->pitch_constrained()) ? ImGui::Text("true") : ImGui::Text("false");
+												ImGui::SameLine(second_tab_x);			if (gui::CustomImGuiElements::toggle_button("cstrptch", &cam->pitch_constrained())) { cam->toggle_pitch_constraint(); };
+			ImGui::Text("[Input] ");			ImGui::SameLine(first_tab_x);			(cam->input_enabled()) ? ImGui::Text("enabled") : ImGui::Text("disabled");
+			ImGui::Text("[Zoom] ");				ImGui::SameLine(first_tab_x);			(cam->zoom_enabled()) ? ImGui::Text("enabled") : ImGui::Text("disabled");
+												ImGui::SameLine(second_tab_x);			if (gui::CustomImGuiElements::toggle_button("tgglzoom", &cam->zoom_enabled())) { cam->toggle_zoom(); };
+
+
 			ImGui::End();
 		}
 	}

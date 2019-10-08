@@ -32,6 +32,8 @@
 #define AD_CORE_ASSERT_NOTNULL(x, ...)					AD_CORE_ASSERT((x != nullptr), __VA_ARGS__)
 #define AD_CLIENT_ASSERT_NOTNULL(x, ...)					AD_CLIENT_ASSERT((x != nullptr), __VA_ARGS__)
 
+#define AD_CORE_ASSERT_INDEXBOUNDS(idx, nelems)			AD_CORE_ASSERT((idx >= 0 && idx < nelems), "Index out of bounds")
+
 #define AD_NAME_FROM_TYPE(type) std::string(#type)
 
 #define AD_C_STYLE_ARRAYSIZE(x)							(static_cast<size_t>((sizeof(x) / sizeof(*x))))
@@ -76,6 +78,8 @@
 
 #define AD_FALSE										0
 #define AD_TRUE											1
+
+#define AD_CLAMP(v, min_, max_)							v = std::min(max_, v); v = std::max(min_, v);
 
 #ifdef ADONIS_USE_GLFW
 	#define ADONIS_WINDOW_CONTEXT_LIB_NAME				"GLFW"

@@ -53,7 +53,6 @@ namespace Adonis {
 		}
 
 		void Scene::set_resolution(float width, float height) {
-			m_cam_info.aspect_ratio = width / height;
 			m_cams[m_active_cam]->m_aspectratio = width / height;
 		}
 
@@ -79,7 +78,6 @@ namespace Adonis {
 		void Scene::select_cam(uint32_t index) {
 			AD_CORE_ASSERT((index >= 0 && index < m_cams.size()), "Index out of bounds: ");
 			m_active_cam = index;
-			update_cam_info();
 		}
 
 		void Scene::set_cam_uniforms() {
@@ -87,14 +85,6 @@ namespace Adonis {
 			//_CORE_INFO("Camera index: {0}",m_active_cam);
 			m_pipe->get_param("view")->set_mat4f(m_cams[m_active_cam]->view());
 			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
-		}
-
-		void Scene::update_cam_info() {
-			m_cam_info.pos			=	m_cams[m_active_cam]->m_pos;
-			m_cam_info.looking_at	=	m_cams[m_active_cam]->m_front;
-			m_cam_info.yaw			=	m_cams[m_active_cam]->m_yaw;
-			m_cam_info.pitch		=	m_cams[m_active_cam]->m_pitch;
-			m_cam_info.aspect_ratio	=	m_cams[m_active_cam]->m_aspectratio;
 		}
 
 		MeshGroup& Scene::mesh_group(MeshSpecification spec) {
@@ -111,7 +101,7 @@ namespace Adonis {
 
 		void MeshGroup::use_model(uint32_t model_index) {
 
-			AD_CORE_ASSERT((model_index >= 0 && model_index < m_models.size()), "Index out of bounds");
+			AD_CORE_ASSERT_INDEXBOUNDS(model_index, m_models.size());
 
 			m_active_model = model_index;
 

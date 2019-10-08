@@ -143,9 +143,11 @@ namespace Adonis {
 		}
 
 		AD_EVENT_FUNC_DEF_HEAD(MouseScrolledEvent, Camera) {
+			using namespace math::literals;
 			if (m_enable_input) {
 				if (m_enable_zoom) {
 					m_fov -= glm::radians(event->yoffset());
+					AD_CLAMP(m_fov, 0.1_degf, 179.9_degf)
 				}
 			}
 		}

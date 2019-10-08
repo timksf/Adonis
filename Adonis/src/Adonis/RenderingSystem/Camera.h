@@ -44,14 +44,6 @@ namespace Adonis {
 			return static_cast<MovementDirection>(~(static_cast<uint32_t>(a)));
 		}
 
-		struct ADONIS_API CamInfo {
-			glm::vec3 pos{ 0.f, 0.f, 0.f };
-			glm::vec3 looking_at{ 0.f, 0.f, 0.f };
-			float yaw{ 0.f };
-			float pitch{ 0.f };
-			float aspect_ratio{ 0.f };
-		};
-
 		class ADONIS_API Camera : EventListener {
 		public:
 
@@ -69,14 +61,33 @@ namespace Adonis {
 
 			inline auto enable_zoom()->void { m_enable_zoom = true; };
 			inline auto disable_zoom()->void { m_enable_zoom = false; };
+			inline auto toggle_zoom()->void { m_enable_zoom = !m_enable_zoom; };
+
 
 			inline auto enable_input()->void { m_enable_input = true; };
 			inline auto disable_input()->void { m_enable_input = false; m_first_mouse = true; };
+			inline auto toggle_input()->void { m_enable_input = !m_enable_input; if (!m_enable_input) m_first_mouse = true; };
+
+			inline auto toggle_pitch_constraint()->void { m_constrain_pitch = !m_constrain_pitch; };
 
 			auto reset_movement()->void;
 
 			auto view()const->glm::mat4;
 			auto projection()const->glm::mat4;
+
+			inline auto fov()				->float&				{ return m_fov; };
+			inline auto aspect_ratio()		->float&				{ return m_aspectratio; };
+			inline auto vel()				->float&				{ return m_velocity; };
+			inline auto sens()				->float&				{ return m_sensitivity; };
+			inline auto yaw()				->float&				{ return m_yaw; };
+			inline auto pitch()				->float&				{ return m_pitch; };
+			inline auto pitch_constrained()	->bool&					{ return m_constrain_pitch; };
+			inline auto zoom_enabled()		->bool&					{ return m_enable_zoom; };
+			inline auto input_enabled()		->bool&					{ return m_enable_input; };
+			inline auto pos()				->glm::vec3&			{ return m_pos; };
+			inline auto viewing_dir()		->glm::vec3		const	{ return m_front; };
+			inline auto clip_space()		->glm::vec2& const		{ return m_clip_space; };
+
 
 		private:
 			MovementDirection m_movement_status{ MovementDirection::Stationary };

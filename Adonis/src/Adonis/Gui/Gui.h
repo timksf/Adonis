@@ -4,6 +4,7 @@
 #include "Adonis/Eventsystem/EventListener.h"
 #include "Adonis/Eventsystem/Events/Events.h"
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "glm/glm.hpp"
 #include "Adonis/RenderingSystem/RenderingSystem.h"
 #include "ViewportWindow.h"
@@ -51,7 +52,7 @@ namespace Adonis {
 		auto show_style_editor(bool*)->void;
 		auto show_tools_window(bool*)->void;
 		auto show_scene_edit(bool*)->void;
-		auto show_cam_info_window(rendersystem::CamInfo info, bool*)->void;
+		auto show_cam_info_window(bool*)->void;
 
 		static inline auto test(std::shared_ptr<gui::ViewportWindow> w) {
 
@@ -86,5 +87,47 @@ namespace Adonis {
 		std::vector<std::shared_ptr<gui::ViewportWindow>> m_viewport_windows;
 
 	};
+
+	namespace gui {
+
+		class ADONIS_API CustomImGuiElements {
+		public:
+
+			static inline bool toggle_button(const char* str_id, bool* v) {
+
+				AD_CORE_ASSERT_NOTNULL(v, "Toggle button cannot be drawn without a valid pointer-to-boolean");
+
+				ImVec2 p = ImGui::GetCursorScreenPos();
+				ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+				ImGuiStyle* style = &ImGui::GetStyle();
+				auto colors = style->Colors;
+
+				float height = 0.8 * ImGui::GetFrameHeight();
+				float width = height * 1.55f;
+				float radius = height * 0.50f;
+
+				bool pressed = false;
+
+				pressed = ImGui::InvisibleButton(str_id, ImVec2(width, height));
+				if (ImGui::IsItemClicked())
+					*v = !*v;
+
+				float t = *v ? 1.0f : 0.0f;
+
+				draw_list->AddRectFilled(p, ImVec2(p.x + width, p.y + height), ImGui::ColorConvertFloat4ToU32(colors[ImGuiCol_Button]));
+
+				ImU32 col = *v ? IM_COL32(0, 255, 0, 255) : IM_COL32(255, 0, 0, 255);
+				draw_list->AddRectFilled(ImVec2(p.x + t * (width / 2) + 0.05 * width, p.y + 0.1 * height), ImVec2(p.x + t * (width / 2) + width / 2 - 0.05 * width, p.y + 0.9 * height), col);
+
+				if (pressed)
+					*v = !*v;
+
+				return pressed;
+			}
+
+		};
+
+	}
 
 }

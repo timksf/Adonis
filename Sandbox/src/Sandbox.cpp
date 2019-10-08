@@ -135,8 +135,6 @@ public:
 			//Activate default framebuffer so that imgui can render to it
 			renderer()->set_framebuffer(DEFAULT_FRAMEBUFFER);
 
-			m_scene->update();
-
 		}
 	}
 

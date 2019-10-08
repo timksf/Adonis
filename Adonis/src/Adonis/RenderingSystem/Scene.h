@@ -70,21 +70,23 @@ namespace Adonis {
 
 			auto set_resolution(float width, float height)->void;
 
+			inline void test() { m_cams[m_active_cam]->m_enable_zoom = true; };
+
 			inline auto set_pipe(std::shared_ptr<render::RenderPipeline> pipe) { m_pipe = pipe; };
 
 			inline auto pipe()->std::shared_ptr<render::RenderPipeline> { return m_pipe; };
 
 			inline auto type()->SceneType { return m_type; };
 
-			inline auto cam_info()->CamInfo { return m_cam_info; };
+			inline auto active_cam_idx()->uint32_t { return m_active_cam; };
 
-			inline auto active_cam()->uint32_t { return m_active_cam; };
+			inline auto active_cam()->std::shared_ptr<Camera> { return m_cams[m_active_cam]; };
 
 			inline auto number_of_cams()->uint32_t { return m_cams.size(); };
 
 			template<typename... Args>
 			inline auto add_cam(Args&&... args, bool auto_select = false)->void {
-				m_cams.push_back(std::make_unique<Camera>(std::forward<Args>(args)...));
+				m_cams.push_back(std::make_shared<Camera>(std::forward<Args>(args)...));
 				if(auto_select)
 					select_cam(m_cams.size() - 1);
 			}
@@ -95,20 +97,15 @@ namespace Adonis {
 					select_cam(m_cams.size() - 1);
 			}
 
-			inline auto update()->void { this->update_cam_info(); };
 
 		private:
 			auto set_cam_uniforms()->void;
-			auto update_cam_info()->void;
-
 
 			SceneType m_type;
 			uint32_t m_active_cam{ 0 };
-			std::vector<std::unique_ptr<Camera>> m_cams;
+			std::vector<std::shared_ptr<Camera>> m_cams;
 			std::unordered_map<MeshSpecification, MeshGroup, hash<MeshSpecification>> m_meshgroups;
 			std::shared_ptr<render::RenderPipeline> m_pipe{ nullptr };
-			CamInfo m_cam_info;
-			//std::vector<std::unique_ptr<render::VertexArray>> m_vaos;
 		};
 
 	}

@@ -418,9 +418,9 @@ namespace Adonis {
 			ImGui::Text("[Position]");			ImGui::SameLine(first_tab_x);			ImGui::Text("[ %.1f, %.1f, %.1f ]", cam->pos().x, cam->pos().y, cam->pos().z);
 
 			ImGui::SameLine(second_tab_x);
-			if (ImGui::SmallButton("...")) {
+			if (ImGui::SmallButton("...##camposedit")) {
 				ImGui::OpenPopup("Edit camera position");
-			};
+			}
 			if (ImGui::BeginPopupModal("Edit camera position", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
 
 				ImGui::InputFloat3("position", &cam->pos().x, 1);
@@ -437,14 +437,14 @@ namespace Adonis {
 			ImGui::Text("[Pitch]");				ImGui::SameLine(first_tab_x);			ImGui::Text("%.f", cam->pitch());
 			ImGui::Text("[Aspect-ratio]");		ImGui::SameLine(first_tab_x);			ImGui::Text("%.3f", cam->aspect_ratio());
 			ImGui::Text("[Fov]");				ImGui::SameLine(first_tab_x);			ImGui::Text("%.f", glm::degrees(cam->fov()));
-			ImGui::Text("[Clip space] ");		ImGui::SameLine(first_tab_x);			ImGui::Text("[ %.1f, %.1f]", cam->clip_space().x, cam->clip_space().y);
+			ImGui::Text("[Clip space] ");		ImGui::SameLine(first_tab_x);			ImGui::Text("[ %.1f, %.1f ]", cam->clip_space().x, cam->clip_space().y);
 												
 			ImGui::SameLine(second_tab_x);			
-			if (ImGui::SmallButton("...")) {
+			if (ImGui::SmallButton("...##camclipspaceedit")) {
 				ImGui::OpenPopup("Edit camera clip-space");
 			};
 			if (ImGui::BeginPopupModal("Edit camera clip-space", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-
+				AD_CORE_INFO("LOL");
 				ImGui::InputFloat2("clip space", &cam->clip_space().x, 1);
 
 				if (ImGui::Button("Close")) {
@@ -459,6 +459,36 @@ namespace Adonis {
 			ImGui::Text("[Input] ");			ImGui::SameLine(first_tab_x);			(cam->input_enabled()) ? ImGui::Text("enabled") : ImGui::Text("disabled");
 			ImGui::Text("[Zoom] ");				ImGui::SameLine(first_tab_x);			(cam->zoom_enabled()) ? ImGui::Text("enabled") : ImGui::Text("disabled");
 												ImGui::SameLine(second_tab_x);			if (gui::CustomImGuiElements::toggle_button("tgglzoom", &cam->zoom_enabled())) { cam->toggle_zoom(); };
+			ImGui::Text("[Sens] ");				ImGui::SameLine(first_tab_x);			ImGui::Text("%.1f", cam->sens());
+			ImGui::SameLine(second_tab_x);		
+			if (ImGui::SmallButton("...##camsensedit")) {
+				ImGui::OpenPopup("Edit camera sensitivity");
+			}
+			if (ImGui::BeginPopupModal("Edit camera sensitivity", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+				ImGui::DragFloat("sensitivity", &cam->sens(), 0.1, 0.01, 0.8);
+
+				if (ImGui::Button("Close")) {
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::EndPopup();
+			}
+			ImGui::Text("[Velocity] ");				ImGui::SameLine(first_tab_x);			ImGui::Text("%.1f", cam->vel());
+			ImGui::SameLine(second_tab_x);		
+			if (ImGui::SmallButton("...##camveledit")) {
+				ImGui::OpenPopup("Edit camera velocity");
+			}
+			if (ImGui::BeginPopupModal("Edit camera velocity", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+				ImGui::DragFloat("velocity", &cam->vel());
+
+				if (ImGui::Button("Close")) {
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::EndPopup();
+			}
 
 
 			ImGui::End();

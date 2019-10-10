@@ -38,43 +38,13 @@ public:
 
 		m_default_vao = VertexArray::create(VertexArrayDesc::default_pos_color_desc());
 
-		float width = 10, height = 10, depth = 20;
+		auto test_cuboid = std::make_unique<primitives::Cuboid>(10, 10, 10);
 
-		float cube_vertices[] = {
-			width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
-			width / 2.0f,  height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
-			-width / 2.0f, height / 2.0f,  depth / 2.0f,	.0f, 1.0f, 1.0f,
-			-width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
-			width / 2.0f,  -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-			width / 2.0f,  height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-			-width / 2.0f, -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-			-width / 2.0f, height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f
-		};
-
-		uint32_t cube_indices[] = {
-
-			0,1,4,
-			4,1,5,
-			0,2,1,
-			0,3,2,
-			0,4,6,
-			0,3,6,
-			1,5,2,
-			2,5,7,
-			2,3,6,
-			2,6,7,
-			5,6,7,
-			5,4,6
-
-		};
-
-		auto temp_cube_mesh = std::make_unique<Mesh>(cube_vertices, sizeof(cube_vertices), VertexArrayDesc::default_pos_color_desc(), cube_indices, sizeof(cube_indices));
-
-		auto temp_cube_model = std::make_unique<Model>(std::move(temp_cube_mesh));
+		auto test_cuboid_model = std::make_unique<Model>(std::move(test_cuboid));
 
 		m_scene->set_pipe(RenderPipeline::test_pipeline_3D());
 		m_scene->add_default_cam(true);
-		m_scene->add_model(std::move(temp_cube_model));
+		m_scene->add_model(std::move(test_cuboid_model));
 		m_scene->enable_cam();
 
 		renderer()->toggle_wireframe();

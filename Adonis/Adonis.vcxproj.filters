@@ -126,6 +126,7 @@
       <Filter>src\Adonis</Filter>
     </ClInclude>
     <ClInclude Include="src\Adonis\Gui\ViewportWindow.h" />
+    <ClInclude Include="src\Adonis\RenderingSystem\Primitives\Icosahedron.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Adonis\Application.cpp">
@@ -178,6 +179,7 @@
       <Filter>src\Adonis</Filter>
     </ClCompile>
     <ClCompile Include="src\Adonis\Gui\ViewportWindow.cpp" />
+    <ClCompile Include="src\Adonis\RenderingSystem\Primitives\Icosahedron.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag">

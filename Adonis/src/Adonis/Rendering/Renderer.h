@@ -21,8 +21,8 @@ namespace Adonis {
 
 			enum class DrawMode : uint32_t {
 				Triangles = 0,
-				Lines,
 				Points,
+				Lines,
 			};
 
 			enum class DrawMethod : uint32_t {
@@ -473,7 +473,9 @@ namespace Adonis {
 			*/
 			static auto test_pipeline_2D()->std::shared_ptr<RenderPipeline>;
 
-			static auto test_pipeline_3D()->std::shared_ptr<RenderPipeline>;
+			static auto test_pipeline_3D_pos_col()->std::shared_ptr<RenderPipeline>;
+
+			static auto test_pipeline_3D_pos()->std::shared_ptr<RenderPipeline>;
 
 			virtual ~RenderPipeline() {};
 
@@ -565,6 +567,8 @@ namespace Adonis {
 			*	@return pointer to the vertex array description 
 			*/
 			static auto default_pos_color_desc()->std::shared_ptr<VertexArrayDesc>;
+
+			static auto default_only_pos_desc()->std::shared_ptr<VertexArrayDesc>;
 					   
 			virtual ~VertexArrayDesc() {};
 

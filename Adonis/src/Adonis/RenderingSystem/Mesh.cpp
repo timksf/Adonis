@@ -59,7 +59,7 @@ namespace Adonis {
 				//TODO add functionality to be able to influence buffer flags upon mesh creation
 				m_ibo = render::IndexBuffer::create(m_n_indices, indices, render::BufferBit::DYNAMIC_STORAGE);
 				m_prim_count = static_cast<uint32_t>(std::floor(m_n_indices / render::AD_LOOKUP_CORE(drawmode_divisor, m_specs.mode())));
-				//AD_CORE_INFO("PRIM COUNT: {0}", m_prim_count);
+				AD_CORE_INFO("PRIM COUNT: {0}", m_prim_count);
 				//m_prim_count = 12;// static_cast<uint32_t>(std::floor(m_n_indices / render::AD_LOOKUP_CORE(drawmode_divisor, m_specs.mode())));
 			}
 

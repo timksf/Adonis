@@ -188,12 +188,14 @@
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.vert">
       <Filter>src\Adonis\OpenGL\Shaders</Filter>
     </None>
-    <None Include="src\Adonis\OpenGL\Shaders\3DTest.frag">
+    <None Include="src\Adonis\OpenGL\Shaders\3d_pos_color.frag">
       <Filter>src\Adonis\OpenGL\Shaders</Filter>
     </None>
-    <None Include="src\Adonis\OpenGL\Shaders\3DTest.vert">
+    <None Include="src\Adonis\OpenGL\Shaders\3d_pos_color.vert">
       <Filter>src\Adonis\OpenGL\Shaders</Filter>
     </None>
+    <None Include="src\Adonis\OpenGL\Shaders\3d_only_pos.vert" />
+    <None Include="src\Adonis\OpenGL\Shaders\3d_only_pos.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\WindowIcon.png">

@@ -218,8 +218,10 @@
   <ItemGroup>
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.frag" />
     <None Include="src\Adonis\OpenGL\Shaders\2DTest.vert" />
-    <None Include="src\Adonis\OpenGL\Shaders\3DTest.frag" />
-    <None Include="src\Adonis\OpenGL\Shaders\3DTest.vert" />
+    <None Include="src\Adonis\OpenGL\Shaders\3d_only_pos.frag" />
+    <None Include="src\Adonis\OpenGL\Shaders\3d_only_pos.vert" />
+    <None Include="src\Adonis\OpenGL\Shaders\3d_pos_color.frag" />
+    <None Include="src\Adonis\OpenGL\Shaders\3d_pos_color.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\WindowIcon.png" />

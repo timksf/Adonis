@@ -76,6 +76,7 @@
 
 #define AD_INVERTED_MODULO(lhs, rhs)					(lhs / rhs) - (lhs % rhs)
 
+
 #define AD_FALSE										0
 #define AD_TRUE											1
 

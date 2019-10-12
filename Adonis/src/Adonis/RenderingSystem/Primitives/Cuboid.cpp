@@ -8,14 +8,14 @@ namespace Adonis::rendersystem::primitives {
 	Cuboid::Cuboid(float height, float width, float depth) : Mesh() {
 
 		float vertices[] = {
-				width / 2.0f, -height / 2.0f, depth / 2.0f,		.0f, 1.0f, 1.0f,
-				width / 2.0f,  height / 2.0f, depth / 2.0f,		.0f, 1.0f, 1.0f,
-				-width / 2.0f, height / 2.0f,  depth / 2.0f,	.0f, 1.0f, 1.0f,
-				-width / 2.0f, -height / 2.0f, depth / 2.0f,	.0f, 1.0f, 1.0f,
-				width / 2.0f,  -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-				width / 2.0f,  height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-				-width / 2.0f, -height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f,
-				-width / 2.0f, height / 2.0f, -depth / 2.0f,	.0f, 1.0f, 1.0f
+				width / 2.0f, -height / 2.0f, depth / 2.0f,		
+				width / 2.0f,  height / 2.0f, depth / 2.0f,		
+				-width / 2.0f, height / 2.0f,  depth / 2.0f,	
+				-width / 2.0f, -height / 2.0f, depth / 2.0f,	
+				width / 2.0f,  -height / 2.0f, -depth / 2.0f,	
+				width / 2.0f,  height / 2.0f, -depth / 2.0f,	
+				-width / 2.0f, -height / 2.0f, -depth / 2.0f,	
+				-width / 2.0f, height / 2.0f, -depth / 2.0f,	
 		};
 
 		uint32_t indices[] = {
@@ -36,7 +36,7 @@ namespace Adonis::rendersystem::primitives {
 		};
 
 		this->set_data(vertices, sizeof(vertices), indices, sizeof(indices));
-		this->set_specs(render::VertexArrayDesc::default_pos_color_desc(), render::DrawMode::Triangles, render::DrawMethod::Indexed);
+		this->set_specs(render::VertexArrayDesc::default_only_pos_desc(), render::DrawMode::Triangles, render::DrawMethod::Indexed);
 	}
 
 

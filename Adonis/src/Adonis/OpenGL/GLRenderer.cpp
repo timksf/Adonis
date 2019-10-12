@@ -22,7 +22,7 @@ namespace Adonis {
 			AD_LOOKUP_TABLE_DEF_U32(tex_param_value, { GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER, GL_MIRRORED_REPEAT, GL_REPEAT, GL_MIRROR_CLAMP_TO_EDGE });
 			AD_LOOKUP_TABLE_DEF_U32(texture_attachment_type, { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT });
 			AD_LOOKUP_TABLE_DEF_U32(vertex_type_size, { 4u, 2u, 8u, 1u, 1u, 2u, 2u, 4u, 4u });
-			AD_LOOKUP_TABLE_DEF_U32(drawmode_divisor, { 3u, 2u, 1u });
+			AD_LOOKUP_TABLE_DEF_U32(drawmode_divisor, { 3u, 1u, 2u });
 			AD_LOOKUP_TABLE_DEF_U32(framebuffer_status, { GL_FRAMEBUFFER_UNDEFINED, GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT, GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT, GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER, 
 															GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER, GL_FRAMEBUFFER_UNSUPPORTED, GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE, GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS, GL_FRAMEBUFFER_COMPLETE });
 
@@ -81,6 +81,8 @@ namespace Adonis {
 		}
 
 		void GLRenderer::draw(DrawMethod method, DrawMode mode, int offset, int count) {
+
+			//AD_CORE_ASSERT((AD_LOOKUP_CORE(drawmode, method) == GL_POINTS), "LOL");
 
 			switch (method) {
 				case DrawMethod::Classic:
@@ -269,13 +271,24 @@ namespace Adonis {
 				);
 		}
 
-		std::shared_ptr<RenderPipeline> RenderPipeline::test_pipeline_3D() {
+		std::shared_ptr<RenderPipeline> RenderPipeline::test_pipeline_3D_pos_col() {
 			return std::make_shared<GLRenderPipeline>(
 				std::make_unique<GLVertexShader>(
-#include "Adonis/OpenGL/Shaders/3DTest.vert"
+#include "Adonis/OpenGL/Shaders/3d_pos_color.vert"
 					),
 				std::make_unique<GLFragmentShader>(
-#include "Adonis/OpenGL/Shaders/3DTest.frag"
+#include "Adonis/OpenGL/Shaders/3d_pos_color.frag"
+					)
+				);
+		}
+
+		std::shared_ptr<RenderPipeline> RenderPipeline::test_pipeline_3D_pos() {
+			return std::make_shared<GLRenderPipeline>(
+				std::make_unique<GLVertexShader>(
+#include "Adonis/OpenGL/Shaders/3d_only_pos.vert"
+					),
+				std::make_unique<GLFragmentShader>(
+#include "Adonis/OpenGL/Shaders/3d_only_pos.frag"
 					)
 				);
 		}
@@ -514,6 +527,14 @@ namespace Adonis {
 			auto desc = VertexArrayDesc::create_empty();
 			desc->add_attrib(VertexType::FLOAT, 3); //position
 			desc->add_attrib(VertexType::FLOAT, 3); //color
+			desc->force_init();
+			return desc;
+		}
+		
+		
+		std::shared_ptr<VertexArrayDesc> VertexArrayDesc::default_only_pos_desc() {
+			auto desc = VertexArrayDesc::create_empty();
+			desc->add_attrib(VertexType::FLOAT, 3); //position
 			desc->force_init();
 			return desc;
 		}

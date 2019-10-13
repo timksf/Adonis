@@ -14,8 +14,6 @@ namespace Adonis::rendersystem::primitives {
 		using namespace math;
 		using namespace math::constants;
 
-		AD_CORE_INFO(m_radius);
-
 		std::vector<float> vertices(36);
 
 		vertices[0] = 0.0f;

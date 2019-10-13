@@ -34,6 +34,8 @@ namespace Adonis {
 			//Increase primitive count for mesh group and transfer ownership of the model to it
 			//m_meshgroups[model->mesh_specs()].prim_count() += model->primitive_count();
 			m_meshgroups[model->mesh_specs()].add_model(model);
+
+			m_model_count++;
 		}
 
 		void Scene::draw_init() {
@@ -84,6 +86,17 @@ namespace Adonis {
 			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
 		}
 
+		bool Scene::remove_model(const char* name) {
+
+			for (auto& group : m_meshgroups) {
+				if (group.second.remove_model(name)) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		MeshGroup& Scene::mesh_group(MeshSpecification spec) {
 			return m_meshgroups[spec];
 		}
@@ -106,6 +119,30 @@ namespace Adonis {
 			
 			if (model->is_indexed())
 				m_vao->set_index_buffer(model->ibo_id());
+
+		}
+
+		std::shared_ptr<Model> MeshGroup::model(const char* name) {
+
+			for (auto& model : m_models) {
+				if (model->name() == name)
+					return model;
+			}
+
+			return nullptr;
+		}
+
+		bool MeshGroup::remove_model(const char* name) {
+
+			for (auto& it = m_models.begin(); it != m_models.end(); it++) {
+				if ((*it)->name() == name) {
+					it = m_models.erase(it);
+					return true;
+				}
+
+			}
+
+			return false;
 
 		}
 

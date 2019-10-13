@@ -10,6 +10,20 @@
 #include "ViewportWindow.h"
 #include <memory>
 
+
+namespace ImGui {
+
+	static auto vector_getter = [](void* vec, int idx, const char** out_text) {
+
+		auto& vector = *static_cast<std::vector<std::string>*>(vec);
+		if (idx < 0 || idx >= static_cast<int>(vector.size())) { return false; }
+		*out_text = vector.at(idx).c_str();
+		return true;
+
+	};
+
+}
+
 namespace Adonis {
 
 	class ADONIS_API Gui : public EventListener {
@@ -52,19 +66,9 @@ namespace Adonis {
 		auto show_style_editor(bool*)->void;
 		auto show_tools_window(bool*)->void;
 		auto show_scene_edit(bool*)->void;
-		auto show_cam_info_window(bool*)->void;
+		auto show_cam_info_window(bool*)->void;;
 
-		static inline auto test(std::shared_ptr<gui::ViewportWindow> w) {
-
-			w->draw();
-
-		};
-
-		inline auto add_viewport_window(std::shared_ptr<gui::ViewportWindow> w)->void {
-
-			m_viewport_windows.push_back(w);
-
-		};
+		inline auto add_viewport_window(std::shared_ptr<gui::ViewportWindow> w)->void { m_viewport_windows.push_back(w); };
 
 	private:
 		auto init()->void;
@@ -126,8 +130,16 @@ namespace Adonis {
 				return pressed;
 			}
 
+			static bool Combo(const char* label, int* currIndex, std::vector<std::string>& values){
+				if (values.empty()) { return false; }
+				return ImGui::Combo(label, currIndex, ImGui::vector_getter,
+					static_cast<void*>(&values), values.size());
+			}
+
+
 		};
 
 	}
 
 }
+

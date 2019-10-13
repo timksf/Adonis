@@ -689,7 +689,7 @@ namespace Adonis {
 				attachment_index = 0;
 			}
 			glNamedFramebufferTexture(m_id, AD_LOOKUP_CORE(texture_attachment_type, attachment_type) + attachment_index, tex_id, 0);
-			AD_CORE_INFO("Index: {0}", AD_LOOKUP_CORE(texture_attachment_type, attachment_type) + attachment_index);
+			//AD_CORE_INFO("Index: {0}", AD_LOOKUP_CORE(texture_attachment_type, attachment_type) + attachment_index);
 		}
 
 		void GLFramebuffer::activate_color_attachment(int index) {

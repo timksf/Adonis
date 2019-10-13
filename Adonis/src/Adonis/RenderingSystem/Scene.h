@@ -29,7 +29,11 @@ namespace Adonis {
 
 			auto add_model(std::shared_ptr<Model> model)->void;
 
+			auto remove_model(const char* name)->bool;
+
 			auto use_model(std::shared_ptr<Model> model)->void;
+
+			auto model(const char* name)->std::shared_ptr<Model>;
 
 			inline auto models()->std::vector<std::shared_ptr<Model>>& { return m_models; };
 
@@ -55,6 +59,8 @@ namespace Adonis {
 			auto add_cam(std::unique_ptr<Camera>&& cam, bool auto_select = false)->void;
 
 			auto add_model(std::shared_ptr<Model> model)->void;
+
+			auto remove_model(const char* name)->bool;
 
 			auto mesh_specs()->std::vector<MeshSpecification>;
 
@@ -82,6 +88,8 @@ namespace Adonis {
 
 			inline auto number_of_cams()->uint32_t { return m_cams.size(); };
 
+			inline auto number_of_models()->uint32_t { return m_model_count; };
+
 			template<typename... Args>
 			inline auto add_cam(Args&&... args, bool auto_select = false)->void {
 				m_cams.push_back(std::make_shared<Camera>(std::forward<Args>(args)...));
@@ -99,6 +107,7 @@ namespace Adonis {
 		private:
 			auto set_cam_uniforms()->void;
 
+			uint32_t m_model_count{ 0 };
 			SceneType m_type;
 			uint32_t m_active_cam{ 0 };
 			std::vector<std::shared_ptr<Camera>> m_cams;

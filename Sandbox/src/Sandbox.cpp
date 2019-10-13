@@ -42,7 +42,7 @@ public:
 		auto test_icosahedron = std::make_unique<primitives::Icosahedron>(10);
 
 		auto test_cuboid_model = std::make_shared<Model>(std::move(test_cuboid), "Cube");
-		auto test_icosahedron_model = std::make_shared<Model>(std::move(test_icosahedron), "Ico");
+		auto test_icosahedron_model = std::make_shared<Model>(std::move(test_icosahedron), "Icosphere");
 
 		m_scene->set_pipe(RenderPipeline::test_pipeline_3D_pos());
 		m_scene->add_default_cam(true);

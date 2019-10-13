@@ -142,6 +142,7 @@ namespace Adonis {
 			static bool show_scene_window = (*app->config())["gui"]["scene_window"]["show"];
 			(*app->config())["gui"]["scene_window"]["show"] = show_scene_window;
 
+
 			//Setup main docking space
 			ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 			ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -251,7 +252,6 @@ namespace Adonis {
 
 	void Gui::show_scene_edit(bool* show) {
 		if (!ImGui::Begin("Scene Editor", show, ImGuiWindowFlags_NoTitleBar)) {
-			ImGui::End();
 			AD_CORE_ERROR("Failed to create scene edit window");
 		}
 		else {
@@ -264,7 +264,7 @@ namespace Adonis {
 
 	void Gui::generate_scene_window(std::shared_ptr<rendersystem::Scene> scene) {
 
-		if (scene == nullptr) return;
+		AD_CORE_ASSERT_NOTNULL(scene, "Scene cant be nullptr");
 
 		ImGui::Text("Type: %s", scene->type() == rendersystem::SceneType::Scene2D ? "2D" : "3D");
 		if (scene->type() == rendersystem::SceneType::Scene3D) {
@@ -278,7 +278,6 @@ namespace Adonis {
 			ImGui::SameLine();
 			if (ImGui::SmallButton("Select...")) {
 				if (!ImGui::Begin("Select camera", NULL, ImGuiWindowFlags_NoTitleBar)) {
-					ImGui::End();
 					AD_CORE_ERROR("Failed to create scene edit window");
 				}
 				else {
@@ -286,6 +285,42 @@ namespace Adonis {
 					ImGui::Text("Select camera: ");
 					ImGui::SameLine();
 					//for(uint32_t i = 0; i<)
+
+					ImGui::End();
+				}
+			}
+
+			static bool show_model_edit = false;
+
+			if (ImGui::Button("Model Editor##button")) {
+				show_model_edit = true;
+			}
+
+			if (show_model_edit) {
+				if (!ImGui::Begin("Model Editor##window", &show_model_edit)) {
+					AD_CORE_WARN("Failed to open model editor");
+				}
+				else {
+					std::vector<std::string> names;
+					names.reserve(scene->number_of_models());
+					for (auto& spec : scene->mesh_specs()) {
+						for (auto& model : scene->mesh_group(spec).models()) {
+							names.push_back(model->name());
+						}
+					}
+
+					if (names.size() == 0) {
+						names.push_back("No model found");
+					}
+
+					static int curr_el = 0;
+					gui::CustomImGuiElements::Combo("Models", &curr_el, names);
+
+					if (ImGui::Button("Delete##model_delete_button")) {
+
+						AD_CORE_INFO("Removed model: {0}", (scene->remove_model(names[curr_el].data())));
+						curr_el = 0;
+					}
 
 					ImGui::End();
 				}
@@ -444,7 +479,6 @@ namespace Adonis {
 				ImGui::OpenPopup("Edit camera clip-space");
 			};
 			if (ImGui::BeginPopupModal("Edit camera clip-space", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-				AD_CORE_INFO("LOL");
 				ImGui::InputFloat2("clip space", &cam->clip_space().x, 1);
 
 				if (ImGui::Button("Close")) {

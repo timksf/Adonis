@@ -10,7 +10,9 @@ namespace Adonis {
 			m_type(type){
 		}
 
-		void Scene::add_model(std::unique_ptr<Model>&& model) {
+		void Scene::add_model(std::shared_ptr<Model> model) {
+
+			AD_CORE_ASSERT(model->initialized(), "Model not initialized, probably forgot to name it");
 
 			//Create new or add buffers to existing vao
 			bool new_vao_needed;
@@ -31,7 +33,7 @@ namespace Adonis {
 
 			//Increase primitive count for mesh group and transfer ownership of the model to it
 			//m_meshgroups[model->mesh_specs()].prim_count() += model->primitive_count();
-			m_meshgroups[model->mesh_specs()].add_model(std::move(model));
+			m_meshgroups[model->mesh_specs()].add_model(model);
 		}
 
 		void Scene::draw_init() {
@@ -67,9 +69,6 @@ namespace Adonis {
 		}
 
 		void Scene::add_cam(std::unique_ptr<Camera>&& cam, bool auto_select) {
-			std::stringstream address;
-			address << (uint32_t)(cam.get());
-			AD_CORE_INFO("Camera address from inside scene's add_cam function: {0}", address.str());
 			m_cams.push_back(std::move(cam));
 			if(auto_select)
 				select_cam(m_cams.size() - 1);
@@ -81,8 +80,6 @@ namespace Adonis {
 		}
 
 		void Scene::set_cam_uniforms() {
-			//AD_CORE_INFO("Camera nullptr: {0}", m_cams[m_active_cam] == nullptr);
-			//_CORE_INFO("Camera index: {0}",m_active_cam);
 			m_pipe->get_param("view")->set_mat4f(m_cams[m_active_cam]->view());
 			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
 		}
@@ -91,34 +88,27 @@ namespace Adonis {
 			return m_meshgroups[spec];
 		}
 
-		void MeshGroup::add_model(std::unique_ptr<Model>&& model) {
-			m_models.push_back(std::move(model));
+		void MeshGroup::add_model(std::shared_ptr<Model> model) {
+			for (auto& m : m_models) {
+				AD_CORE_ASSERT(!(model->name() == m->name()), "Model must have unique name");
+			}
+
+			m_models.push_back(model);
 		}
 
 		void MeshGroup::set_vao(std::unique_ptr<render::VertexArray>&& vao) {
 			m_vao = std::move(vao);
 		}
 
-		void MeshGroup::use_model(uint32_t model_index) {
+		void MeshGroup::use_model(std::shared_ptr<Model> model) {
 
-			AD_CORE_ASSERT_INDEXBOUNDS(model_index, m_models.size());
-
-			m_active_model = model_index;
-
-			m_vao->set_vertex_buffer(m_models[m_active_model]->vbo_id(), 0); //TODO custom bindingindex in case of custom vertex layout
+			m_vao->set_vertex_buffer(model->vbo_id(), 0); //TODO custom bindingindex in case of custom vertex layout
 			
-			if (m_models[m_active_model]->is_indexed())
-				m_vao->set_index_buffer(m_models[m_active_model]->ibo_id());
+			if (model->is_indexed())
+				m_vao->set_index_buffer(model->ibo_id());
 
 		}
 
-		uint32_t MeshGroup::active_model_prim_count() {
-			return m_models[m_active_model]->primitive_count();
-		}
-
-		auto MeshGroup::active_model_matrix() -> glm::mat4& {
-			return m_models[m_active_model]->matrix();
-		}
 
 
 	}

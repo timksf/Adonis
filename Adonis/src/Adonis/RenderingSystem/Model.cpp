@@ -3,7 +3,7 @@
 
 namespace Adonis::rendersystem {
 
-	Model::Model(std::unique_ptr<Mesh>&& mesh){
+	Model::Model(std::unique_ptr<Mesh>&& mesh, const char* name): m_name(name){
 		AD_CORE_ASSERT(mesh->initialized(), "Model: Mesh not initialized properly");
 		AD_ON_EVENT_BIND(UpdateEvent, Model);
 		m_mesh = std::move(mesh);
@@ -36,5 +36,8 @@ namespace Adonis::rendersystem {
 	void Model::on_UpdateEvent(const event_ptr_t<UpdateEvent>& event) {
 	}
 
+	bool Model::initialized() {
+		return !m_name.empty();
+	}
 
 }

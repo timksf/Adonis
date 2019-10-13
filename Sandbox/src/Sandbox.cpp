@@ -41,13 +41,13 @@ public:
 		auto test_cuboid = std::make_unique<primitives::Cuboid>(10, 10, 10);
 		auto test_icosahedron = std::make_unique<primitives::Icosahedron>(10);
 
-		auto test_cuboid_model = std::make_unique<Model>(std::move(test_cuboid));
-		auto test_icosahedron_model = std::make_unique<Model>(std::move(test_icosahedron));
+		auto test_cuboid_model = std::make_shared<Model>(std::move(test_cuboid), "Cube");
+		auto test_icosahedron_model = std::make_shared<Model>(std::move(test_icosahedron), "Ico");
 
 		m_scene->set_pipe(RenderPipeline::test_pipeline_3D_pos());
 		m_scene->add_default_cam(true);
-		m_scene->add_model(std::move(test_cuboid_model));
-		m_scene->add_model(std::move(test_icosahedron_model));
+		m_scene->add_model(test_cuboid_model);
+		m_scene->add_model(test_icosahedron_model);
 		m_scene->enable_cam();
 
 		renderer()->toggle_wireframe();

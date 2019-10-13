@@ -27,20 +27,18 @@ namespace Adonis {
 
 			inline auto activate()const->void { m_vao->use(); };
 
-			auto add_model(std::unique_ptr<Model>&& model)->void;
+			auto add_model(std::shared_ptr<Model> model)->void;
 
-			auto use_model(uint32_t model_index)->void;
+			auto use_model(std::shared_ptr<Model> model)->void;
 
-			auto active_model_prim_count()->uint32_t;
-
-			auto active_model_matrix()->glm::mat4 &;
+			inline auto models()->std::vector<std::shared_ptr<Model>>& { return m_models; };
 
 			inline auto number_of_models()->size_t { return m_models.size(); };
 
 		private:
 			uint32_t m_active_model{ 0 };
 			std::unique_ptr<render::VertexArray> m_vao{ nullptr };
-			std::vector<std::unique_ptr<Model>> m_models;
+			std::vector<std::shared_ptr<Model>> m_models;
 		};
 
 		class ADONIS_API Scene {
@@ -56,7 +54,7 @@ namespace Adonis {
 
 			auto add_cam(std::unique_ptr<Camera>&& cam, bool auto_select = false)->void;
 
-			auto add_model(std::unique_ptr<Model>&& model)->void;
+			auto add_model(std::shared_ptr<Model> model)->void;
 
 			auto mesh_specs()->std::vector<MeshSpecification>;
 

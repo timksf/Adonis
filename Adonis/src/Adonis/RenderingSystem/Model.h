@@ -17,7 +17,7 @@ namespace Adonis {
 
 			Model() = delete;
 
-			Model(std::unique_ptr<Mesh>&& mesh);
+			Model(std::unique_ptr<Mesh>&& mesh, const char* name);
 
 			auto mesh_specs()const->MeshSpecification;
 			auto primitive_count()const->uint32_t;
@@ -27,9 +27,15 @@ namespace Adonis {
 			auto vbo_id()->uint32_t;
 			auto ibo_id()->uint32_t;
 
+			auto initialized()->bool;
+
 			inline auto matrix()->glm::mat4& { return m_matrix; };
+			inline auto name()->std::string { return m_name; };
+			inline auto set_name(const char* name)->void { m_name = std::string(name); };
 
 		private:
+
+			std::string m_name;
 			std::unique_ptr<Mesh> m_mesh;
 
 			glm::vec3 m_pos{ 0.0f, 0.0f, 0.0f };

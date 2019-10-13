@@ -66,7 +66,7 @@ namespace Adonis {
 				mesh_group.activate();
 
 				//Draw each mesh respectively
-				for (uint32_t i = 0; i < mesh_group.number_of_models(); i++) {
+				/*for (uint32_t i = 0; i < mesh_group.number_of_models(); i++) {
 					mesh_group.use_model(i);
 
 					if (scene->type() == rendersystem::SceneType::Scene3D) {
@@ -74,6 +74,17 @@ namespace Adonis {
 					}
 
 					draw(mesh_spec.method(), mesh_spec.mode(), 0, mesh_group.active_model_prim_count());
+				}*/
+
+				for (auto& model : mesh_group.models()) {
+
+					mesh_group.use_model(model);
+
+					if (scene->type() == rendersystem::SceneType::Scene3D) {
+						scene->pipe()->get_param("model")->set_mat4f(model->matrix());
+					}
+
+					draw(mesh_spec.method(), mesh_spec.mode(), 0, model->primitive_count());
 				}
 
 			}

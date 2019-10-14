@@ -94,6 +94,10 @@ public:
 
 			renderer()->set_framebuffer(m_framebuffer->id());
 
+			double time = window()->get_time() * 10.0;
+
+			m_scene->model("Cube")->rotation() = glm::vec3(time, time, time);
+
 			m_framebuffer->activate_color_attachment(0);
 			renderer()->clear_color_buffer();
 			//renderer()->clear_depth_buffer(0.f);

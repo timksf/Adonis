@@ -62,6 +62,8 @@ namespace Adonis {
 
 			auto remove_model(const char* name)->bool;
 
+			auto model(const char* name)->std::shared_ptr<Model>;
+
 			auto mesh_specs()->std::vector<MeshSpecification>;
 
 			auto mesh_group(MeshSpecification spec)->MeshGroup&;

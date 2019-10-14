@@ -316,6 +316,12 @@ namespace Adonis {
 					static int curr_el = 0;
 					gui::CustomImGuiElements::Combo("Models", &curr_el, names);
 
+					auto curr_model = scene->model(names[curr_el].data());
+
+					ImGui::DragFloat3("Position##model_pos_edit", &curr_model->pos().x);
+					ImGui::DragFloat3("Scale##model_scale_edit", &curr_model->scale().x);
+					ImGui::DragFloat3("Rotation##model_rot_edit", &curr_model->rotation().x, 1.0f, 0.0f, 360000.0f, "%.f");
+
 					if (ImGui::Button("Delete##model_delete_button")) {
 
 						AD_CORE_INFO("Removed model: {0}", (scene->remove_model(names[curr_el].data())));

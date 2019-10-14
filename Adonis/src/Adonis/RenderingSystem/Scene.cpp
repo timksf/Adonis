@@ -86,6 +86,18 @@ namespace Adonis {
 			m_pipe->get_param("projection")->set_mat4f(m_cams[m_active_cam]->projection());
 		}
 
+		std::shared_ptr<Model> Scene::model(const char* name) {
+
+			for (auto& group : m_meshgroups) {
+				auto model = group.second.model(name);
+				if (model) {
+					return model;
+				}
+			}
+
+			return nullptr;
+		}
+
 		bool Scene::remove_model(const char* name) {
 
 			for (auto& group : m_meshgroups) {
@@ -145,6 +157,8 @@ namespace Adonis {
 			return false;
 
 		}
+
+
 
 
 

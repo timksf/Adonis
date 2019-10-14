@@ -39,11 +39,9 @@ namespace Adonis::rendersystem::primitives {
 			vertices[i * 3ULL + 2u] = xz * sin(h_angle);
 
 			//third row
-			vertices[(i + 5ULL) * 3ULL] = xz * cos(h_angle + ((-vertical_angle) / 2.0f)	);
+			vertices[(i + 5ULL) * 3ULL] = xz * cos(h_angle + ((-(PI_F / 180.0f * 72.0f)) / 2.0f)	);
 			vertices[(i + 5ULL) * 3ULL + 1u] = -y;
-			vertices[(i + 5ULL) * 3ULL + 2u] = xz * sin(h_angle + ((-vertical_angle) / 2.0f));
-
-			AD_CORE_ASSERT(y != 0, "Lol");
+			vertices[(i + 5ULL) * 3ULL + 2u] = xz * sin(h_angle + ((-(PI_F / 180.0f * 72.0f)) / 2.0f));
 
 			h_angle -= (PI_F / 180.0f * 72.0f);
 		}

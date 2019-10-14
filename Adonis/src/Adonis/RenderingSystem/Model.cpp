@@ -34,10 +34,32 @@ namespace Adonis::rendersystem {
 	}
 
 	void Model::on_UpdateEvent(const event_ptr_t<UpdateEvent>& event) {
+		update();
 	}
 
 	bool Model::initialized() {
 		return !m_name.empty();
+	}
+
+	void Model::update() {
+		if(m_update_pos)			update_pos();
+		if(m_update_scale)			update_scale();
+		if(m_update_rotation)		update_rotation();
+	}
+
+	void Model::update_pos() {
+		m_matrix = glm::mat4(1.0f);
+		m_matrix = glm::translate(m_matrix, m_pos);
+	}
+
+	void Model::update_rotation() {
+		m_matrix = glm::rotate(m_matrix, glm::radians(m_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		m_matrix = glm::rotate(m_matrix, glm::radians(m_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		m_matrix = glm::rotate(m_matrix, glm::radians(m_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	}
+
+	void Model::update_scale() {
+		m_matrix = glm::scale(m_matrix, m_scale);
 	}
 
 }

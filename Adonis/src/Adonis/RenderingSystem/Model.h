@@ -33,7 +33,17 @@ namespace Adonis {
 			inline auto name()->std::string { return m_name; };
 			inline auto set_name(const char* name)->void { m_name = std::string(name); };
 
+			inline auto pos()->glm::vec3& { m_update_pos = true;  return m_pos; };
+			inline auto rotation()->glm::vec3& { m_update_rotation = true; return m_rotation; };
+			inline auto scale()->glm::vec3& { m_update_scale = true; return m_scale; };
+
+
 		private:
+
+			auto update_pos()->void;
+			auto update_rotation()->void;
+			auto update_scale()->void;
+			auto update()->void;
 
 			std::string m_name;
 			std::unique_ptr<Mesh> m_mesh;
@@ -43,6 +53,10 @@ namespace Adonis {
 			glm::vec3 m_scale{ 1.0f, 1.0f, 1.0f };
 
 			glm::mat4 m_matrix{ 1.0f };
+
+			bool m_update_pos;
+			bool m_update_scale;
+			bool m_update_rotation;
 		};
 
 	}
